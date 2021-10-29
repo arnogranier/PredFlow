@@ -1,0 +1,58 @@
+import tensorflow as tf 
+
+def inference_SGD_step(r, ir, g, update_last=True):
+    N = len(r) - 1
+    with tf.name_scope("RepresentationUpdate"):
+        for i in range(1, N):
+            r[i] -= tf.scalar_mul(ir, g[i])
+        if update_last:
+            r[N] -= tf.scalar_mul(ir, g[N])
+    
+def parameters_SGD_step(theta, lr, g):
+    with tf.name_scope("ParametersUpdate"):
+        for i in range(len(theta)):
+            theta[i].assign_add(tf.scalar_mul(lr, -g[i]))
+    
+def energy_and_error(w, r, theta=[], predictions_flow_upward=False):
+    with tf.name_scope("EnergyComputation"):
+        F = tf.zeros(())
+        with tf.GradientTape(persistent=True, watch_accessed_variables=False) as g:
+            g.watch(r+theta)
+            for i in range(len(w)):
+                if predictions_flow_upward:
+                    F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i+1], w[i](r[i]))), 1)
+                else:
+                    F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i], w[i](r[i+1]))), 1)
+        return F, g
+
+def forward_initialize_representations(model, image, target=None):
+    with tf.name_scope("Initialization"):
+        N = len(model)
+        representations = [image,]
+        for i in range(N-1):
+            representations.append(model[i](representations[-1]))
+        if target is not None:
+            representations.append(target)
+        else:
+            representations.append(model[-1](representations[-1]))
+        return representations
+    
+def backward_initialize_representations(model, target, image=None):
+    with tf.name_scope("Initialization"):
+        N = len(model)
+        representations = [target,]
+        for i in reversed(range(1, N)):
+            representations.insert(0, model[i](representations[0]))
+        if image is not None:
+            representations.insert(0, image)
+        else:
+            representations.insert(0, model[0](representations[0]))
+        return representations
+    
+def random_initialize_representations(model, image, stddev=0.001):
+    with tf.name_scope("Initialization"):
+        N = len(model)
+        representations = [image,]
+        for i in range(N):
+            representations.append(0, tf.random.normal(tf.shape(model[i](representations[-1])), stddev=stddev))
+        return representations
