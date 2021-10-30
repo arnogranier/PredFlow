@@ -1,4 +1,5 @@
 import tensorflow as tf 
+from tf_utils import reduced_batched_outer_product
 
 def inference_SGD_step(r, ir, g, update_last=True):
     N = len(r) - 1
@@ -16,14 +17,14 @@ def parameters_SGD_step(theta, lr, g):
 def energy_and_error(w, r, theta=[], predictions_flow_upward=False):
     with tf.name_scope("EnergyComputation"):
         F = tf.zeros(())
-        with tf.GradientTape(persistent=True, watch_accessed_variables=False) as g:
-            g.watch(r+theta)
+        with tf.GradientTape(persistent=True, watch_accessed_variables=False) as tape:
+            tape.watch(r+theta)
             for i in range(len(w)):
                 if predictions_flow_upward:
                     F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i+1], w[i](r[i]))), 1)
                 else:
                     F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i], w[i](r[i+1]))), 1)
-        return F, g
+        return F, tape
 
 def forward_initialize_representations(model, image, target=None):
     with tf.name_scope("Initialization"):
@@ -54,5 +55,45 @@ def random_initialize_representations(model, image, stddev=0.001):
         N = len(model)
         representations = [image,]
         for i in range(N):
-            representations.append(0, tf.random.normal(tf.shape(model[i](representations[-1])), stddev=stddev))
+            representations.append(tf.random.normal(tf.shape(model[i](representations[-1])), stddev=stddev))
         return representations
+    
+def zero_initialize_representations(model, image):
+    with tf.name_scope("Initialization"):
+        N = len(model)
+        representations = [image,]
+        for i in range(N):
+            representations.append(tf.random.zeros(tf.shape(model[i](representations[-1]))))
+        return representations
+    
+def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
+    N = len(w)
+    with tf.name_scope("PredictionErrorComputation"):
+        for i in range(N):
+            e[i] = tf.subtract(r[i], w[i](f(r[i+1])))
+    with tf.name_scope("RepresentationUpdate"):
+        for i in range(1, N):
+            r[i] += tf.scalar_mul(ir, tf.subtract(tf.matmul(w[i-1], e[i-1], transpose_a=True) * df(r[i]), e[i]))
+        if update_last:
+            r[N] += tf.scalar_mul(ir, tf.matmul(w[N-1], e[N-1], transpose_a=True) * df(r[N]))
+            
+def weight_update_backward_predictions(w, e, r, lr, f):
+    with tf.name_scope("WeightUpdate"):
+        for i in range(len(w)):
+            w[i].assign_add(tf.scalar_mul(lr, reduced_batched_outer_product(e[i], f(r[i+1]))))
+
+def inference_step_forward_predictions(e, r, w, ir, f, df, update_last=True):
+    N = len(w)
+    with tf.name_scope("PredictionErrorComputation"):
+        for i in range(N):
+            e[i] = tf.subtract(r[i+1], tf.matmul(w[i], f(r[i])))
+    with tf.name_scope("RepresentationUpdate"):
+        for i in range(1,N):
+            r[i] += tf.scalar_mul(ir, tf.subtract(tf.matmul(w[i], e[i], transpose_a=True) * df(r[i]), e[i-1]))
+        if update_last:
+            r[N] -= tf.scalar_mul(ir, e[N-1])
+            
+def weight_update_forward_predictions(w, e, r, lr, f):
+    with tf.name_scope("WeightUpdate"):
+        for i in range(len(w)):
+            w[i].assign_add(tf.scalar_mul(lr, reduced_batched_outer_product(e[i], f(r[i]))))

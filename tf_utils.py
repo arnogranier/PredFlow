@@ -1,17 +1,17 @@
 import tensorflow as tf
 
 class Dense(tf.Module):
-    def __init__(self, input_dim, output_size, name=None, activation=tf.nn.relu):
+    def __init__(self, input_dim, output_size, name=None, activation=tf.nn.relu, stddev=.001):
         super(Dense, self).__init__(name=name)
-        self.w = tf.Variable(tf.random.normal([output_size, input_dim], stddev=.001), name='w')
+        self.w = tf.Variable(tf.random.normal([output_size, input_dim], stddev=stddev), name='w')
         self.activation = activation
     def __call__(self, x):
         return tf.matmul(self.w, self.activation(x)) 
     
 class BiasedDense(tf.Module):
-    def __init__(self, input_dim, output_size, name=None, activation=tf.nn.relu):
-        super(Dense, self).__init__(name=name)
-        self.w = tf.Variable(tf.random.normal([output_size, input_dim], stddev=.001), name='w')
+    def __init__(self, input_dim, output_size, name=None, activation=tf.nn.relu, stddev=.001):
+        super(BiasedDense, self).__init__(name=name)
+        self.w = tf.Variable(tf.random.normal([output_size, input_dim], stddev=stddev), name='w')
         self.b = tf.Variable(tf.zeros([output_size,1]), name='b')
         self.activation = activation
     def __call__(self, x):
@@ -28,14 +28,31 @@ def load_tensorboard_graph(logdir, func, args, name, step=0, kwargs={}):
             profiler_outdir=logdir)
 
 def reduced_batched_outer_product(x, y):
-    with tf.name_scope("ReducedBatchedOuterProduct") as scope:
+    with tf.name_scope("ReducedBatchedOuterProduct"):
         return tf.reduce_sum(tf.einsum('nx,ny->nxy', tf.squeeze(x), tf.squeeze(y)), 0)
 
-def mlp(*args, biased=False, activation=tf.nn.relu):
+def relu_derivate(x):
+    with tf.name_scope("ReLUDerivate"):
+        return tf.cast(tf.grater_equal(x, tf.constant(0.)), tf.float32)
+
+def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01):
     if not biased:
-        return [Dense(s1, s2, activation=activation) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+        if not reversed_flow:
+            return [Dense(s1, s2, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+        else:
+            return [Dense(s2, s1, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
     else:
-        return [BiasedDense(s1, s2, activation=activation) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+        if not reversed_flow:
+            return [BiasedDense(s1, s2, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+        else:
+            return [BiasedDense(s2, s1, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+    
+def mlp_weights(*args, reversed_flow=False, stddev=0.01):
+    if not reversed_flow:
+        return [tf.Variable(tf.random.normal([s2, s1], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+    else:
+        return [tf.Variable(tf.random.normal([s1, s2], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
 
 def one_hot_pred_accuracy(p, t):
-    return tf.cast(tf.math.count_nonzero(tf.argmax(p, axis=1) == tf.argmax(t, axis=1)), tf.int32)/tf.shape(p)[0]
+    with tf.name_scope("AccuracyComputation"):
+        return tf.cast(tf.math.count_nonzero(tf.argmax(p, axis=1) == tf.argmax(t, axis=1)), tf.int32)/tf.shape(p)[0]

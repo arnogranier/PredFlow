@@ -14,12 +14,12 @@ def learn(model, image, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
             with tf.name_scope("InferenceStep"):
-                energy, gradients = energy_and_error(model, representations, parameters, predictions_flow_upward=predictions_flow_upward)
-                inference_SGD_step(representations, ir, gradients.gradient(energy, representations), update_last=False)
+                energy, autodiff = energy_and_error(model, representations, parameters, predictions_flow_upward=predictions_flow_upward)
+                inference_SGD_step(representations, ir, autodiff.gradient(energy, representations), update_last=False)
             
-    parameters_SGD_step(parameters, lr, gradients.gradient(energy, parameters))
+    parameters_SGD_step(parameters, lr, autodiff.gradient(energy, parameters))
     
-    del gradients
+    del autodiff
 
 @tf.function
 def infer(model, image, ir=0.025, T=200, predictions_flow_upward=False):
@@ -32,9 +32,9 @@ def infer(model, image, ir=0.025, T=200, predictions_flow_upward=False):
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
             with tf.name_scope("InferenceStep"):
-                energy, gradients = energy_and_error(model, representations, predictions_flow_upward=predictions_flow_upward)
-                inference_SGD_step(representations, ir, gradients.gradient(energy, representations))
+                energy, autodiff = energy_and_error(model, representations, predictions_flow_upward=predictions_flow_upward)
+                inference_SGD_step(representations, ir, autodiff.gradient(energy, representations))
                 
-    del gradients
+    del autodiff
     
     return representations[1:]

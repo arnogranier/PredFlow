@@ -9,12 +9,12 @@ import time
 train_dataset, test_dataset = load_mnist(batch_size=32)
 
 # Fully connected strict hierarchy weights
-model = mlp(784, 350, 50, 10)
+model = mlp(784, 350, 50, 10, activation=tf.nn.relu)
 
 # Train
 start = time.perf_counter()
 for epoch in range(5):
-    train_dataset.shuffle(10000)
+    train_dataset.shuffle(60000)
     for (image, target) in train_dataset:
         pc.learn(model, tf.constant(image), tf.constant(target), ir=tf.constant(.1),
                  lr=tf.constant(.001), T=20, predictions_flow_upward=True)
