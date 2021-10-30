@@ -3,7 +3,7 @@ import tensorflow as tf
 from pc_utils import *
 
 @tf.function
-def learn(model, image, target, ir=0.03, lr=0.0004, T=40, predictions_flow_upward=False):
+def learn(model, image, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=False):
 
     if predictions_flow_upward:
         representations = forward_initialize_representations(model, image, target)
@@ -22,7 +22,7 @@ def learn(model, image, target, ir=0.03, lr=0.0004, T=40, predictions_flow_upwar
     del gradients
 
 @tf.function
-def infer(model, image, ir=0.01, T=200, predictions_flow_upward=False, target_shape=None):
+def infer(model, image, ir=0.025, T=200, predictions_flow_upward=False):
     
     if predictions_flow_upward:
         representations = forward_initialize_representations(model, image)
