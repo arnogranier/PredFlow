@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tensorflow Utilities &mdash; PredFlow  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> PredFlow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">PredictiveCoding</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">Datasets Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pc_utils.html">Predictive Coding Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tensorflow Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PredFlow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">PredictiveCoding</a> &raquo;</li>
+      <li>Tensorflow Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tf_utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-tf_utils">
+<span id="tensorflow-utilities"></span><h1>Tensorflow Utilities<a class="headerlink" href="#module-tf_utils" title="Permalink to this headline"></a></h1>
+<p>[description]</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="tf_utils.BiasedDense">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">BiasedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dim</span></em>, <em class="sig-param"><span class="pre">output_size</span></em>, <em class="sig-param"><span class="pre">name=None</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.001</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.BiasedDense" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
+<p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_dim</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>output_size</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>name</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>activation</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to .001</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tf_utils.Dense">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">Dense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dim</span></em>, <em class="sig-param"><span class="pre">output_size</span></em>, <em class="sig-param"><span class="pre">name=None</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.001</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.Dense" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
+<p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_dim</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>output_size</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>name</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>activation</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to .001</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tf_utils.load_tensorboard_graph">
+<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">load_tensorboard_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.load_tensorboard_graph" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logdir</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>func</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>args</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>name</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>step</strong> (<em>int</em><em>, </em><em>optional</em>) – [description], defaults to 0</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – [description], defaults to {}</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tf_utils.mlp">
+<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">mlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*args</span></em>, <em class="sig-param"><span class="pre">biased=False</span></em>, <em class="sig-param"><span class="pre">reversed_flow=False</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.01</span></em>, <em class="sig-param"><span class="pre">only_return_weights=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.mlp" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>biased</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
+<li><p><strong>reversed_flow</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
+<li><p><strong>activation</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.01</p></li>
+<li><p><strong>only_return_weights</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tf_utils.one_hot_pred_accuracy">
+<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">one_hot_pred_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.one_hot_pred_accuracy" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>t</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tf_utils.reduced_batched_outer_product">
+<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">reduced_batched_outer_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.reduced_batched_outer_product" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>y</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tf_utils.relu_derivate">
+<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">relu_derivate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.relu_derivate" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="supervised_fullyconnected_stricthierarchy_explicit_pc.html" class="btn btn-neutral float-left" title="Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Arno Granier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

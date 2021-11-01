@@ -1,7 +1,24 @@
+'''
+[description]
+'''
+
+
 import tensorflow as tf 
 from tf_utils import reduced_batched_outer_product
 
 def inference_SGD_step(r, ir, g, update_last=True):
+    """[summary]
+
+    :param r: [description]
+    :type r: [type]
+    :param ir: [description]
+    :type ir: [type]
+    :param g: [description]
+    :type g: [type]
+    :param update_last: [description], defaults to True
+    :type update_last: bool, optional
+    """
+    
     N = len(r) - 1
     with tf.name_scope("RepresentationUpdate"):
         for i in range(1, N):
@@ -10,11 +27,35 @@ def inference_SGD_step(r, ir, g, update_last=True):
             r[N] -= tf.scalar_mul(ir, g[N])
     
 def parameters_SGD_step(theta, lr, g):
+    """[summary]
+
+    :param theta: [description]
+    :type theta: [type]
+    :param lr: [description]
+    :type lr: [type]
+    :param g: [description]
+    :type g: [type]
+    """
+    
     with tf.name_scope("ParametersUpdate"):
         for i in range(len(theta)):
             theta[i].assign_add(tf.scalar_mul(lr, -g[i]))
     
 def energy_and_error(w, r, theta=[], predictions_flow_upward=False):
+    """[summary]
+
+    :param w: [description]
+    :type w: [type]
+    :param r: [description]
+    :type r: [type]
+    :param theta: [description], defaults to []
+    :type theta: list, optional
+    :param predictions_flow_upward: [description], defaults to False
+    :type predictions_flow_upward: bool, optional
+    :return: [description]
+    :rtype: [type]
+    """
+    
     with tf.name_scope("EnergyComputation"):
         F = tf.zeros(())
         with tf.GradientTape(persistent=True, watch_accessed_variables=False) as tape:
@@ -27,6 +68,18 @@ def energy_and_error(w, r, theta=[], predictions_flow_upward=False):
         return F, tape
 
 def forward_initialize_representations(model, image, target=None):
+    """[summary]
+
+    :param model: [description]
+    :type model: [type]
+    :param image: [description]
+    :type image: [type]
+    :param target: [description], defaults to None
+    :type target: [type], optional
+    :return: [description]
+    :rtype: [type]
+    """
+    
     with tf.name_scope("Initialization"):
         N = len(model)
         representations = [image,]
@@ -39,6 +92,18 @@ def forward_initialize_representations(model, image, target=None):
         return representations
     
 def backward_initialize_representations(model, target, image=None):
+    """[summary]
+
+    :param model: [description]
+    :type model: [type]
+    :param target: [description]
+    :type target: [type]
+    :param image: [description], defaults to None
+    :type image: [type], optional
+    :return: [description]
+    :rtype: [type]
+    """
+    
     with tf.name_scope("Initialization"):
         N = len(model)
         representations = [target,]
@@ -51,6 +116,22 @@ def backward_initialize_representations(model, target, image=None):
         return representations
     
 def random_initialize_representations(model, image, stddev=0.001, predictions_flow_upward=False, target_shape=None):
+    """[summary]
+
+    :param model: [description]
+    :type model: [type]
+    :param image: [description]
+    :type image: [type]
+    :param stddev: [description], defaults to 0.001
+    :type stddev: float, optional
+    :param predictions_flow_upward: [description], defaults to False
+    :type predictions_flow_upward: bool, optional
+    :param target_shape: [description], defaults to None
+    :type target_shape: [type], optional
+    :return: [description]
+    :rtype: [type]
+    """
+    
     with tf.name_scope("Initialization"):
         N = len(model)
         if predictions_flow_upward:
@@ -65,6 +146,22 @@ def random_initialize_representations(model, image, stddev=0.001, predictions_fl
         return representations
     
 def zero_initialize_representations(model, image, predictions_flow_upward=False, target_shape=None, bias=tf.constant(0.)):
+    """[summary]
+
+    :param model: [description]
+    :type model: [type]
+    :param image: [description]
+    :type image: [type]
+    :param predictions_flow_upward: [description], defaults to False
+    :type predictions_flow_upward: bool, optional
+    :param target_shape: [description], defaults to None
+    :type target_shape: [type], optional
+    :param bias: [description], defaults to tf.constant(0.)
+    :type bias: [type], optional
+    :return: [description]
+    :rtype: [type]
+    """
+    
     with tf.name_scope("Initialization"):
         N = len(model)
         if predictions_flow_upward:
@@ -79,6 +176,24 @@ def zero_initialize_representations(model, image, predictions_flow_upward=False,
         return representations
     
 def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
+    """[summary]
+
+    :param e: [description]
+    :type e: [type]
+    :param r: [description]
+    :type r: [type]
+    :param w: [description]
+    :type w: [type]
+    :param ir: [description]
+    :type ir: [type]
+    :param f: [description]
+    :type f: [type]
+    :param df: [description]
+    :type df: [type]
+    :param update_last: [description], defaults to True
+    :type update_last: bool, optional
+    """
+    
     N = len(w)
     with tf.name_scope("PredictionErrorComputation"):
         for i in range(N):
@@ -90,11 +205,43 @@ def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
             r[N] += tf.scalar_mul(ir, tf.matmul(w[N-1], e[N-1], transpose_a=True) * df(r[N]))
             
 def weight_update_backward_predictions(w, e, r, lr, f):
+    """[summary]
+
+    :param w: [description]
+    :type w: [type]
+    :param e: [description]
+    :type e: [type]
+    :param r: [description]
+    :type r: [type]
+    :param lr: [description]
+    :type lr: [type]
+    :param f: [description]
+    :type f: [type]
+    """
+    
     with tf.name_scope("WeightUpdate"):
         for i in range(len(w)):
             w[i].assign_add(tf.scalar_mul(lr, reduced_batched_outer_product(e[i], f(r[i+1]))))
 
 def inference_step_forward_predictions(e, r, w, ir, f, df, update_last=True):
+    """[summary]
+
+    :param e: [description]
+    :type e: [type]
+    :param r: [description]
+    :type r: [type]
+    :param w: [description]
+    :type w: [type]
+    :param ir: [description]
+    :type ir: [type]
+    :param f: [description]
+    :type f: [type]
+    :param df: [description]
+    :type df: [type]
+    :param update_last: [description], defaults to True
+    :type update_last: bool, optional
+    """
+    
     N = len(w)
     with tf.name_scope("PredictionErrorComputation"):
         for i in range(N):
@@ -106,6 +253,20 @@ def inference_step_forward_predictions(e, r, w, ir, f, df, update_last=True):
             r[N] -= tf.scalar_mul(ir, e[N-1])
             
 def weight_update_forward_predictions(w, e, r, lr, f):
+    """[summary]
+
+    :param w: [description]
+    :type w: [type]
+    :param e: [description]
+    :type e: [type]
+    :param r: [description]
+    :type r: [type]
+    :param lr: [description]
+    :type lr: [type]
+    :param f: [description]
+    :type f: [type]
+    """
+    
     with tf.name_scope("WeightUpdate"):
         for i in range(len(w)):
             w[i].assign_add(tf.scalar_mul(lr, reduced_batched_outer_product(e[i], f(r[i]))))

@@ -1,9 +1,30 @@
-from numpy import dtype
+'''
+[description]
+'''
+
 import tensorflow as tf
 from pc_utils import *
 
 @tf.function
 def learn(model, image, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=False):
+    """[summary]
+
+    :param model: [description]
+    :type model: [type]
+    :param image: [description]
+    :type image: [type]
+    :param target: [description]
+    :type target: [type]
+    :param ir: [description], defaults to 0.1
+    :type ir: float, optional
+    :param lr: [description], defaults to 0.001
+    :type lr: float, optional
+    :param T: [description], defaults to 40
+    :type T: int, optional
+    :param predictions_flow_upward: [description], defaults to False
+    :type predictions_flow_upward: bool, optional
+    """
+    
     if predictions_flow_upward:
         representations = forward_initialize_representations(model, image, target)
     else:
@@ -22,6 +43,23 @@ def learn(model, image, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=
 
 @tf.function
 def infer(model, image, ir=0.025, T=200, predictions_flow_upward=False, target_shape=None):
+    """[summary]
+
+    :param model: [description]
+    :type model: [type]
+    :param image: [description]
+    :type image: [type]
+    :param ir: [description], defaults to 0.025
+    :type ir: float, optional
+    :param T: [description], defaults to 200
+    :type T: int, optional
+    :param predictions_flow_upward: [description], defaults to False
+    :type predictions_flow_upward: bool, optional
+    :param target_shape: [description], defaults to None
+    :type target_shape: [type], optional
+    :return: [description]
+    :rtype: [type]
+    """
     
     if predictions_flow_upward:
         representations = forward_initialize_representations(model, image)

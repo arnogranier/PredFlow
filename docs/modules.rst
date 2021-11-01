@@ -1,0 +1,11 @@
+Documentation
+=============
+
+.. toctree::
+   :maxdepth: 4
+
+   datasets_utils
+   pc_utils
+   supervised_autodiff_pc
+   supervised_fullyconnected_stricthierarchy_explicit_pc
+   tf_utils

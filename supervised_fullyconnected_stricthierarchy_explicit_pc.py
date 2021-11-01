@@ -1,10 +1,36 @@
+'''
+[description]
+'''
+
+
 import tensorflow as tf
 from pc_utils import *
 from tf_utils import relu_derivate
 
 @tf.function
 def learn(weights, image, target, ir=0.1, lr=0.0003, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+    """[summary]
 
+    :param weights: [description]
+    :type weights: [type]
+    :param image: [description]
+    :type image: [type]
+    :param target: [description]
+    :type target: [type]
+    :param ir: [description], defaults to 0.1
+    :type ir: float, optional
+    :param lr: [description], defaults to 0.0003
+    :type lr: float, optional
+    :param T: [description], defaults to 40
+    :type T: int, optional
+    :param f: [description], defaults to tf.nn.relu
+    :type f: [type], optional
+    :param df: [description], defaults to relu_derivate
+    :type df: [type], optional
+    :param predictions_flow_upward: [description], defaults to False
+    :type predictions_flow_upward: bool, optional
+    """
+    
     N = len(weights)
     with tf.name_scope("Initialization"):
         with tf.name_scope("RepresentationsInitialization"):
@@ -36,6 +62,27 @@ def learn(weights, image, target, ir=0.1, lr=0.0003, T=40, f=tf.nn.relu, df=relu
         
 @tf.function
 def infer(weights, image, ir=0.01, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
+    """[summary]
+
+    :param weights: [description]
+    :type weights: [type]
+    :param image: [description]
+    :type image: [type]
+    :param ir: [description], defaults to 0.01
+    :type ir: float, optional
+    :param T: [description], defaults to 200
+    :type T: int, optional
+    :param f: [description], defaults to tf.nn.relu
+    :type f: [type], optional
+    :param df: [description], defaults to relu_derivate
+    :type df: [type], optional
+    :param predictions_flow_upward: [description], defaults to False
+    :type predictions_flow_upward: bool, optional
+    :param target_shape: [description], defaults to None
+    :type target_shape: [type], optional
+    :return: [description]
+    :rtype: [type]
+    """
     
     N = len(weights)
     with tf.name_scope("Initialization"):
