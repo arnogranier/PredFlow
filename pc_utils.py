@@ -10,11 +10,11 @@ def inference_SGD_step(r, ir, g, update_last=True):
     """[summary]
 
     :param r: [description]
-    :type r: [type]
+    :type r: list of 3d tf.Tensor of float32
     :param ir: [description]
-    :type ir: [type]
+    :type ir: float32
     :param g: [description]
-    :type g: [type]
+    :type g: tf.GradientTape
     :param update_last: [description], defaults to True
     :type update_last: bool, optional
     """
@@ -30,54 +30,54 @@ def parameters_SGD_step(theta, lr, g):
     """[summary]
 
     :param theta: [description]
-    :type theta: [type]
+    :type theta: list of variable tf.Tensor of float32
     :param lr: [description]
-    :type lr: [type]
+    :type lr: float32
     :param g: [description]
-    :type g: [type]
+    :type g: tf.GradientTape
     """
     
     with tf.name_scope("ParametersUpdate"):
         for i in range(len(theta)):
             theta[i].assign_add(tf.scalar_mul(lr, -g[i]))
     
-def energy_and_error(w, r, theta=[], predictions_flow_upward=False):
+def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
     """[summary]
 
-    :param w: [description]
-    :type w: [type]
+    :param model: [description]
+    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
     :param r: [description]
-    :type r: [type]
+    :type r: list of 3d tf.Tensor of float32
     :param theta: [description], defaults to []
-    :type theta: list, optional
+    :type theta: list of variable tf.Tensor of float32, optional
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     :return: [description]
-    :rtype: [type]
+    :rtype: float32, tf.GradientTape
     """
     
     with tf.name_scope("EnergyComputation"):
         F = tf.zeros(())
         with tf.GradientTape(persistent=True, watch_accessed_variables=False) as tape:
             tape.watch(r+theta)
-            for i in range(len(w)):
+            for i in range(len(model)):
                 if predictions_flow_upward:
-                    F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i+1], w[i](r[i]))), 1)
+                    F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i+1], model[i](r[i]))), 1)
                 else:
-                    F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i], w[i](r[i+1]))), 1)
+                    F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i], model[i](r[i+1]))), 1)
         return F, tape
 
 def forward_initialize_representations(model, image, target=None):
     """[summary]
 
     :param model: [description]
-    :type model: [type]
+    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
     :param image: [description]
-    :type image: [type]
+    :type image: 3d tf.Tensor of float32
     :param target: [description], defaults to None
-    :type target: [type], optional
+    :type target: 3d tf.Tensor of float32, optional
     :return: [description]
-    :rtype: [type]
+    :rtype: list of 3d tf.Tensor of float32
     """
     
     with tf.name_scope("Initialization"):
@@ -95,13 +95,13 @@ def backward_initialize_representations(model, target, image=None):
     """[summary]
 
     :param model: [description]
-    :type model: [type]
+    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
     :param target: [description]
-    :type target: [type]
+    :type target: 3d tf.Tensor of float32
     :param image: [description], defaults to None
-    :type image: [type], optional
+    :type image: 3d tf.Tensor of float32, optional
     :return: [description]
-    :rtype: [type]
+    :rtype: list of 3d tf.Tensor of float32
     """
     
     with tf.name_scope("Initialization"):
@@ -119,17 +119,17 @@ def random_initialize_representations(model, image, stddev=0.001, predictions_fl
     """[summary]
 
     :param model: [description]
-    :type model: [type]
+    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
     :param image: [description]
-    :type image: [type]
+    :type image: 3d tf.Tensor of float32
     :param stddev: [description], defaults to 0.001
     :type stddev: float, optional
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     :param target_shape: [description], defaults to None
-    :type target_shape: [type], optional
+    :type target_shape: tf.Tensor of int32, optional
     :return: [description]
-    :rtype: [type]
+    :rtype: list of 3d tf.Tensor of float32
     """
     
     with tf.name_scope("Initialization"):
@@ -149,17 +149,17 @@ def zero_initialize_representations(model, image, predictions_flow_upward=False,
     """[summary]
 
     :param model: [description]
-    :type model: [type]
+    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
     :param image: [description]
-    :type image: [type]
+    :type image: 3d tf.Tensor of float32
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     :param target_shape: [description], defaults to None
-    :type target_shape: [type], optional
+    :type target_shape: tf.Tensor of int32, optional
     :param bias: [description], defaults to tf.constant(0.)
-    :type bias: [type], optional
+    :type bias: float32, optional
     :return: [description]
-    :rtype: [type]
+    :rtype: list of 3d tf.Tensor of float32
     """
     
     with tf.name_scope("Initialization"):
@@ -179,17 +179,17 @@ def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
     """[summary]
 
     :param e: [description]
-    :type e: [type]
+    :type e: list of 3d tf.Tensor of float32
     :param r: [description]
-    :type r: [type]
+    :type r: list of 3d tf.Tensor of float32
     :param w: [description]
-    :type w: [type]
+    :type w: list of 2d tf.Tensor of float32
     :param ir: [description]
-    :type ir: [type]
+    :type ir: float32
     :param f: [description]
-    :type f: [type]
+    :type f: function
     :param df: [description]
-    :type df: [type]
+    :type df: function
     :param update_last: [description], defaults to True
     :type update_last: bool, optional
     """
@@ -208,15 +208,15 @@ def weight_update_backward_predictions(w, e, r, lr, f):
     """[summary]
 
     :param w: [description]
-    :type w: [type]
+    :type w: list of 2d tf.Tensor of float32
     :param e: [description]
-    :type e: [type]
+    :type e: list of 3d tf.Tensor of float32
     :param r: [description]
-    :type r: [type]
+    :type r: list of 3d tf.Tensor of float32
     :param lr: [description]
-    :type lr: [type]
+    :type lr: float32
     :param f: [description]
-    :type f: [type]
+    :type f: function
     """
     
     with tf.name_scope("WeightUpdate"):
@@ -227,17 +227,17 @@ def inference_step_forward_predictions(e, r, w, ir, f, df, update_last=True):
     """[summary]
 
     :param e: [description]
-    :type e: [type]
+    :type e: list of 3d tf.Tensor of float32
     :param r: [description]
-    :type r: [type]
+    :type r: list of 3d tf.Tensor of float32
     :param w: [description]
-    :type w: [type]
+    :type w: list of 2d tf.Tensor of float32
     :param ir: [description]
-    :type ir: [type]
+    :type ir: float32
     :param f: [description]
-    :type f: [type]
+    :type f: float32
     :param df: [description]
-    :type df: [type]
+    :type df: function
     :param update_last: [description], defaults to True
     :type update_last: bool, optional
     """
@@ -256,15 +256,15 @@ def weight_update_forward_predictions(w, e, r, lr, f):
     """[summary]
 
     :param w: [description]
-    :type w: [type]
+    :type w: list of 2d tf.Tensor of float32
     :param e: [description]
-    :type e: [type]
+    :type e: list of 3d tf.Tensor of float32
     :param r: [description]
-    :type r: [type]
+    :type r: list of 3d tf.Tensor of float32
     :param lr: [description]
-    :type lr: [type]
+    :type lr: float32
     :param f: [description]
-    :type f: [type]
+    :type f: function
     """
     
     with tf.name_scope("WeightUpdate"):

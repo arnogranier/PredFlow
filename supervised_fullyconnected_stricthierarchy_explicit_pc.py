@@ -8,25 +8,25 @@ from pc_utils import *
 from tf_utils import relu_derivate
 
 @tf.function
-def learn(weights, image, target, ir=0.1, lr=0.0003, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+def learn(weights, image, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
     """[summary]
 
     :param weights: [description]
-    :type weights: list of 2d tf.Tensor
+    :type weights: list of 2d variable tf.Tensor of float32
     :param image: [description]
-    :type image: [type]
+    :type image: 3d tf.Tensor of float32
     :param target: [description]
-    :type target: [type]
+    :type target: 3d tf.Tensor of float32
     :param ir: [description], defaults to 0.1
     :type ir: float, optional
-    :param lr: [description], defaults to 0.0003
+    :param lr: [description], defaults to 0.001
     :type lr: float, optional
-    :param T: [description], defaults to 40
+    :param T: [description], defaults to 20
     :type T: int, optional
     :param f: [description], defaults to tf.nn.relu
-    :type f: [type], optional
-    :param df: [description], defaults to relu_derivate
-    :type df: [type], optional
+    :type f: function, optional
+    :param df: [description], defaults to tf_utils.relu_derivate
+    :type df: function, optional
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     """
@@ -61,27 +61,27 @@ def learn(weights, image, target, ir=0.1, lr=0.0003, T=40, f=tf.nn.relu, df=relu
         weight_update_backward_predictions(weights, errors, representations, lr, f)
         
 @tf.function
-def infer(weights, image, ir=0.01, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
+def infer(weights, image, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
     """[summary]
 
     :param weights: [description]
-    :type weights: [type]
+    :type weights: list of 2d tf.Tensor of float32
     :param image: [description]
-    :type image: [type]
-    :param ir: [description], defaults to 0.01
+    :type image: 3d tf.Tensor of float32
+    :param ir: [description], defaults to 0.025
     :type ir: float, optional
     :param T: [description], defaults to 200
     :type T: int, optional
     :param f: [description], defaults to tf.nn.relu
-    :type f: [type], optional
+    :type f: function, optional
     :param df: [description], defaults to relu_derivate
-    :type df: [type], optional
+    :type df: function, optional
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     :param target_shape: [description], defaults to None
-    :type target_shape: [type], optional
+    :type target_shape: tf.Tensor of int32, optional
     :return: [description]
-    :rtype: [type]
+    :rtype: list of 3d tf.Tensor of float32
     """
     
     N = len(weights)
