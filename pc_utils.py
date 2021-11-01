@@ -50,27 +50,39 @@ def backward_initialize_representations(model, target, image=None):
             representations.insert(0, model[0](representations[0]))
         return representations
     
-def random_initialize_representations(model, image, stddev=0.001):
+def random_initialize_representations(model, image, stddev=0.001, predictions_flow_upward=False, target_shape=None):
     with tf.name_scope("Initialization"):
         N = len(model)
-        representations = [image,]
-        for i in range(N):
-            representations.append(tf.random.normal(tf.shape(model[i](representations[-1])), stddev=stddev))
+        if predictions_flow_upward:
+            representations = [image,]
+            for i in range(N):
+                representations.append(tf.random.normal(tf.shape(model[i](representations[-1])), stddev=stddev))
+        else:
+            representations = [tf.random.normal(target_shape, stddev=stddev),]
+            for i in reversed(range(1, N)):
+                representations.insert(0, tf.random.normal(tf.shape(model[i](representations[0])),stddev=stddev))
+            representations.insert(0, image)
         return representations
     
-def zero_initialize_representations(model, image):
+def zero_initialize_representations(model, image, predictions_flow_upward=False, target_shape=None, bias=tf.constant(0.)):
     with tf.name_scope("Initialization"):
         N = len(model)
-        representations = [image,]
-        for i in range(N):
-            representations.append(tf.random.zeros(tf.shape(model[i](representations[-1]))))
+        if predictions_flow_upward:
+            representations = [image,]
+            for i in range(N):
+                representations.append(bias+tf.zeros(tf.shape(model[i](representations[-1]))))
+        else:
+            representations = [tf.zeros(target_shape)+bias,]
+            for i in reversed(range(1, N)):
+                representations.insert(0, tf.zeros(tf.shape(model[i](representations[0])))+bias)
+            representations.insert(0, image)
         return representations
     
 def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
     N = len(w)
     with tf.name_scope("PredictionErrorComputation"):
         for i in range(N):
-            e[i] = tf.subtract(r[i], w[i](f(r[i+1])))
+            e[i] = tf.subtract(r[i], tf.matmul(w[i], f(r[i+1])))
     with tf.name_scope("RepresentationUpdate"):
         for i in range(1, N):
             r[i] += tf.scalar_mul(ir, tf.subtract(tf.matmul(w[i-1], e[i-1], transpose_a=True) * df(r[i]), e[i]))

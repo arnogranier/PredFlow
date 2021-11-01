@@ -33,25 +33,25 @@ def reduced_batched_outer_product(x, y):
 
 def relu_derivate(x):
     with tf.name_scope("ReLUDerivate"):
-        return tf.cast(tf.grater_equal(x, tf.constant(0.)), tf.float32)
+        return tf.cast(tf.greater(x, tf.constant(0.)), tf.float32)
 
-def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01):
-    if not biased:
+def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01, only_return_weights=False):
+    if only_return_weights:
         if not reversed_flow:
-            return [Dense(s1, s2, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+            return [tf.Variable(tf.random.normal([s2, s1], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
         else:
-            return [Dense(s2, s1, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+            return [tf.Variable(tf.random.normal([s1, s2], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
     else:
-        if not reversed_flow:
-            return [BiasedDense(s1, s2, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+        if not biased:
+            if not reversed_flow:
+                return [Dense(s1, s2, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+            else:
+                return [Dense(s2, s1, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
         else:
-            return [BiasedDense(s2, s1, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
-    
-def mlp_weights(*args, reversed_flow=False, stddev=0.01):
-    if not reversed_flow:
-        return [tf.Variable(tf.random.normal([s2, s1], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
-    else:
-        return [tf.Variable(tf.random.normal([s1, s2], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+            if not reversed_flow:
+                return [BiasedDense(s1, s2, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+            else:
+                return [BiasedDense(s2, s1, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
 
 def one_hot_pred_accuracy(p, t):
     with tf.name_scope("AccuracyComputation"):

@@ -4,7 +4,6 @@ from pc_utils import *
 
 @tf.function
 def learn(model, image, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=False):
-
     if predictions_flow_upward:
         representations = forward_initialize_representations(model, image, target)
     else:
@@ -22,12 +21,12 @@ def learn(model, image, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=
     del autodiff
 
 @tf.function
-def infer(model, image, ir=0.025, T=200, predictions_flow_upward=False):
+def infer(model, image, ir=0.025, T=200, predictions_flow_upward=False, target_shape=None):
     
     if predictions_flow_upward:
         representations = forward_initialize_representations(model, image)
     else:
-        representations = random_initialize_representations(model, image)
+        representations = zero_initialize_representations(model, image, predictions_flow_upward=predictions_flow_upward, target_shape=target_shape, bias=tf.constant(.0001))
         
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
