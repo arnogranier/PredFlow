@@ -12,7 +12,7 @@ def learn(weights, image, target, ir=0.1, lr=0.0003, T=40, f=tf.nn.relu, df=relu
     """[summary]
 
     :param weights: [description]
-    :type weights: [type]
+    :type weights: list of 2d tf.Tensor
     :param image: [description]
     :type image: [type]
     :param target: [description]

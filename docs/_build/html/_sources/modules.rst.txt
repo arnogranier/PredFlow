@@ -1,5 +1,5 @@
-PredictiveCoding
-================
+Documentation
+=============
 
 .. toctree::
    :maxdepth: 4
