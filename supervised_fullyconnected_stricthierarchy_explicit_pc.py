@@ -79,7 +79,7 @@ def infer(weights, image, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predi
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     :param target_shape: [description], defaults to None
-    :type target_shape: tf.Tensor of int32, optional
+    :type target_shape: 1d tf.Tensor of int32, optional
     :return: [description]
     :rtype: list of 3d tf.Tensor of float32
     """

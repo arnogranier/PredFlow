@@ -39,7 +39,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">PredictiveCoding</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">Datasets Utilities</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Predictive Coding Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
@@ -63,7 +63,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">PredictiveCoding</a> &raquo;</li>
+          <li><a href="modules.html">Documentation</a> &raquo;</li>
       <li>Predictive Coding Utilities</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/pc_utils.rst.txt" rel="nofollow"> View page source</a>
@@ -84,30 +84,30 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>target</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>image</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>image</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>[description]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[type]</p>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.energy_and_error">
-<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">energy_and_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.energy_and_error" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">energy_and_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.energy_and_error" title="Permalink to this definition"></a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>w</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>theta</strong> (<em>list</em><em>, </em><em>optional</em>) – [description], defaults to []</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em><em>, </em><em>optional</em>) – [description], defaults to []</p></li>
 <li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
 </ul>
 </dd>
@@ -115,7 +115,7 @@
 <dd class="field-even"><p>[description]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[type]</p>
+<dd class="field-odd"><p>float32, tf.GradientTape</p>
 </dd>
 </dl>
 </dd></dl>
@@ -127,16 +127,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>image</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>target</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
+<li><p><strong>image</strong> (<em>3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>[description]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[type]</p>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
 </dd>
 </dl>
 </dd></dl>
@@ -148,9 +148,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>r</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>ir</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>g</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – [description]</p></li>
+<li><p><strong>g</strong> (<em>tf.GradientTape</em>) – [description]</p></li>
 <li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to True</p></li>
 </ul>
 </dd>
@@ -164,12 +164,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>e</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>w</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>ir</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>f</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>df</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – [description]</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – [description]</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – [description]</p></li>
 <li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to True</p></li>
 </ul>
 </dd>
@@ -183,12 +183,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>e</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>w</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>ir</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>f</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>df</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – [description]</p></li>
+<li><p><strong>f</strong> (<em>float32</em>) – [description]</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – [description]</p></li>
 <li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to True</p></li>
 </ul>
 </dd>
@@ -202,9 +202,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>theta</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>lr</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>g</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – [description]</p></li>
+<li><p><strong>g</strong> (<em>tf.GradientTape</em>) – [description]</p></li>
 </ul>
 </dd>
 </dl>
@@ -217,18 +217,18 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>image</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
+<li><p><strong>image</strong> (<em>3d tf.Tensor of float32</em>) – [description]</p></li>
 <li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.001</p></li>
 <li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
-<li><p><strong>target_shape</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>[description]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[type]</p>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
 </dd>
 </dl>
 </dd></dl>
@@ -240,11 +240,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>w</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>e</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>lr</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>f</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – [description]</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – [description]</p></li>
 </ul>
 </dd>
 </dl>
@@ -257,11 +257,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>w</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>e</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>lr</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>f</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – [description]</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – [description]</p></li>
 </ul>
 </dd>
 </dl>
@@ -274,18 +274,18 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
-<li><p><strong>image</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
+<li><p><strong>image</strong> (<em>3d tf.Tensor of float32</em>) – [description]</p></li>
 <li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
-<li><p><strong>target_shape</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
-<li><p><strong>bias</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to tf.constant(0.)</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>bias</strong> (<em>float32</em><em>, </em><em>optional</em>) – [description], defaults to tf.constant(0.)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>[description]</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>[type]</p>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
 </dd>
 </dl>
 </dd></dl>

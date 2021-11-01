@@ -45,7 +45,7 @@ def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
     """[summary]
 
     :param model: [description]
-    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param r: [description]
     :type r: list of 3d tf.Tensor of float32
     :param theta: [description], defaults to []
@@ -71,7 +71,7 @@ def forward_initialize_representations(model, image, target=None):
     """[summary]
 
     :param model: [description]
-    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param image: [description]
     :type image: 3d tf.Tensor of float32
     :param target: [description], defaults to None
@@ -95,7 +95,7 @@ def backward_initialize_representations(model, target, image=None):
     """[summary]
 
     :param model: [description]
-    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param target: [description]
     :type target: 3d tf.Tensor of float32
     :param image: [description], defaults to None
@@ -119,7 +119,7 @@ def random_initialize_representations(model, image, stddev=0.001, predictions_fl
     """[summary]
 
     :param model: [description]
-    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param image: [description]
     :type image: 3d tf.Tensor of float32
     :param stddev: [description], defaults to 0.001
@@ -127,7 +127,7 @@ def random_initialize_representations(model, image, stddev=0.001, predictions_fl
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     :param target_shape: [description], defaults to None
-    :type target_shape: tf.Tensor of int32, optional
+    :type target_shape: 1d tf.Tensor of int32, optional
     :return: [description]
     :rtype: list of 3d tf.Tensor of float32
     """
@@ -149,13 +149,13 @@ def zero_initialize_representations(model, image, predictions_flow_upward=False,
     """[summary]
 
     :param model: [description]
-    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param image: [description]
     :type image: 3d tf.Tensor of float32
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     :param target_shape: [description], defaults to None
-    :type target_shape: tf.Tensor of int32, optional
+    :type target_shape: 1d tf.Tensor of int32, optional
     :param bias: [description], defaults to tf.constant(0.)
     :type bias: float32, optional
     :return: [description]

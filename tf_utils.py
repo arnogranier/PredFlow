@@ -134,7 +134,7 @@ def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=
     :param only_return_weights: [description], defaults to False
     :type only_return_weights: bool, optional
     :return: [description]
-    :rtype: list of Dense/BiasedDense/2d variable tf.Tensor of float32
+    :rtype: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense` or 2d variable tf.Tensor of float32
     """
     
     if only_return_weights:

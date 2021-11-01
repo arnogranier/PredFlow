@@ -10,7 +10,7 @@ def learn(model, image, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=
     """[summary]
 
     :param model: [description]
-    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param image: [description]
     :type image: 3d tf.Tensor of float32
     :param target: [description]
@@ -46,9 +46,9 @@ def infer(model, image, ir=0.025, T=200, predictions_flow_upward=False, target_s
     """[summary]
 
     :param model: [description]
-    :type model: list of tf_utils.Dense or tf_utils.BiasedDense
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param image: [description]
-    :type image: 3d tf.Tensor of float32
+    :type image: 3d `tf.Tensor` of float32
     :param ir: [description], defaults to 0.025
     :type ir: float, optional
     :param T: [description], defaults to 200
@@ -56,7 +56,7 @@ def infer(model, image, ir=0.025, T=200, predictions_flow_upward=False, target_s
     :param predictions_flow_upward: [description], defaults to False
     :type predictions_flow_upward: bool, optional
     :param target_shape: [description], defaults to None
-    :type target_shape: tf.Tensor of int32, optional
+    :type target_shape: 1d tf.Tensor of int32, optional
     :return: [description]
     :rtype: list of 3d tf.Tensor of float32
     """
