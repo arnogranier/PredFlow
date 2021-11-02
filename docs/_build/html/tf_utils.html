@@ -84,11 +84,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_dim</strong> (<em>int</em>) – [description]</p></li>
-<li><p><strong>output_size</strong> (<em>int</em>) – [description]</p></li>
-<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
-<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – [description], defaults to tf.nn.relu</p></li>
-<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to .001</p></li>
+<li><p><strong>input_dim</strong> (<em>int</em>) – dimension of the layer’s input</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – dimension of the layer’s output</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – custom name for the layer, defaults to None</p></li>
+<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to .001</p></li>
 </ul>
 </dd>
 </dl>
@@ -102,11 +102,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_dim</strong> (<em>int</em>) – [description]</p></li>
-<li><p><strong>output_size</strong> (<em>int</em>) – [description]</p></li>
-<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
-<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – [description], defaults to tf.nn.relu</p></li>
-<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to .001</p></li>
+<li><p><strong>input_dim</strong> (<em>int</em>) – dimension of the layer’s input</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – dimension of the layer’s output</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – custom name for the layer, defaults to None</p></li>
+<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to .001</p></li>
 </ul>
 </dd>
 </dl>
@@ -119,12 +119,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>logdir</strong> (<em>str</em>) – [description]</p></li>
-<li><p><strong>func</strong> (<em>function</em>) – [description]</p></li>
-<li><p><strong>args</strong> (<em>list</em>) – [description]</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – [description]</p></li>
-<li><p><strong>step</strong> (<em>int</em><em>, </em><em>optional</em>) – [description], defaults to 0</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – [description], defaults to {}</p></li>
+<li><p><strong>logdir</strong> (<em>str</em>) – log folder path</p></li>
+<li><p><strong>func</strong> (<em>function</em>) – function to analyze</p></li>
+<li><p><strong>args</strong> (<em>list</em>) – arguments of func</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of the tensorboard trace</p></li>
+<li><p><strong>step</strong> (<em>int</em><em>, </em><em>optional</em>) – tensorboard step, defaults to 0</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – kwargs of func, defaults to {}</p></li>
 </ul>
 </dd>
 </dl>
@@ -137,15 +137,16 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>biased</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
-<li><p><strong>reversed_flow</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
-<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – [description], defaults to tf.nn.relu</p></li>
-<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.01</p></li>
-<li><p><strong>only_return_weights</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
+<li><p><strong>args</strong> – sequence of int representing layer sizes</p></li>
+<li><p><strong>biased</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we use bias in layers, defaults to False</p></li>
+<li><p><strong>reversed_flow</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we reverse the flow of activation (default is bottom-up), defaults to False</p></li>
+<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to 0.01</p></li>
+<li><p><strong>only_return_weights</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we return a list of tf.Module or 2d variable weight matrices, defaults to False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>model</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list of <a class="reference internal" href="#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a> or 2d variable tf.Tensor of float32</p>
@@ -160,13 +161,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>p</strong> (<em>3d tf.Tensor</em>) – [description]</p></li>
-<li><p><strong>t</strong> (<em>3d tf.Tensor</em>) – [description]</p></li>
-<li><p><strong>axis</strong> (<em>int</em><em>, </em><em>optional</em>) – [description], defaults to 1</p></li>
+<li><p><strong>p</strong> (<em>3d tf.Tensor</em>) – network prediction</p></li>
+<li><p><strong>t</strong> (<em>3d tf.Tensor</em>) – ground truth target</p></li>
+<li><p><strong>axis</strong> (<em>int</em><em>, </em><em>optional</em>) – argmax axis, defaults to 1</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>accuracy</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float32</p>
@@ -181,15 +182,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>3d tf.Tensor</em>) – [description]</p></li>
-<li><p><strong>y</strong> (<em>3d tf.Tensor</em>) – [description]</p></li>
+<li><p><strong>x</strong> (<em>3d tf.Tensor</em>) – first tensor</p></li>
+<li><p><strong>y</strong> (<em>3d tf.Tensor</em>) – second tensor</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>outer product summed over batch dimesion</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>3d tf.Tensor</p>
+<dd class="field-odd"><p>2d tf.Tensor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -200,10 +201,10 @@
 <dd><p>[summary]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>tf.Tensor</em>) – [description]</p>
+<dd class="field-odd"><p><strong>x</strong> (<em>tf.Tensor</em>) – input</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>output</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>tf.Tensor</p>

@@ -9,11 +9,13 @@ import tensorflow_datasets as tfds
 def load_mnist(batch_size=50):
     """[summary]
 
-    :param batch_size: [description], defaults to 50
+    :param batch_size: minibatch size, defaults to 50
     :type batch_size: int, optional
+    :return: mnist dataset
+    :rtype: tf.raw_ops.PrefetchDataset
     """
     
-    def preprocess(image, label):
+    def preprocess(image, label): 
         return (tf.reshape(tf.cast(image, tf.float32), [784, 1]) / 255.,
                 tf.cast(tf.expand_dims(tf.one_hot(label, 10), -1), tf.float32))
         
@@ -29,3 +31,6 @@ def load_mnist(batch_size=50):
     tds = tds.prefetch(tf.data.experimental.AUTOTUNE)
     
     return ds, tds
+
+
+    

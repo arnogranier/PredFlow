@@ -8,15 +8,15 @@ import tensorflow as tf
 class Dense(tf.Module):
     """[summary]
 
-    :param input_dim: [description]
+    :param input_dim: dimension of the layer's input
     :type input_dim: int
-    :param output_size: [description]
+    :param output_size: dimension of the layer's output
     :type output_size: int
-    :param name: [description], defaults to None
+    :param name: custom name for the layer, defaults to None
     :type name: str, optional
-    :param activation: [description], defaults to tf.nn.relu
+    :param activation: activation function, defaults to tf.nn.relu
     :type activation: function, optional
-    :param stddev: [description], defaults to .001
+    :param stddev: standard deviation of the normal initialization, defaults to .001
     :type stddev: float, optional
     """
 
@@ -28,9 +28,9 @@ class Dense(tf.Module):
     def __call__(self, x):
         """[summary]
 
-        :param x: [description]
+        :param x: input
         :type x: 3d tf.Tensor of float32
-        :return: [description]
+        :return: output
         :rtype: 3d tf.Tensor of float32
         """
         
@@ -39,15 +39,15 @@ class Dense(tf.Module):
 class BiasedDense(tf.Module):
     """[summary]
 
-    :param input_dim: [description]
+    :param input_dim: dimension of the layer's input
     :type input_dim: int
-    :param output_size: [description]
+    :param output_size: dimension of the layer's output
     :type output_size: int
-    :param name: [description], defaults to None
+    :param name: custom name for the layer, defaults to None
     :type name: str, optional
-    :param activation: [description], defaults to tf.nn.relu
+    :param activation: activation function, defaults to tf.nn.relu
     :type activation: function, optional
-    :param stddev: [description], defaults to .001
+    :param stddev: standard deviation of the normal initialization, defaults to .001
     :type stddev: float, optional
     """
         
@@ -60,9 +60,9 @@ class BiasedDense(tf.Module):
     def __call__(self, x):
         """[summary]
 
-        :param x: [description]
+        :param x: input
         :type x: 3d tf.Tensor of float32
-        :return: [description]
+        :return: output
         :rtype: 3d tf.Tensor of float32
         """
         
@@ -71,17 +71,17 @@ class BiasedDense(tf.Module):
 def load_tensorboard_graph(logdir, func, args, name, step=0, kwargs={}):
     """[summary]
 
-    :param logdir: [description]
+    :param logdir: log folder path
     :type logdir: str
-    :param func: [description]
+    :param func: function to analyze
     :type func: function
-    :param args: [description]
+    :param args: arguments of func
     :type args: list
-    :param name: [description]
+    :param name: name of the tensorboard trace
     :type name: str
-    :param step: [description], defaults to 0
+    :param step: tensorboard step, defaults to 0
     :type step: int, optional
-    :param kwargs: [description], defaults to {}
+    :param kwargs: kwargs of func, defaults to {}
     :type kwargs: dict, optional
     """
     
@@ -97,12 +97,12 @@ def load_tensorboard_graph(logdir, func, args, name, step=0, kwargs={}):
 def reduced_batched_outer_product(x, y):
     """[summary]
 
-    :param x: [description]
+    :param x: first tensor
     :type x: 3d tf.Tensor
-    :param y: [description]
+    :param y: second tensor
     :type y: 3d tf.Tensor
-    :return: [description]
-    :rtype: 3d tf.Tensor
+    :return: outer product summed over batch dimesion 
+    :rtype: 2d tf.Tensor
     """
     
     with tf.name_scope("ReducedBatchedOuterProduct"):
@@ -111,9 +111,9 @@ def reduced_batched_outer_product(x, y):
 def relu_derivate(x):
     """[summary]
 
-    :param x: [description]
+    :param x: input
     :type x: tf.Tensor
-    :return: [description]
+    :return: output
     :rtype: tf.Tensor
     """
     
@@ -123,17 +123,18 @@ def relu_derivate(x):
 def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01, only_return_weights=False):
     """[summary]
 
-    :param biased: [description], defaults to False
+    :param args: sequence of int representing layer sizes
+    :param biased: controls weither we use bias in layers, defaults to False
     :type biased: bool, optional
-    :param reversed_flow: [description], defaults to False
+    :param reversed_flow: controls weither we reverse the flow of activation (default is bottom-up), defaults to False
     :type reversed_flow: bool, optional
-    :param activation: [description], defaults to tf.nn.relu
+    :param activation: activation function, defaults to tf.nn.relu
     :type activation: function, optional
-    :param stddev: [description], defaults to 0.01
+    :param stddev: standard deviation of the normal initialization, defaults to 0.01
     :type stddev: float, optional
-    :param only_return_weights: [description], defaults to False
+    :param only_return_weights: controls weither we return a list of tf.Module or 2d variable weight matrices, defaults to False
     :type only_return_weights: bool, optional
-    :return: [description]
+    :return: model
     :rtype: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense` or 2d variable tf.Tensor of float32
     """
     
@@ -157,13 +158,13 @@ def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=
 def one_hot_pred_accuracy(p, t, axis=1):
     """[summary]
 
-    :param p: [description]
+    :param p: network prediction
     :type p: 3d tf.Tensor
-    :param t: [description]
+    :param t: ground truth target
     :type t: 3d tf.Tensor
-    :param axis: [description], defaults to 1
+    :param axis: argmax axis, defaults to 1
     :type axis: int, optional
-    :return: [description]
+    :return: accuracy
     :rtype: float32
     """
     

@@ -9,13 +9,13 @@ from tf_utils import reduced_batched_outer_product
 def inference_SGD_step(r, ir, g, update_last=True):
     """[summary]
 
-    :param r: [description]
+    :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param ir: [description]
+    :param ir: inference rate
     :type ir: float32
-    :param g: [description]
+    :param g: autodiff gradient tape
     :type g: tf.GradientTape
-    :param update_last: [description], defaults to True
+    :param update_last: controls weither representations in the last layer are updated, defaults to True
     :type update_last: bool, optional
     """
     
@@ -29,11 +29,11 @@ def inference_SGD_step(r, ir, g, update_last=True):
 def parameters_SGD_step(theta, lr, g):
     """[summary]
 
-    :param theta: [description]
+    :param theta: learnable parameters
     :type theta: list of variable tf.Tensor of float32
-    :param lr: [description]
+    :param lr: learning rate
     :type lr: float32
-    :param g: [description]
+    :param g: autodiff gradient tape
     :type g: tf.GradientTape
     """
     
@@ -44,15 +44,15 @@ def parameters_SGD_step(theta, lr, g):
 def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
     """[summary]
 
-    :param model: [description]
+    :param model: description of a sequential network by a list of layers
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
-    :param r: [description]
+    :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param theta: [description], defaults to []
+    :param theta: learnable parameters, defaults to []
     :type theta: list of variable tf.Tensor of float32, optional
-    :param predictions_flow_upward: [description], defaults to False
+    :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
-    :return: [description]
+    :return: energy, autodiff gradient tape
     :rtype: float32, tf.GradientTape
     """
     
@@ -67,22 +67,22 @@ def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
                     F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i], model[i](r[i+1]))), 1)
         return F, tape
 
-def forward_initialize_representations(model, image, target=None):
+def forward_initialize_representations(model, data, target=None):
     """[summary]
 
-    :param model: [description]
+    :param model: description of a sequential network by a list of layers
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
-    :param image: [description]
-    :type image: 3d tf.Tensor of float32
-    :param target: [description], defaults to None
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param target: output target batch, defaults to None
     :type target: 3d tf.Tensor of float32, optional
-    :return: [description]
+    :return: representations
     :rtype: list of 3d tf.Tensor of float32
     """
     
     with tf.name_scope("Initialization"):
         N = len(model)
-        representations = [image,]
+        representations = [data,]
         for i in range(N-1):
             representations.append(model[i](representations[-1]))
         if target is not None:
@@ -91,16 +91,16 @@ def forward_initialize_representations(model, image, target=None):
             representations.append(model[-1](representations[-1]))
         return representations
     
-def backward_initialize_representations(model, target, image=None):
+def backward_initialize_representations(model, target, data=None):
     """[summary]
 
-    :param model: [description]
+    :param model: description of a sequential network by a list of layers
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
-    :param target: [description]
+    :param target: output target batch
     :type target: 3d tf.Tensor of float32
-    :param image: [description], defaults to None
-    :type image: 3d tf.Tensor of float32, optional
-    :return: [description]
+    :param data: inuput data batch, defaults to None
+    :type data: 3d tf.Tensor of float32, optional
+    :return: representations
     :rtype: list of 3d tf.Tensor of float32
     """
     
@@ -109,88 +109,88 @@ def backward_initialize_representations(model, target, image=None):
         representations = [target,]
         for i in reversed(range(1, N)):
             representations.insert(0, model[i](representations[0]))
-        if image is not None:
-            representations.insert(0, image)
+        if data is not None:
+            representations.insert(0, data)
         else:
             representations.insert(0, model[0](representations[0]))
         return representations
     
-def random_initialize_representations(model, image, stddev=0.001, predictions_flow_upward=False, target_shape=None):
+def random_initialize_representations(model, data, stddev=0.001, predictions_flow_upward=False, target_shape=None):
     """[summary]
 
-    :param model: [description]
+    :param model: description of a sequential network by a list of layers
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
-    :param image: [description]
-    :type image: 3d tf.Tensor of float32
-    :param stddev: [description], defaults to 0.001
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param stddev: standard deviation of the normal initialization, defaults to 0.001
     :type stddev: float, optional
-    :param predictions_flow_upward: [description], defaults to False
+    :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
-    :param target_shape: [description], defaults to None
+    :param target_shape: shape of target minibatch, defaults to None
     :type target_shape: 1d tf.Tensor of int32, optional
-    :return: [description]
+    :return: representations
     :rtype: list of 3d tf.Tensor of float32
     """
     
     with tf.name_scope("Initialization"):
         N = len(model)
         if predictions_flow_upward:
-            representations = [image,]
+            representations = [data,]
             for i in range(N):
                 representations.append(tf.random.normal(tf.shape(model[i](representations[-1])), stddev=stddev))
         else:
             representations = [tf.random.normal(target_shape, stddev=stddev),]
             for i in reversed(range(1, N)):
                 representations.insert(0, tf.random.normal(tf.shape(model[i](representations[0])),stddev=stddev))
-            representations.insert(0, image)
+            representations.insert(0, data)
         return representations
     
-def zero_initialize_representations(model, image, predictions_flow_upward=False, target_shape=None, bias=tf.constant(0.)):
+def zero_initialize_representations(model, data, predictions_flow_upward=False, target_shape=None, bias=tf.constant(0.)):
     """[summary]
 
-    :param model: [description]
+    :param model: description of a sequential network by a list of layers
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
-    :param image: [description]
-    :type image: 3d tf.Tensor of float32
-    :param predictions_flow_upward: [description], defaults to False
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
-    :param target_shape: [description], defaults to None
+    :param target_shape: shape of target minibatch, defaults to None
     :type target_shape: 1d tf.Tensor of int32, optional
-    :param bias: [description], defaults to tf.constant(0.)
+    :param bias: initialize representation with bias rather than 0., defaults to tf.constant(0.)
     :type bias: float32, optional
-    :return: [description]
+    :return: representations
     :rtype: list of 3d tf.Tensor of float32
     """
     
     with tf.name_scope("Initialization"):
         N = len(model)
         if predictions_flow_upward:
-            representations = [image,]
+            representations = [data,]
             for i in range(N):
                 representations.append(bias+tf.zeros(tf.shape(model[i](representations[-1]))))
         else:
             representations = [tf.zeros(target_shape)+bias,]
             for i in reversed(range(1, N)):
                 representations.insert(0, tf.zeros(tf.shape(model[i](representations[0])))+bias)
-            representations.insert(0, image)
+            representations.insert(0, data)
         return representations
     
 def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
     """[summary]
 
-    :param e: [description]
+    :param e: prediction errors
     :type e: list of 3d tf.Tensor of float32
-    :param r: [description]
+    :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param w: [description]
+    :param w: list of weight matrices
     :type w: list of 2d tf.Tensor of float32
-    :param ir: [description]
+    :param ir: inference rate
     :type ir: float32
-    :param f: [description]
+    :param f: activation function
     :type f: function
-    :param df: [description]
+    :param df: derivate of the activation function
     :type df: function
-    :param update_last: [description], defaults to True
+    :param update_last: controls weither representations in the last layer are updated, defaults to True
     :type update_last: bool, optional
     """
     
@@ -207,15 +207,15 @@ def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
 def weight_update_backward_predictions(w, e, r, lr, f):
     """[summary]
 
-    :param w: [description]
+    :param w: list of weight matrices
     :type w: list of 2d tf.Tensor of float32
-    :param e: [description]
+    :param e: prediction errors
     :type e: list of 3d tf.Tensor of float32
-    :param r: [description]
+    :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param lr: [description]
+    :param lr: learning rate
     :type lr: float32
-    :param f: [description]
+    :param f: activation function
     :type f: function
     """
     
@@ -226,19 +226,19 @@ def weight_update_backward_predictions(w, e, r, lr, f):
 def inference_step_forward_predictions(e, r, w, ir, f, df, update_last=True):
     """[summary]
 
-    :param e: [description]
+    :param e: prediction errors
     :type e: list of 3d tf.Tensor of float32
-    :param r: [description]
+    :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param w: [description]
+    :param w: list of weight matrices
     :type w: list of 2d tf.Tensor of float32
-    :param ir: [description]
+    :param ir: inference rate
     :type ir: float32
-    :param f: [description]
+    :param f: activation function
     :type f: float32
-    :param df: [description]
+    :param df: derivate of the activation function
     :type df: function
-    :param update_last: [description], defaults to True
+    :param update_last: controls weither representations in the last layer are updated, defaults to True
     :type update_last: bool, optional
     """
     
@@ -255,15 +255,15 @@ def inference_step_forward_predictions(e, r, w, ir, f, df, update_last=True):
 def weight_update_forward_predictions(w, e, r, lr, f):
     """[summary]
 
-    :param w: [description]
+    :param w: list of weight matrices
     :type w: list of 2d tf.Tensor of float32
-    :param e: [description]
+    :param e: prediction errors
     :type e: list of 3d tf.Tensor of float32
-    :param r: [description]
+    :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param lr: [description]
+    :param lr: learning rate
     :type lr: float32
-    :param f: [description]
+    :param f: activation function
     :type f: function
     """
     

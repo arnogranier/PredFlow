@@ -8,26 +8,26 @@ from pc_utils import *
 from tf_utils import relu_derivate
 
 @tf.function
-def learn(weights, image, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
     """[summary]
 
-    :param weights: [description]
+    :param weights: list of weight matrices
     :type weights: list of 2d variable tf.Tensor of float32
-    :param image: [description]
-    :type image: 3d tf.Tensor of float32
-    :param target: [description]
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param target: output target batch
     :type target: 3d tf.Tensor of float32
-    :param ir: [description], defaults to 0.1
+    :param ir: inference rate, defaults to 0.1
     :type ir: float, optional
-    :param lr: [description], defaults to 0.001
+    :param lr: learning rate, defaults to 0.001
     :type lr: float, optional
-    :param T: [description], defaults to 20
+    :param T: number of inference steps, defaults to 20
     :type T: int, optional
-    :param f: [description], defaults to tf.nn.relu
+    :param f: activation function, defaults to tf.nn.relu
     :type f: function, optional
-    :param df: [description], defaults to tf_utils.relu_derivate
+    :param df: derivate of the activation function, defaults to tf_utils.relu_derivate
     :type df: function, optional
-    :param predictions_flow_upward: [description], defaults to False
+    :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
     """
     
@@ -35,7 +35,7 @@ def learn(weights, image, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_
     with tf.name_scope("Initialization"):
         with tf.name_scope("RepresentationsInitialization"):
             if predictions_flow_upward:
-                representations = [image, ]
+                representations = [data, ]
                 for i in range(N-1):
                     representations.append(tf.matmul(weights[i], f(representations[-1])))
                 representations.append(target)
@@ -43,7 +43,7 @@ def learn(weights, image, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_
                 representations = [target, ]
                 for i in reversed(range(1,N)):
                     representations.insert(0, tf.matmul(weights[i], f(representations[0])))
-                representations.insert(0, image)
+                representations.insert(0, data)
         with tf.name_scope("ErrorsInitialization"):
             errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
 
@@ -61,40 +61,40 @@ def learn(weights, image, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_
         weight_update_backward_predictions(weights, errors, representations, lr, f)
         
 @tf.function
-def infer(weights, image, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
+def infer(weights, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
     """[summary]
 
-    :param weights: [description]
+    :param weights: list of weight matrices
     :type weights: list of 2d tf.Tensor of float32
-    :param image: [description]
-    :type image: 3d tf.Tensor of float32
-    :param ir: [description], defaults to 0.025
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param ir: inference rate, defaults to 0.025
     :type ir: float, optional
-    :param T: [description], defaults to 200
+    :param T: number of inference steps, defaults to 200
     :type T: int, optional
-    :param f: [description], defaults to tf.nn.relu
+    :param f: activation function, defaults to tf.nn.relu
     :type f: function, optional
-    :param df: [description], defaults to relu_derivate
+    :param df: derivate of the activation function, defaults to relu_derivate
     :type df: function, optional
-    :param predictions_flow_upward: [description], defaults to False
+    :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
-    :param target_shape: [description], defaults to None
+    :param target_shape: shape of target minibatch, defaults to None
     :type target_shape: 1d tf.Tensor of int32, optional
-    :return: [description]
+    :return: latent representations
     :rtype: list of 3d tf.Tensor of float32
     """
     
     N = len(weights)
     with tf.name_scope("Initialization"):
         if predictions_flow_upward:
-            representations = [image, ]
+            representations = [data, ]
             for i in range(N):
                 representations.append(tf.matmul(weights[i], f(representations[-1])))
         else:
             representations = [tf.zeros(target_shape)+tf.constant(.0001),]
             for i in reversed(range(1,N)):
                 representations.insert(0, tf.zeros(tf.shape(tf.matmul(weights[i], representations[0])))+tf.constant(.0001))
-            representations.insert(0, image)
+            representations.insert(0, data)
             
         errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
         

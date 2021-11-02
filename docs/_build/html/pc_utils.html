@@ -79,18 +79,18 @@
 <p>[description]</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.backward_initialize_representations">
-<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">backward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.backward_initialize_representations" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">backward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.backward_initialize_representations" title="Permalink to this definition"></a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
-<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>image</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – inuput data batch, defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>representations</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
@@ -105,14 +105,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em><em>, </em><em>optional</em>) – [description], defaults to []</p></li>
-<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em><em>, </em><em>optional</em>) – learnable parameters, defaults to []</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>energy, autodiff gradient tape</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>float32, tf.GradientTape</p>
@@ -122,18 +122,18 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.forward_initialize_representations">
-<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.forward_initialize_representations" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.forward_initialize_representations" title="Permalink to this definition"></a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
-<li><p><strong>image</strong> (<em>3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – output target batch, defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>representations</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
@@ -148,10 +148,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>ir</strong> (<em>float32</em>) – [description]</p></li>
-<li><p><strong>g</strong> (<em>tf.GradientTape</em>) – [description]</p></li>
-<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to True</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>g</strong> (<em>tf.GradientTape</em>) – autodiff gradient tape</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
 </ul>
 </dd>
 </dl>
@@ -164,13 +164,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>ir</strong> (<em>float32</em>) – [description]</p></li>
-<li><p><strong>f</strong> (<em>function</em>) – [description]</p></li>
-<li><p><strong>df</strong> (<em>function</em>) – [description]</p></li>
-<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to True</p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
 </ul>
 </dd>
 </dl>
@@ -183,13 +183,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>ir</strong> (<em>float32</em>) – [description]</p></li>
-<li><p><strong>f</strong> (<em>float32</em>) – [description]</p></li>
-<li><p><strong>df</strong> (<em>function</em>) – [description]</p></li>
-<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to True</p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>f</strong> (<em>float32</em>) – activation function</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
 </ul>
 </dd>
 </dl>
@@ -202,9 +202,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>lr</strong> (<em>float32</em>) – [description]</p></li>
-<li><p><strong>g</strong> (<em>tf.GradientTape</em>) – [description]</p></li>
+<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em>) – learnable parameters</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>g</strong> (<em>tf.GradientTape</em>) – autodiff gradient tape</p></li>
 </ul>
 </dd>
 </dl>
@@ -212,20 +212,20 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.random_initialize_representations">
-<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">random_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.random_initialize_representations" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">random_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.random_initialize_representations" title="Permalink to this definition"></a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
-<li><p><strong>image</strong> (<em>3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – [description], defaults to 0.001</p></li>
-<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
-<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to 0.001</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>representations</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
@@ -240,11 +240,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>lr</strong> (<em>float32</em>) – [description]</p></li>
-<li><p><strong>f</strong> (<em>function</em>) – [description]</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
 </ul>
 </dd>
 </dl>
@@ -257,11 +257,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>lr</strong> (<em>float32</em>) – [description]</p></li>
-<li><p><strong>f</strong> (<em>function</em>) – [description]</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
 </ul>
 </dd>
 </dl>
@@ -269,20 +269,20 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.zero_initialize_representations">
-<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">zero_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">image</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em>, <em class="sig-param"><span class="pre">target_shape=None</span></em>, <em class="sig-param"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></em>, <em class="sig-param"><span class="pre">dtype=float32</span></em>, <em class="sig-param"><span class="pre">numpy=0.0&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.zero_initialize_representations" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">zero_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em>, <em class="sig-param"><span class="pre">target_shape=None</span></em>, <em class="sig-param"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></em>, <em class="sig-param"><span class="pre">dtype=float32</span></em>, <em class="sig-param"><span class="pre">numpy=0.0&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.zero_initialize_representations" title="Permalink to this definition"></a></dt>
 <dd><p>[summary]</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – [description]</p></li>
-<li><p><strong>image</strong> (<em>3d tf.Tensor of float32</em>) – [description]</p></li>
-<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
-<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – [description], defaults to None</p></li>
-<li><p><strong>bias</strong> (<em>float32</em><em>, </em><em>optional</em>) – [description], defaults to tf.constant(0.)</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+<li><p><strong>bias</strong> (<em>float32</em><em>, </em><em>optional</em>) – initialize representation with bias rather than 0., defaults to tf.constant(0.)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>[description]</p>
+<dd class="field-even"><p>representations</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
