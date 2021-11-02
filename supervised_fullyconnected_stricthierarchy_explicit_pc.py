@@ -39,28 +39,25 @@ def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_d
     """
     
     N = len(weights)
-    with tf.name_scope("Initialization"):
-        with tf.name_scope("RepresentationsInitialization"):
-            if predictions_flow_upward:
-                representations = [data, ]
-                for i in range(N-1):
-                    representations.append(tf.matmul(weights[i], f(representations[-1])))
-                representations.append(target)
-            else:
-                representations = [target, ]
-                for i in reversed(range(1,N)):
-                    representations.insert(0, tf.matmul(weights[i], f(representations[0])))
-                representations.insert(0, data)
-        with tf.name_scope("ErrorsInitialization"):
-            errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+    with tf.name_scope("Init"):
+        if predictions_flow_upward:
+            representations = [data, ]
+            for i in range(N-1):
+                representations.append(tf.matmul(weights[i], f(representations[-1])))
+            representations.append(target)
+        else:
+            representations = [target, ]
+            for i in reversed(range(1,N)):
+                representations.insert(0, tf.matmul(weights[i], f(representations[0])))
+            representations.insert(0, data)
+        errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
 
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
-            with tf.name_scope("InferenceStep"):
-                if predictions_flow_upward:
-                    inference_step_forward_predictions(errors, representations, weights, ir, f, df, update_last=False)
-                else:
-                    inference_step_backward_predictions(errors, representations, weights, ir, f, df, update_last=False)
+            if predictions_flow_upward:
+                inference_step_forward_predictions(errors, representations, weights, ir, f, df, update_last=False)
+            else:
+                inference_step_backward_predictions(errors, representations, weights, ir, f, df, update_last=False)
                     
     if predictions_flow_upward:
         weight_update_forward_predictions(weights, errors, representations, lr, f)

@@ -7,7 +7,7 @@ flow up the network.
 ```python
 import tensorflow as tf
 
-import supervised_fullyconnected_stricthierarchy_explicit_pc as pc
+import supervised_autodiff_pc as pc
 
 from datasets_utils import load_mnist
 from tf_utils import mlp, one_hot_pred_accuracy

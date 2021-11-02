@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visualize the computational graph &mdash; PredFlow  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Train a MLP classifier on MNIST" href="mnist_experiments.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> PredFlow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Usage</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="mnist_experiments.html">Train a MLP classifier on MNIST</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Visualize the computational graph</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PredFlow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="usage.html">Usage</a> &raquo;</li>
+      <li>Visualize the computational graph</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tensorboard_graph.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="visualize-the-computational-graph">
+<h1>Visualize the computational graph<a class="headerlink" href="#visualize-the-computational-graph" title="Permalink to this headline"></a></h1>
+<p>One of the advantage of tensorflow is that you can easily visualize the
+computational graph that is actually running on your computer
+using <a class="reference external" href="https://www.tensorflow.org/tensorboard">tensorboard</a>.</p>
+<p>Here is what the computational graph of <code class="docutils literal notranslate"><span class="pre">supervised_fullyconnected_stricthierarchy_explicit_pc.learn</span></code> for an MLP with 2 hidden layers looks like from a high level:</p>
+<p><a href="https://ibb.co/DLHZ6DX"><img src="https://i.ibb.co/FnLFfbv/full.png" alt="full" border="0"></a></p>
+<p>Of course we can get to a finer level of detail, and inspect for example the initialization phase:
+<a href="https://ibb.co/sbwSsMY"><img src="https://i.ibb.co/ckF527n/init.png" alt="init" border="0"></a></p>
+<p>We can see that the initialization consist of a forward sweep through the model, stopping before the last layer since its activity is clamped to targets in this function, and an initalization of prediction errors to zero.</p>
+<p>Let us also further inspect the graph of the inference loop:
+<a href="https://ibb.co/GTxQrSM"><img src="https://i.ibb.co/8cKgQZx/inferenceloop.png" alt="inferenceloop" border="0"></a></p>
+<p>We can see that, for this function, it is alternating sequentially between prediction error computation and representation update (for 5 timesteps here). We can further inspect prediction errors computation:
+<a href="https://ibb.co/McF6MSs"><img src="https://i.ibb.co/jynRgfT/pe.png" alt="pe" border="0"></a></p>
+<p>and remark that it indeed computes <code class="docutils literal notranslate"><span class="pre">e[i]</span> <span class="pre">=</span> <span class="pre">r[i+1]</span> <span class="pre">-</span> <span class="pre">W[i]</span> <span class="pre">*</span> <span class="pre">f(r[i])</span></code> as expected for this model.</p>
+<p>A further inspection of representation update illustrates the computation <code class="docutils literal notranslate"><span class="pre">r[i]</span> <span class="pre">+=</span> <span class="pre">ir</span> <span class="pre">*</span> <span class="pre">(-e[i-1]</span> <span class="pre">+</span> <span class="pre">tranpose(W[i])</span> <span class="pre">*</span> <span class="pre">e[i]</span> <span class="pre">.*</span> <span class="pre">f'(r[i]))</span></code>:
+<a href="https://ibb.co/mzhPh58"><img src="https://i.ibb.co/YjfVfBZ/reprupdate.png" alt="reprupdate" border="0"></a></p>
+<p>Finally we can inspect the weight update computational graph, illustrating the computation <code class="docutils literal notranslate"><span class="pre">W[i]</span> <span class="pre">+=</span> <span class="pre">lr</span> <span class="pre">*</span> <span class="pre">(e[i]</span> <span class="pre">*</span> <span class="pre">transpose(f(r[i])))</span></code>
+<a href="https://ibb.co/X4ZHvWt"><img src="https://i.ibb.co/PYZkfrg/weightupdate.png" alt="weightupdate" border="0"></a></p>
+<p>A particularly important feature of the three last core computational graphs is that operations for each layers and weight matrices are executed in parallel (nodes on the same horizontal level in tensorboard graphs are executed in parallel). This certainly illustrates an important property of predictive coding, namely that it is highly parallelizable across layers, since there is no need to backpropagate gradients (because representations and parameters update are based on <em>local</em> prediction errors).</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mnist_experiments.html" class="btn btn-neutral float-left" title="Train a MLP classifier on MNIST" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Arno Granier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
