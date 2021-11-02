@@ -17,7 +17,7 @@ def load_mnist(batch_size=50):
     :param batch_size: minibatch size, defaults to 50
     :type batch_size: int, optional
     :return: mnist dataset
-    :rtype: tf.raw_ops.PrefetchDataset
+    :rtype: tf.Dataset
     """
     
     def preprocess(image, label): 

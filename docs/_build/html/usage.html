@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Datasets Utilities &mdash; PredFlow  documentation</title>
+  <title>Usage &mdash; PredFlow  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,8 +18,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Predictive Coding Utilities" href="pc_utils.html" />
-    <link rel="prev" title="Documentation" href="modules.html" /> 
+    <link rel="next" title="Train a MLP classifier on MNIST" href="mnist_experiments.html" />
+    <link rel="prev" title="Tensorflow Utilities" href="tf_utils.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -39,15 +39,11 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Datasets Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pc_utils.html">Predictive Coding Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
-<li class="toctree-l2"><a class="reference internal" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tf_utils.html">Tensorflow Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mnist_experiments.html">Train a MLP classifier on MNIST</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 </ul>
 
         </div>
@@ -64,10 +60,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">Documentation</a> &raquo;</li>
-      <li>Datasets Utilities</li>
+      <li>Usage</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/datasets_utils.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -75,38 +70,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-datasets_utils">
-<span id="datasets-utilities"></span><h1>Datasets Utilities<a class="headerlink" href="#module-datasets_utils" title="Permalink to this headline"></a></h1>
-<p>Dataset loading utilities, mainly relying on the <a class="reference external" href="https://www.tensorflow.org/datasets/api_docs/python/tfds">tensorflow_datasets</a> module.</p>
-<p>Datasets:</p>
-<ul class="simple">
-<li><p>MNIST</p></li>
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mnist_experiments.html">Train a MLP classifier on MNIST</a></li>
 </ul>
-<dl class="py function">
-<dt class="sig sig-object py" id="datasets_utils.load_mnist">
-<span class="sig-prename descclassname"><span class="pre">datasets_utils.</span></span><span class="sig-name descname"><span class="pre">load_mnist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#datasets_utils.load_mnist" title="Permalink to this definition"></a></dt>
-<dd><p>Load the MNIST train and test dataset</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>optional</em>) – minibatch size, defaults to 50</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>mnist dataset</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tf.Dataset</p>
-</dd>
-</dl>
-</dd></dl>
-
+</div>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="modules.html" class="btn btn-neutral float-left" title="Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pc_utils.html" class="btn btn-neutral float-right" title="Predictive Coding Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tf_utils.html" class="btn btn-neutral float-left" title="Tensorflow Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mnist_experiments.html" class="btn btn-neutral float-right" title="Train a MLP classifier on MNIST" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
