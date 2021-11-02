@@ -19,7 +19,7 @@ if __name__ == "__main__":
         train_dataset.shuffle(60000)
         for (image, target) in train_dataset:
             pc.learn(model, tf.constant(image), tf.constant(target), ir=tf.constant(.1),
-                    lr=tf.constant(.001), T=20, predictions_flow_upward=True)
+                    lr=tf.constant(.001), predictions_flow_upward=True)
     elapsed = time.perf_counter() - start
     print('Elapsed %.3f seconds.' % elapsed)
 
