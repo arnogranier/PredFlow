@@ -1,5 +1,10 @@
 '''
-[description]
+Dataset loading utilities, mainly relying on the `tensorflow_datasets <https://www.tensorflow.org/datasets/api_docs/python/tfds>`_ module.
+
+Datasets:
+
+- MNIST
+
 '''
 
 
@@ -7,7 +12,7 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 
 def load_mnist(batch_size=50):
-    """[summary]
+    """Load the MNIST train and test dataset
 
     :param batch_size: minibatch size, defaults to 50
     :type batch_size: int, optional

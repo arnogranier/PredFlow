@@ -1,5 +1,7 @@
 '''
-[description]
+Supervised predictive coding with implicit gradients using tensorflow's 
+autodifferentiation of the energy with respect to representations and 
+learnable parameters.
 '''
 
 import tensorflow as tf
@@ -7,9 +9,15 @@ from pc_utils import *
 
 @tf.function
 def learn(model, data, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=False):
-    """[summary]
+    """Implements the following logic::
+    
+        Initialize representations
+        do T times
+            E = 0.5 * norm(r - model(r)) ^ 2
+            r -= ir * dE/dr
+        W -= lr * dE/dW
 
-    :param model: description of a sequential network by a list of layers
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
@@ -43,9 +51,15 @@ def learn(model, data, target, ir=0.1, lr=0.001, T=40, predictions_flow_upward=F
 
 @tf.function
 def infer(model, data, ir=0.025, T=200, predictions_flow_upward=False, target_shape=None):
-    """[summary]
+    """Implements the following logic::
+    
+        Initialize representations
+        do T times
+            E = 0.5 * norm(r - model(r)) ^ 2
+            r -= ir * dE/dr
+        return r
 
-    :param model: description of a sequential network by a list of layers
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param data: inuput data batch
     :type data: 3d `tf.Tensor` of float32

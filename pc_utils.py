@@ -1,5 +1,10 @@
 '''
-[description]
+Utilities for predictive coding specifically.
+
+- Energy computation and autodifferentiated gradients of energy wrt to representations and learnable parameters  
+- Explicit computation of gradients expressed with prediction errors in the nonlinear fully-connected strictly hierarchical case
+- Stochastic gradient descent steps on representations and learnable parameters
+- Representations initializers (first pass)
 '''
 
 
@@ -7,7 +12,7 @@ import tensorflow as tf
 from tf_utils import reduced_batched_outer_product
 
 def inference_SGD_step(r, ir, g, update_last=True):
-    """[summary]
+    """Stochastic gradient descent step on represnetations (inference) using autodifferentiated gradients
 
     :param r: representations
     :type r: list of 3d tf.Tensor of float32
@@ -27,7 +32,7 @@ def inference_SGD_step(r, ir, g, update_last=True):
             r[N] -= tf.scalar_mul(ir, g[N])
     
 def parameters_SGD_step(theta, lr, g):
-    """[summary]
+    """Stochastic gradient descent step on learnable parameters (learning) using autodifferentiated gradients
 
     :param theta: learnable parameters
     :type theta: list of variable tf.Tensor of float32
@@ -42,9 +47,9 @@ def parameters_SGD_step(theta, lr, g):
             theta[i].assign_add(tf.scalar_mul(lr, -g[i]))
     
 def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
-    """[summary]
+    """Energy (total squared L2 norm of errors) computation and autodifferentiation with respect to representations and learnable parameters
 
-    :param model: description of a sequential network by a list of layers
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param r: representations
     :type r: list of 3d tf.Tensor of float32
@@ -68,9 +73,9 @@ def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
         return F, tape
 
 def forward_initialize_representations(model, data, target=None):
-    """[summary]
+    """Initial representations with a forward sweep through the model
 
-    :param model: description of a sequential network by a list of layers
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
@@ -92,9 +97,9 @@ def forward_initialize_representations(model, data, target=None):
         return representations
     
 def backward_initialize_representations(model, target, data=None):
-    """[summary]
+    """Initial representations with a backward sweep through the model
 
-    :param model: description of a sequential network by a list of layers
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param target: output target batch
     :type target: 3d tf.Tensor of float32
@@ -116,9 +121,9 @@ def backward_initialize_representations(model, target, data=None):
         return representations
     
 def random_initialize_representations(model, data, stddev=0.001, predictions_flow_upward=False, target_shape=None):
-    """[summary]
+    """Randomly initialize latent representations 
 
-    :param model: description of a sequential network by a list of layers
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
@@ -146,9 +151,9 @@ def random_initialize_representations(model, data, stddev=0.001, predictions_flo
         return representations
     
 def zero_initialize_representations(model, data, predictions_flow_upward=False, target_shape=None, bias=tf.constant(0.)):
-    """[summary]
+    """Initialize representations at zero (or a constant)
 
-    :param model: description of a sequential network by a list of layers
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
@@ -176,13 +181,15 @@ def zero_initialize_representations(model, data, predictions_flow_upward=False, 
         return representations
     
 def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
-    """[summary]
+    """Representations update using stochastic gradient descent with analytic expressions
+    of the gradients of energy wrt representations, only applicable to an
+    unbiased MLP with reversed flow (predictions come from higher layer)
 
     :param e: prediction errors
     :type e: list of 3d tf.Tensor of float32
     :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param w: list of weight matrices
+    :param w: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type w: list of 2d tf.Tensor of float32
     :param ir: inference rate
     :type ir: float32
@@ -205,9 +212,11 @@ def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
             r[N] += tf.scalar_mul(ir, tf.matmul(w[N-1], e[N-1], transpose_a=True) * df(r[N]))
             
 def weight_update_backward_predictions(w, e, r, lr, f):
-    """[summary]
+    """Weight update using stochastic gradient descent with analytic expressions
+    of the gradients of energy wrt weights, only applicable to an
+    unbiased MLP with reversed flow (predictions come from higher layer)
 
-    :param w: list of weight matrices
+    :param w: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type w: list of 2d tf.Tensor of float32
     :param e: prediction errors
     :type e: list of 3d tf.Tensor of float32
@@ -224,13 +233,15 @@ def weight_update_backward_predictions(w, e, r, lr, f):
             w[i].assign_add(tf.scalar_mul(lr, reduced_batched_outer_product(e[i], f(r[i+1]))))
 
 def inference_step_forward_predictions(e, r, w, ir, f, df, update_last=True):
-    """[summary]
+    """Representations update using stochastic gradient descent with analytic expressions
+    of the gradients of energy wrt representations, only applicable to an
+    unbiased MLP (predictions come from lower layer)
 
     :param e: prediction errors
     :type e: list of 3d tf.Tensor of float32
     :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param w: list of weight matrices
+    :param w: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type w: list of 2d tf.Tensor of float32
     :param ir: inference rate
     :type ir: float32
@@ -253,9 +264,11 @@ def inference_step_forward_predictions(e, r, w, ir, f, df, update_last=True):
             r[N] -= tf.scalar_mul(ir, e[N-1])
             
 def weight_update_forward_predictions(w, e, r, lr, f):
-    """[summary]
+    """Weight update using stochastic gradient descent with analytic expressions
+    of the gradients of energy wrt weights, only applicable to an
+    unbiased MLP (predictions come from lower layer)
 
-    :param w: list of weight matrices
+    :param w: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type w: list of 2d tf.Tensor of float32
     :param e: prediction errors
     :type e: list of 3d tf.Tensor of float32

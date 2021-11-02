@@ -1,12 +1,16 @@
 '''
-[description]
+General tensorflow utilities.
+
+- Custom tensorflow modules
+- Simple general tensorflow operations (e.g. :py:func:`reduced_batched_outer_product`)
+- tensorboard utilities
 '''
 
 
 import tensorflow as tf
 
 class Dense(tf.Module):
-    """[summary]
+    """Unbiased dense layer, :code:`y = W * f(x)`
 
     :param input_dim: dimension of the layer's input
     :type input_dim: int
@@ -26,7 +30,7 @@ class Dense(tf.Module):
         self.activation = activation
         
     def __call__(self, x):
-        """[summary]
+        """Path through layer
 
         :param x: input
         :type x: 3d tf.Tensor of float32
@@ -37,7 +41,7 @@ class Dense(tf.Module):
         return tf.matmul(self.w, self.activation(x)) 
     
 class BiasedDense(tf.Module):
-    """[summary]
+    """Biased dense layer, :code:`y = W * f(x) + b`
 
     :param input_dim: dimension of the layer's input
     :type input_dim: int
@@ -58,7 +62,7 @@ class BiasedDense(tf.Module):
         self.activation = activation
         
     def __call__(self, x):
-        """[summary]
+        """Path through layer
 
         :param x: input
         :type x: 3d tf.Tensor of float32
@@ -69,7 +73,7 @@ class BiasedDense(tf.Module):
         return tf.matmul(self.w, self.activation(x)) + self.b
 
 def load_tensorboard_graph(logdir, func, args, name, step=0, kwargs={}):
-    """[summary]
+    """Log the tensorboard graph trace of :code:`func(*args, **kwargs)`
 
     :param logdir: log folder path
     :type logdir: str
@@ -95,7 +99,7 @@ def load_tensorboard_graph(logdir, func, args, name, step=0, kwargs={}):
             profiler_outdir=logdir)
 
 def reduced_batched_outer_product(x, y):
-    """[summary]
+    """Compute the outer product of :code:`x` and :code:`y` summed over batch dimesion 
 
     :param x: first tensor
     :type x: 3d tf.Tensor
@@ -109,7 +113,7 @@ def reduced_batched_outer_product(x, y):
         return tf.reduce_sum(tf.einsum('nx,ny->nxy', tf.squeeze(x), tf.squeeze(y)), 0)
 
 def relu_derivate(x):
-    """[summary]
+    """Derivate of the ReLU activation function
 
     :param x: input
     :type x: tf.Tensor
@@ -121,7 +125,7 @@ def relu_derivate(x):
         return tf.cast(tf.greater(x, tf.constant(0.)), tf.float32)
 
 def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01, only_return_weights=False):
-    """[summary]
+    """Create a multi-layer perceptron
 
     :param args: sequence of int representing layer sizes
     :param biased: controls weither we use bias in layers, defaults to False
@@ -156,7 +160,7 @@ def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=
                 return [BiasedDense(s2, s1, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
 
 def one_hot_pred_accuracy(p, t, axis=1):
-    """[summary]
+    """Compute the accuracy of a prediction :code:`p` with respect to target :code:`t` as the proportion of time :code:`argmax(p) == argmax(t)`
 
     :param p: network prediction
     :type p: 3d tf.Tensor

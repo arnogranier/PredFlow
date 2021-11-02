@@ -76,15 +76,23 @@
              
   <section id="module-supervised_fullyconnected_stricthierarchy_explicit_pc">
 <span id="supervised-fully-connected-strict-hierarchy-explicit-predictive-coding"></span><h1>Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding<a class="headerlink" href="#module-supervised_fullyconnected_stricthierarchy_explicit_pc" title="Permalink to this headline"></a></h1>
-<p>[description]</p>
+<p>Supervised predictive coding with analytic expressions of the gradients of the 
+energy with respect to representations and learnable parameters.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="supervised_fullyconnected_stricthierarchy_explicit_pc.infer">
 <span class="sig-prename descclassname"><span class="pre">supervised_fullyconnected_stricthierarchy_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">ir=0.025</span></em>, <em class="sig-param"><span class="pre">T=200</span></em>, <em class="sig-param"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em>, <em class="sig-param"><span class="pre">target_shape=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#supervised_fullyconnected_stricthierarchy_explicit_pc.infer" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">W</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">+=</span> <span class="n">ir</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">e</span> <span class="o">+</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>weights</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>weights</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.025</p></li>
 <li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 200</p></li>
@@ -106,11 +114,18 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="supervised_fullyconnected_stricthierarchy_explicit_pc.learn">
 <span class="sig-prename descclassname"><span class="pre">supervised_fullyconnected_stricthierarchy_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">learn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">target</span></em>, <em class="sig-param"><span class="pre">ir=0.1</span></em>, <em class="sig-param"><span class="pre">lr=0.001</span></em>, <em class="sig-param"><span class="pre">T=20</span></em>, <em class="sig-param"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#supervised_fullyconnected_stricthierarchy_explicit_pc.learn" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">W</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">+=</span> <span class="n">ir</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">e</span> <span class="o">+</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">+=</span> <span class="n">lr</span> <span class="o">*</span> <span class="p">(</span><span class="n">e</span> <span class="o">*</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>weights</strong> (<em>list of 2d variable tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>weights</strong> (<em>list of 2d variable tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
 <li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.1</p></li>

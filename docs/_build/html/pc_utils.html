@@ -76,15 +76,21 @@
              
   <section id="module-pc_utils">
 <span id="predictive-coding-utilities"></span><h1>Predictive Coding Utilities<a class="headerlink" href="#module-pc_utils" title="Permalink to this headline"></a></h1>
-<p>[description]</p>
+<p>Utilities for predictive coding specifically.</p>
+<ul class="simple">
+<li><p>Energy computation and autodifferentiated gradients of energy wrt to representations and learnable parameters</p></li>
+<li><p>Explicit computation of gradients expressed with prediction errors in the nonlinear fully-connected strictly hierarchical case</p></li>
+<li><p>Stochastic gradient descent steps on representations and learnable parameters</p></li>
+<li><p>Representations initializers (first pass)</p></li>
+</ul>
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.backward_initialize_representations">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">backward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.backward_initialize_representations" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Initial representations with a backward sweep through the model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – inuput data batch, defaults to None</p></li>
 </ul>
@@ -101,11 +107,11 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.energy_and_error">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">energy_and_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.energy_and_error" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Energy (total squared L2 norm of errors) computation and autodifferentiation with respect to representations and learnable parameters</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
 <li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em><em>, </em><em>optional</em>) – learnable parameters, defaults to []</p></li>
 <li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
@@ -123,11 +129,11 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.forward_initialize_representations">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.forward_initialize_representations" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Initial representations with a forward sweep through the model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – output target batch, defaults to None</p></li>
 </ul>
@@ -144,7 +150,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.inference_SGD_step">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">inference_SGD_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.inference_SGD_step" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Stochastic gradient descent step on represnetations (inference) using autodifferentiated gradients</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -160,13 +166,15 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.inference_step_backward_predictions">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">inference_step_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.inference_step_backward_predictions" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Representations update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt representations, only applicable to an
+unbiased MLP with reversed flow (predictions come from higher layer)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
 <li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
-<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
 <li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
 <li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
@@ -179,13 +187,15 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.inference_step_forward_predictions">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">inference_step_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.inference_step_forward_predictions" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Representations update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt representations, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
 <li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
-<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
 <li><p><strong>f</strong> (<em>float32</em>) – activation function</p></li>
 <li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
@@ -198,7 +208,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.parameters_SGD_step">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">parameters_SGD_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.parameters_SGD_step" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Stochastic gradient descent step on learnable parameters (learning) using autodifferentiated gradients</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -213,11 +223,11 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.random_initialize_representations">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">random_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.random_initialize_representations" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Randomly initialize latent representations</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to 0.001</p></li>
 <li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
@@ -236,11 +246,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.weight_update_backward_predictions">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">weight_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.weight_update_backward_predictions" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Weight update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt weights, only applicable to an
+unbiased MLP with reversed flow (predictions come from higher layer)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
 <li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
 <li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
@@ -253,11 +265,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.weight_update_forward_predictions">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">weight_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.weight_update_forward_predictions" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Weight update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt weights, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
 <li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
 <li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
@@ -270,11 +284,11 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.zero_initialize_representations">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">zero_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em>, <em class="sig-param"><span class="pre">target_shape=None</span></em>, <em class="sig-param"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></em>, <em class="sig-param"><span class="pre">dtype=float32</span></em>, <em class="sig-param"><span class="pre">numpy=0.0&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.zero_initialize_representations" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
+<dd><p>Initialize representations at zero (or a constant)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers</p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
 <li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>

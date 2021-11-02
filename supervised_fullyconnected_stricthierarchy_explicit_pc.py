@@ -1,5 +1,6 @@
 '''
-[description]
+Supervised predictive coding with analytic expressions of the gradients of the 
+energy with respect to representations and learnable parameters.
 '''
 
 
@@ -9,9 +10,15 @@ from tf_utils import relu_derivate
 
 @tf.function
 def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
-    """[summary]
+    """Implements the following logic::
+    
+        Initialize representations
+        do T times
+            e = r - W * r
+            r += ir * (-e + tranpose(W) * e)
+        W += lr * (e * tranpose(r))
 
-    :param weights: list of weight matrices
+    :param weights: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type weights: list of 2d variable tf.Tensor of float32
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
@@ -62,9 +69,15 @@ def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_d
         
 @tf.function
 def infer(weights, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
-    """[summary]
+    """Implements the following logic::
+    
+        Initialize representations
+        do T times
+            e = r - W * r
+            r += ir * (-e + tranpose(W) * e)
+        return r
 
-    :param weights: list of weight matrices
+    :param weights: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type weights: list of 2d tf.Tensor of float32
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
