@@ -71,7 +71,7 @@ def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
                 else:
                     F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i], model[i](r[i+1]))), 1)
         return F, tape
-
+    
 def forward_initialize_representations(model, data, target=None):
     """Initial representations with a forward sweep through the model
 
