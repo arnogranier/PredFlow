@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>precisions_utils module &mdash; PredFlow  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> PredFlow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PredFlow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>precisions_utils module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/precisions_utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-precisions_utils">
+<span id="precisions-utils-module"></span><h1>precisions_utils module<a class="headerlink" href="#module-precisions_utils" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="precisions_utils.precision_modulated_energy">
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">r</span></em>, <em class="sig-param"><span class="pre">theta=[]</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em>, <em class="sig-param"><span class="pre">gamma=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></em>, <em class="sig-param"><span class="pre">dtype=float32</span></em>, <em class="sig-param"><span class="pre">numpy=0.5&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_energy" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>r</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>theta</strong> (<em>list</em><em>, </em><em>optional</em>) – [description], defaults to []</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description], defaults to False</p></li>
+<li><p><strong>gamma</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description], defaults to tf.constant(.5)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="precisions_utils.precision_modulated_inference_step_backward_predictions">
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_inference_step_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_inference_step_backward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Representations update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt representations, only applicable to an
+unbiased MLP with reversed flow (predictions come from higher layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>P</strong> – </p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="precisions_utils.precision_modulated_inference_step_forward_predictions">
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_inference_step_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_inference_step_forward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Representations update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt representations, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>P</strong> – </p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>f</strong> (<em>float32</em>) – activation function</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="precisions_utils.precision_modulated_weight_update_backward_predictions">
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_weight_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_weight_update_backward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Weight update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt weights, only applicable to an
+unbiased MLP with reversed flow (predictions come from higher layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>P</strong> – </p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="precisions_utils.precision_modulated_weight_update_forward_predictions">
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_weight_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_weight_update_forward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Weight update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt weights, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>P</strong> – </p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="precisions_utils.precisions_update_backward_predictions">
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precisions_update_backward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>P</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>lr</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="precisions_utils.precisions_update_forward_predictions">
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precisions_update_forward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>P</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>lr</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Arno Granier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

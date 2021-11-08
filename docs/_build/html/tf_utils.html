@@ -119,6 +119,12 @@
 </dl>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="tf_utils.PrecisionModulatedDense">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">PrecisionModulatedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dim</span></em>, <em class="sig-param"><span class="pre">output_size</span></em>, <em class="sig-param"><span class="pre">name=None</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.001</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.PrecisionModulatedDense" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="tf_utils.load_tensorboard_graph">
 <span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">load_tensorboard_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.load_tensorboard_graph" title="Permalink to this definition"></a></dt>
@@ -139,7 +145,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tf_utils.mlp">
-<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">mlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*args</span></em>, <em class="sig-param"><span class="pre">biased=False</span></em>, <em class="sig-param"><span class="pre">reversed_flow=False</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.01</span></em>, <em class="sig-param"><span class="pre">only_return_weights=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.mlp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">mlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*args</span></em>, <em class="sig-param"><span class="pre">biased=False</span></em>, <em class="sig-param"><span class="pre">reversed_flow=False</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.01</span></em>, <em class="sig-param"><span class="pre">only_return_variables=False</span></em>, <em class="sig-param"><span class="pre">precision_modulated=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.mlp" title="Permalink to this definition"></a></dt>
 <dd><p>Create a multi-layer perceptron</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
