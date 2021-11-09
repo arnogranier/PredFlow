@@ -10,7 +10,7 @@ from precisions_utils import *
 from tf_utils import relu_derivate
 
 @tf.function
-def learn(weights, precisions, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+def learn(weights, precisions, data, target, ir=0.1, lr=0.001, pr=0.001, T=20, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
     """Implements the following logic::
     
         Initialize representations
@@ -30,8 +30,10 @@ def learn(weights, precisions, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.rel
     :type target: 3d tf.Tensor of float32
     :param ir: inference rate, defaults to 0.1
     :type ir: float, optional
-    :param lr: learning rate, defaults to 0.001
+    :param lr: learning rate for weights, defaults to 0.001
     :type lr: float, optional
+    :param pr: learning rate for precision, defaults to 0.001
+    :type pr: float, optional
     :param T: number of inference steps, defaults to 20
     :type T: int, optional
     :param f: activation function, defaults to tf.nn.relu
@@ -65,10 +67,10 @@ def learn(weights, precisions, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.rel
                     
     if predictions_flow_upward:
         precision_modulated_weight_update_forward_predictions(weights, errors, representations, precisions, lr, f)
-        precisions_update_forward_predictions(errors, precisions, 0.001)
+        precisions_update_forward_predictions(errors, precisions, pr)
     else:
         precision_modulated_weight_update_backward_predictions(weights, errors, representations, precisions, lr, f)
-        precisions_update_forward_predictions(errors, precisions, 0.001)
+        precisions_update_forward_predictions(errors, precisions, pr)
         
 @tf.function
 def infer(weights, precisions, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):

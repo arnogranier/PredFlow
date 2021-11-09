@@ -14,7 +14,7 @@ def learn(model, data, target, ir=0.1, lr=0.001, pr=0.001, T=40, predictions_flo
     
         Initialize representations
         do T times
-            E = 0.5 * norm(r - model(r)) ^ 2
+            E = 0.5 * norm(r - model(r)) ^ 2 + log |P|
             r -= ir * dE/dr
         W -= lr * dE/dW
         P -= pr * dE/dP
@@ -29,6 +29,8 @@ def learn(model, data, target, ir=0.1, lr=0.001, pr=0.001, T=40, predictions_flo
     :type ir: float, optional
     :param lr: learning rate, defaults to 0.001
     :type lr: float, optional
+    :param pr: learning rate for precision, defaults to 0.001
+    :type pr: float, optional
     :param T: number of inference steps, defaults to 40
     :type T: int, optional
     :param predictions_flow_upward: direction of prediction flow, defaults to False
@@ -59,7 +61,7 @@ def infer(model, data, ir=0.025, T=200, predictions_flow_upward=False, target_sh
     
         Initialize representations
         do T times
-            E = 0.5 * norm(r - model(r)) ^ 2
+            E = 0.5 * norm(r - model(r)) ^ 2 + log |P|
             r -= ir * dE/dr
         return r
 

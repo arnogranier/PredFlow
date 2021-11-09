@@ -2,20 +2,20 @@ import tensorflow as tf
 from tf_utils import reduced_batched_outer_product
 
 def precision_modulated_energy(model, r, theta=[], predictions_flow_upward=False, gamma=tf.constant(.5)):
-    """[summary]
+    """Energy (total squared L2 norm of precision-weighted errors + regularizer) computation and autodifferentiation with respect to representations and learnable parameters
 
-    :param model: [description]
-    :type model: [type]
-    :param r: [description]
-    :type r: [type]
-    :param theta: [description], defaults to []
-    :type theta: list, optional
-    :param predictions_flow_upward: [description], defaults to False
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
+    :param r: representations
+    :type r: list of 3d tf.Tensor of float32
+    :param theta: learnable parameters, defaults to []
+    :type theta: list of variable tf.Tensor of float32, optional
+    :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
-    :param gamma: [description], defaults to tf.constant(.5)
-    :type gamma: [type], optional
-    :return: [description]
-    :rtype: [type]
+    :param gamma: Regularization scalar, defaults to .5
+    :type gamma: float32, optional
+    :return: energy, autodiff gradient tape
+    :rtype: float32, tf.GradientTape
     """
     
     with tf.name_scope("EnergyComputation"):
@@ -41,8 +41,8 @@ def precision_modulated_inference_step_forward_predictions(e, r, w, P, ir, f, df
     :type r: list of 3d tf.Tensor of float32
     :param w: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type w: list of 2d tf.Tensor of float32
-    :param P:
-    :type P:
+    :param P: list of precision matrices
+    :type P: list of 2d tf.Tensor of float32
     :param ir: inference rate
     :type ir: float32
     :param f: activation function
@@ -74,8 +74,8 @@ def precision_modulated_weight_update_forward_predictions(w, e, r, P, lr, f):
     :type e: list of 3d tf.Tensor of float32
     :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param P:
-    :type P:
+    :param P: list of precision matrices
+    :type P: list of 2d tf.Tensor of float32
     :param lr: learning rate
     :type lr: float32
     :param f: activation function
@@ -97,8 +97,8 @@ def precision_modulated_inference_step_backward_predictions(e, r, w, P, ir, f, d
     :type r: list of 3d tf.Tensor of float32
     :param w: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type w: list of 2d tf.Tensor of float32
-    :param P:
-    :type P:
+    :param P: list of precision matrices
+    :type P: list of 2d tf.Tensor of float32
     :param ir: inference rate
     :type ir: float32
     :param f: activation function
@@ -130,8 +130,8 @@ def precision_modulated_weight_update_backward_predictions(w, e, r, P, lr, f):
     :type e: list of 3d tf.Tensor of float32
     :param r: representations
     :type r: list of 3d tf.Tensor of float32
-    :param P:
-    :type P:
+    :param P: list of precision matrices
+    :type P: list of 2d tf.Tensor of float32
     :param lr: learning rate
     :type lr: float32
     :param f: activation function
@@ -143,33 +143,37 @@ def precision_modulated_weight_update_backward_predictions(w, e, r, P, lr, f):
             w[i].assign_add(tf.scalar_mul(lr, reduced_batched_outer_product(tf.matmul(P[i],e[i]), f(r[i+1]))))
             
 def precisions_update_backward_predictions(e, P, lr):
-    """[summary]
+    """Precision update using stochastic gradient descent with analytic expressions
+    of the gradients of energy wrt precision, only applicable to an
+    unbiased MLP (predictions come from higher layer)
 
-    :param e: [description]
-    :type e: [type]
-    :param P: [description]
-    :type P: [type]
-    :param lr: [description]
-    :type lr: [type]
+    :param e: prediction errors
+    :type e: list of 3d tf.Tensor of float32
+    :param P: list of precision matrices
+    :type P: list of 2d tf.Tensor of float32
+    :param lr: learning rate
+    :type lr: float32
     """
     
     with tf.name_scope("PrecisionUpdate"):
-        b = tf.constant(tf.shape(e[0])[0])
+        b = tf.cast(tf.shape(e[0])[0], tf.float32)
         for i in range(len(P)):
             P[i].assign_add(tf.scalar_mul(lr, 0*tf.eye(tf.shape(P[i])[0]) - reduced_batched_outer_product(tf.matmul(P[i],e[i]), e[i]) / b))
             
 def precisions_update_forward_predictions(e, P, lr):
-    """[summary]
+    """Precision update using stochastic gradient descent with analytic expressions
+    of the gradients of energy wrt precision, only applicable to an
+    unbiased MLP (predictions come from lower layer)
 
-    :param e: [description]
-    :type e: [type]
-    :param P: [description]
-    :type P: [type]
-    :param lr: [description]
-    :type lr: [type]
+    :param e: prediction errors
+    :type e: list of 3d tf.Tensor of float32
+    :param P: list of precision matrices
+    :type P: list of 2d tf.Tensor of float32
+    :param lr: learning rate
+    :type lr: float32
     """
     
-    b = tf.constant(tf.shape(e[0])[0])
+    b = tf.cast(tf.shape(e[0])[0], tf.float32)
     with tf.name_scope("PrecisionUpdate"):
         for i in range(len(P)):
             P[i].assign_add(tf.scalar_mul(lr, 0*tf.eye(tf.shape(P[i])[0]) -reduced_batched_outer_product(tf.matmul(P[i], e[i]), e[i]) / b))

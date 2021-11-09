@@ -27,9 +27,9 @@ def inference_SGD_step(r, ir, g, update_last=True):
     N = len(r) - 1
     with tf.name_scope("RepresentationUpdate"):
         for i in range(1, N):
-            r[i] -= tf.scalar_mul(ir, g[i])
+            r[i] -= tf.scalar_mul(tf.constant(0.001), r[i]) + tf.scalar_mul(ir, g[i])
         if update_last:
-            r[N] -= tf.scalar_mul(ir, g[N])
+            r[N] -= tf.scalar_mul(tf.constant(0.001), r[N]) + tf.scalar_mul(ir, g[N])
     
 def parameters_SGD_step(theta, lr, g):
     """Stochastic gradient descent step on learnable parameters (learning) using autodifferentiated gradients
