@@ -18,7 +18,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="next" title="precisions_utils module" href="precisions_utils.html" />
     <link rel="prev" title="Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html" /> 
 </head>
 
@@ -45,6 +45,9 @@
 <li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Tensorflow Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precisions_utils.html">precisions_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_autodiff_pc.html">precision_modulated_supervised_autodiff_pc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_explicit_pc.html">precision_modulated_supervised_explicit_pc module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
@@ -85,7 +88,7 @@
 </ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="tf_utils.BiasedDense">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">BiasedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dim</span></em>, <em class="sig-param"><span class="pre">output_size</span></em>, <em class="sig-param"><span class="pre">name=None</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.001</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.BiasedDense" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">BiasedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.BiasedDense" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
 <p>Biased dense layer, <code class="code docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">W</span> <span class="pre">*</span> <span class="pre">f(x)</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
 <dl class="field-list simple">
@@ -103,7 +106,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tf_utils.Dense">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">Dense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dim</span></em>, <em class="sig-param"><span class="pre">output_size</span></em>, <em class="sig-param"><span class="pre">name=None</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.001</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.Dense" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">Dense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.Dense" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
 <p>Unbiased dense layer, <code class="code docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">W</span> <span class="pre">*</span> <span class="pre">f(x)</span></code></p>
 <dl class="field-list simple">
@@ -121,7 +124,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tf_utils.PrecisionModulatedDense">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">PrecisionModulatedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">input_dim</span></em>, <em class="sig-param"><span class="pre">output_size</span></em>, <em class="sig-param"><span class="pre">name=None</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.001</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.PrecisionModulatedDense" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">PrecisionModulatedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.PrecisionModulatedDense" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
 </dd></dl>
 
@@ -145,7 +148,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="tf_utils.mlp">
-<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">mlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">*args</span></em>, <em class="sig-param"><span class="pre">biased=False</span></em>, <em class="sig-param"><span class="pre">reversed_flow=False</span></em>, <em class="sig-param"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">stddev=0.01</span></em>, <em class="sig-param"><span class="pre">only_return_variables=False</span></em>, <em class="sig-param"><span class="pre">precision_modulated=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.mlp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">mlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biased=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversed_flow=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_return_variables=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision_modulated=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.mlp" title="Permalink to this definition"></a></dt>
 <dd><p>Create a multi-layer perceptron</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -232,7 +235,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="supervised_fullyconnected_stricthierarchy_explicit_pc.html" class="btn btn-neutral float-left" title="Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="precisions_utils.html" class="btn btn-neutral float-right" title="precisions_utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

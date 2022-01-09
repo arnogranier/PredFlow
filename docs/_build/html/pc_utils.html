@@ -45,6 +45,9 @@
 <li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tf_utils.html">Tensorflow Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precisions_utils.html">precisions_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_autodiff_pc.html">precision_modulated_supervised_autodiff_pc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_explicit_pc.html">precision_modulated_supervised_explicit_pc module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
@@ -284,7 +287,7 @@ unbiased MLP (predictions come from lower layer)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.zero_initialize_representations">
-<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">zero_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">model</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em>, <em class="sig-param"><span class="pre">target_shape=None</span></em>, <em class="sig-param"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></em>, <em class="sig-param"><span class="pre">dtype=float32</span></em>, <em class="sig-param"><span class="pre">numpy=0.0&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.zero_initialize_representations" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">zero_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.0&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.zero_initialize_representations" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize representations at zero (or a constant)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

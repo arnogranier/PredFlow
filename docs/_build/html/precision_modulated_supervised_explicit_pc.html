@@ -17,7 +17,9 @@
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="precision_modulated_supervised_autodiff_pc module" href="precision_modulated_supervised_autodiff_pc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -36,8 +38,18 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Documentation</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">Datasets Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pc_utils.html">Predictive Coding Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tf_utils.html">Tensorflow Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precisions_utils.html">precisions_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_autodiff_pc.html">precision_modulated_supervised_autodiff_pc module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">precision_modulated_supervised_explicit_pc module</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 </ul>
 
@@ -55,6 +67,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">Documentation</a> &raquo;</li>
       <li>precision_modulated_supervised_explicit_pc module</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/precision_modulated_supervised_explicit_pc.rst.txt" rel="nofollow"> View page source</a>
@@ -71,7 +84,7 @@
 energy with respect to representations and learnable parameters.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="precision_modulated_supervised_explicit_pc.infer">
-<span class="sig-prename descclassname"><span class="pre">precision_modulated_supervised_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">precisions</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">ir=0.025</span></em>, <em class="sig-param"><span class="pre">T=200</span></em>, <em class="sig-param"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em>, <em class="sig-param"><span class="pre">target_shape=None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#precision_modulated_supervised_explicit_pc.infer" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">precision_modulated_supervised_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precisions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precision_modulated_supervised_explicit_pc.infer" title="Permalink to this definition"></a></dt>
 <dd><p>Implements the following logic:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
 <span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
@@ -105,7 +118,7 @@ energy with respect to representations and learnable parameters.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="precision_modulated_supervised_explicit_pc.learn">
-<span class="sig-prename descclassname"><span class="pre">precision_modulated_supervised_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">learn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">weights</span></em>, <em class="sig-param"><span class="pre">precisions</span></em>, <em class="sig-param"><span class="pre">data</span></em>, <em class="sig-param"><span class="pre">target</span></em>, <em class="sig-param"><span class="pre">ir=0.1</span></em>, <em class="sig-param"><span class="pre">lr=0.001</span></em>, <em class="sig-param"><span class="pre">T=20</span></em>, <em class="sig-param"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></em>, <em class="sig-param"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></em>, <em class="sig-param"><span class="pre">predictions_flow_upward=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#precision_modulated_supervised_explicit_pc.learn" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">precision_modulated_supervised_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">learn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precisions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr=0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pr=0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precision_modulated_supervised_explicit_pc.learn" title="Permalink to this definition"></a></dt>
 <dd><p>Implements the following logic:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
 <span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
@@ -123,7 +136,8 @@ energy with respect to representations and learnable parameters.</p>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
 <li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.1</p></li>
-<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate, defaults to 0.001</p></li>
+<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate for weights, defaults to 0.001</p></li>
+<li><p><strong>pr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate for precision, defaults to 0.001</p></li>
 <li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 20</p></li>
 <li><p><strong>f</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
 <li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – derivate of the activation function, defaults to tf_utils.relu_derivate</p></li>
@@ -138,7 +152,10 @@ energy with respect to representations and learnable parameters.</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="precision_modulated_supervised_autodiff_pc.html" class="btn btn-neutral float-left" title="precision_modulated_supervised_autodiff_pc module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
