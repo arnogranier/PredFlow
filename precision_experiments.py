@@ -1,10 +1,10 @@
+import os ; os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1' 
 import tensorflow as tf
 
 from datasets_utils import load_mnist
 from tf_utils import load_tensorboard_graph, mlp, one_hot_pred_accuracy
 import precision_modulated_supervised_explicit_pc as pc
 import time
-
 if __name__ == "__main__":
 
     # Load MNIST dataset
