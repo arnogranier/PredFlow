@@ -8,22 +8,25 @@ import time
 if __name__ == "__main__":
 
     # Load MNIST dataset
-    train_dataset, test_dataset = load_mnist(batch_size=32)
-
+    train_dataset, test_dataset = load_mnist(batch_size=100)
+    
     # MLP model
-    model = mlp(784, 400, 400, 10, reversed_flow=True)
+    reverse = True
+    model = mlp(784, 256, 64, 10, reversed_flow=reverse)
+    
     # Train
     start = time.perf_counter()
     for epoch in range(2):
         train_dataset.shuffle(60000)
         for (image, target) in train_dataset:
-            pc.learn(model, tf.constant(image), tf.constant(target), ir=tf.constant(.1),
-                    lr=tf.constant(.01), T=20, predictions_flow_upward=False)
+            pc.learn(model, tf.constant(image), tf.constant(target), ir=tf.constant(.05),
+                    lr=tf.constant(.005), T=40, predictions_flow_upward=not reverse)
     elapsed = time.perf_counter() - start
     print('Elapsed %.3f seconds.' % elapsed)
 
     # Infer test set and compute accuracy
+    
     (test_images, test_targets) = test_dataset.get_single_element()
     l = pc.infer(model, tf.constant(test_images), ir=tf.constant(.05), T=60,
-                 predictions_flow_upward=False, target_shape=tf.shape(test_targets))
+                 predictions_flow_upward=not reverse, target_shape=list(tf.shape(test_targets).numpy()))
     tf.print(one_hot_pred_accuracy(test_targets, l[-1]))

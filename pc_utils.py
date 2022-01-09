@@ -27,9 +27,9 @@ def inference_SGD_step(r, ir, g, update_last=True):
     N = len(r) - 1
     with tf.name_scope("RepresentationUpdate"):
         for i in range(1, N):
-            r[i] -= tf.scalar_mul(tf.constant(0.001), r[i]) + tf.scalar_mul(ir, g[i])
+            r[i] -= tf.scalar_mul(ir, g[i]+ 0.00 * r[i])
         if update_last:
-            r[N] -= tf.scalar_mul(tf.constant(0.001), r[N]) + tf.scalar_mul(ir, g[N])
+            r[N] -= tf.scalar_mul(ir, g[N]+ 0.00 * r[N] )
     
 def parameters_SGD_step(theta, lr, g):
     """Stochastic gradient descent step on learnable parameters (learning) using autodifferentiated gradients
@@ -44,7 +44,7 @@ def parameters_SGD_step(theta, lr, g):
     
     with tf.name_scope("ParametersUpdate"):
         for i in range(len(theta)):
-            theta[i].assign_add(tf.scalar_mul(lr, -g[i]))
+            theta[i].assign_add(tf.scalar_mul(lr, -g[i]- 0.00 * theta[i]))
     
 def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
     """Energy (total squared L2 norm of errors) computation and autodifferentiation with respect to representations and learnable parameters

@@ -44,7 +44,7 @@ class PrecisionModulatedDense(tf.Module):
 
     def __init__(self, input_dim, output_size, name=None, activation=tf.nn.relu, stddev=.001):
         super(PrecisionModulatedDense, self).__init__(name=name)
-        self.w = tf.Variable(tf.random.normal([output_size, input_dim], mean=.1, stddev=stddev), name='w')
+        self.w = tf.Variable(tf.random.normal([output_size, input_dim], mean=0.05, stddev=stddev), name='w')
         self.P = tf.Variable(tf.eye(output_size), name='P')
         self.activation = activation
         
