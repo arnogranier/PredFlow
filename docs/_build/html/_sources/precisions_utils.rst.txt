@@ -1,5 +1,5 @@
-precisions\_utils module
-========================
+Precision weighting utilities
+=============================
 
 .. automodule:: precisions_utils
    :members:

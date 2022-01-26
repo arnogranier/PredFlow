@@ -40,14 +40,14 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">Datasets Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">datasets_utils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pc_utils.html">Predictive Coding Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tf_utils.html">Tensorflow Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="precisions_utils.html">precisions_utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_autodiff_pc.html">precision_modulated_supervised_autodiff_pc module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_explicit_pc.html">precision_modulated_supervised_explicit_pc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precisions_utils.html">Precision weighting utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding with precision weighting of prediction errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="precision_modulated_supervised_explicit_pc.html">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding with precision weighting of prediction errors</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
@@ -82,6 +82,39 @@
 <span id="supervised-fully-connected-strict-hierarchy-explicit-predictive-coding"></span><h1>Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding<a class="headerlink" href="#module-supervised_fullyconnected_stricthierarchy_explicit_pc" title="Permalink to this headline"></a></h1>
 <p>Supervised predictive coding with analytic expressions of the gradients of the 
 energy with respect to representations and learnable parameters.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="supervised_fullyconnected_stricthierarchy_explicit_pc.generate">
+<span class="sig-prename descclassname"><span class="pre">supervised_fullyconnected_stricthierarchy_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#supervised_fullyconnected_stricthierarchy_explicit_pc.generate" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">W</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">+=</span> <span class="n">ir</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">e</span> <span class="o">+</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.025</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 200</p></li>
+<li><p><strong>f</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – derivate of the activation function, defaults to relu_derivate</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>latent representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="supervised_fullyconnected_stricthierarchy_explicit_pc.infer">
 <span class="sig-prename descclassname"><span class="pre">supervised_fullyconnected_stricthierarchy_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#supervised_fullyconnected_stricthierarchy_explicit_pc.infer" title="Permalink to this definition"></a></dt>

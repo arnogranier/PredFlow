@@ -1,5 +1,5 @@
-precision\_modulated\_supervised\_explicit\_pc module
-=====================================================
+Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding with precision weighting of prediction errors
+=======================================================================================================================
 
 .. automodule:: precision_modulated_supervised_explicit_pc
    :members:
