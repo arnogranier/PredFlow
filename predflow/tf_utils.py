@@ -134,18 +134,6 @@ def relu_derivate(x):
     
     with tf.name_scope("ReLUDerivate"):
         return tf.cast(tf.greater(x, tf.constant(0.)), tf.float32)
-    
-def tanh_derivate(x):
-    """Derivate of the ReLU activation function
-
-    :param x: input
-    :type x: tf.Tensor
-    :return: output
-    :rtype: tf.Tensor
-    """
-    
-    with tf.name_scope("tanhDerivate"):
-        return tf.cast(1.0-tf.square(tf.nn.tanh(x)), tf.float32)
 
 def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01, only_return_variables=False, precision_modulated=False):
     """Create a multi-layer perceptron
@@ -161,6 +149,8 @@ def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=
     :type stddev: float, optional
     :param only_return_weights: controls weither we return a list of tf.Module or 2d variable weight matrices, defaults to False
     :type only_return_weights: bool, optional
+    :param precision_modulated: 
+    
     :return: model
     :rtype: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense` or 2d variable tf.Tensor of float32
     """
