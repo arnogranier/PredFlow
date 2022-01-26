@@ -1,6 +1,5 @@
 import tensorflow as tf
 from tf_utils import reduced_batched_outer_product
-import numpy as np 
 
 def set_noisy_sensory(representations, data, noise):
     b = tf.shape(representations[0])[0]
