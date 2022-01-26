@@ -117,3 +117,55 @@ def infer(weights, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predic
                     inference_step_backward_predictions(errors, representations, weights, ir, f, df)
                     
     return representations[1:]
+
+@tf.function
+def generate(weights, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+    """Implements the following logic::
+    
+        Initialize representations
+        do T times
+            e = r - W * r
+            r += ir * (-e + tranpose(W) * e)
+        return r
+
+    :param weights: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
+    :type weights: list of 2d tf.Tensor of float32
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param ir: inference rate, defaults to 0.025
+    :type ir: float, optional
+    :param T: number of inference steps, defaults to 200
+    :type T: int, optional
+    :param f: activation function, defaults to tf.nn.relu
+    :type f: function, optional
+    :param df: derivate of the activation function, defaults to relu_derivate
+    :type df: function, optional
+    :param predictions_flow_upward: direction of prediction flow, defaults to False
+    :type predictions_flow_upward: bool, optional
+    :param target_shape: shape of target minibatch, defaults to None
+    :type target_shape: 1d tf.Tensor of int32, optional
+    :return: latent representations
+    :rtype: list of 3d tf.Tensor of float32
+    """
+    
+    N = len(weights)
+    with tf.name_scope("Initialization"):
+        if not predictions_flow_upward:
+            representations = [data, ]
+            for i in reversed(range(N)):
+                representations.insert(0, tf.matmul(weights[i], f(representations[0])))
+        else:
+            raise NotImplementedError
+            
+        errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+        
+    with tf.name_scope("InferenceLoop"):
+        for _ in range(T):
+            with tf.name_scope("InferenceStep"):
+                if predictions_flow_upward:
+                    raise NotImplementedError
+                else:
+                    inference_step_backward_predictions(errors, representations, weights, ir, f, df,
+                                                        update_first=True, update_last=False)
+                    
+    return representations[:-1]

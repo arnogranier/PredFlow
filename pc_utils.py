@@ -180,7 +180,7 @@ def zero_initialize_representations(model, data, predictions_flow_upward=False, 
             representations.insert(0, data)
         return representations
     
-def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
+def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True, update_first=False):
     """Representations update using stochastic gradient descent with analytic expressions
     of the gradients of energy wrt representations, only applicable to an
     unbiased MLP with reversed flow (predictions come from higher layer)
@@ -210,6 +210,8 @@ def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True):
             r[i] += tf.scalar_mul(ir, tf.subtract(tf.matmul(w[i-1], e[i-1], transpose_a=True) * df(r[i]), e[i]))
         if update_last:
             r[N] += tf.scalar_mul(ir, tf.matmul(w[N-1], e[N-1], transpose_a=True) * df(r[N]))
+        if update_first:
+            r[0] += tf.scalar_mul(ir, -e[0])
             
 def weight_update_backward_predictions(w, e, r, lr, f):
     """Weight update using stochastic gradient descent with analytic expressions
