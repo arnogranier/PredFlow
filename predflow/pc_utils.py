@@ -27,9 +27,9 @@ def inference_SGD_step(r, ir, g, update_last=True):
     N = len(r) - 1
     with tf.name_scope("RepresentationUpdate"):
         for i in range(1, N):
-            r[i] -= tf.scalar_mul(ir, g[i]+ 0.00 * r[i])
+            r[i] -= tf.scalar_mul(ir, g[i])
         if update_last:
-            r[N] -= tf.scalar_mul(ir, g[N]+ 0.00 * r[N] )
+            r[N] -= tf.scalar_mul(ir, g[N])
     
 def parameters_SGD_step(theta, lr, g):
     """Stochastic gradient descent step on learnable parameters (learning) using autodifferentiated gradients
@@ -44,7 +44,7 @@ def parameters_SGD_step(theta, lr, g):
     
     with tf.name_scope("ParametersUpdate"):
         for i in range(len(theta)):
-            theta[i].assign_add(tf.scalar_mul(lr, -g[i]- 0.00 * theta[i]))
+            theta[i].assign_add(tf.scalar_mul(lr, -g[i]))
     
 def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
     """Energy (total squared L2 norm of errors) computation and autodifferentiation with respect to representations and learnable parameters
@@ -199,6 +199,8 @@ def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True, up
     :type df: function
     :param update_last: controls weither representations in the last layer are updated, defaults to True
     :type update_last: bool, optional
+    :param update_first: controls weither representations in the first layer are updated, defaults to False
+    :type update_first: bool, optional
     """
     
     N = len(w)

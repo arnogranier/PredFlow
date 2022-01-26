@@ -126,6 +126,18 @@
 <dt class="sig sig-object py" id="tf_utils.PrecisionModulatedDense">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">PrecisionModulatedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.PrecisionModulatedDense" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
+<p>Unbiased dense layer additionally containing a precision matrix variable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_dim</strong> (<em>int</em>) – dimension of the layer’s input</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – dimension of the layer’s output</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – custom name for the layer, defaults to None</p></li>
+<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to .001</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -159,13 +171,14 @@
 <li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
 <li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to 0.01</p></li>
 <li><p><strong>only_return_weights</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we return a list of tf.Module or 2d variable weight matrices, defaults to False</p></li>
+<li><p><strong>precision_modulated</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither the model includes precision weighting of prediction errors, defaults to False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>model</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list of <a class="reference internal" href="#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a> or 2d variable tf.Tensor of float32</p>
+<dd class="field-odd"><p>list of <a class="reference internal" href="#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a>, <a class="reference internal" href="#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>, <a class="reference internal" href="#tf_utils.PrecisionModulatedDense" title="tf_utils.PrecisionModulatedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.PrecisionModulatedDense</span></code></a> or 2d variable tf.Tensor of float32</p>
 </dd>
 </dl>
 </dd></dl>

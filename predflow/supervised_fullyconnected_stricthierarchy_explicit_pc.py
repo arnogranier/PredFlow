@@ -65,10 +65,10 @@ def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_d
         weight_update_backward_predictions(weights, errors, representations, lr, f)
         
 @tf.function
-def infer(weights, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
+def infer(weights, data, ir=0.025, T=10, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
     """Implements the following logic::
     
-        Initialize representations
+        Initialize representations and clamp representations in the sensory layer
         do T times
             e = r - W * r
             r += ir * (-e + tranpose(W) * e)
@@ -119,10 +119,10 @@ def infer(weights, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predic
     return representations[1:]
 
 @tf.function
-def generate(weights, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+def generate(weights, data, ir=0.025, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
     """Implements the following logic::
     
-        Initialize representations
+        Initialize representations and clamp representations in the top layer
         do T times
             e = r - W * r
             r += ir * (-e + tranpose(W) * e)
@@ -142,30 +142,24 @@ def generate(weights, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, pre
     :type df: function, optional
     :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
-    :param target_shape: shape of target minibatch, defaults to None
-    :type target_shape: 1d tf.Tensor of int32, optional
     :return: latent representations
     :rtype: list of 3d tf.Tensor of float32
     """
     
+    if not predictions_flow_upward:
+        raise NotImplementedError("Generation is not implemented for reversed dynamics")
+    
     N = len(weights)
     with tf.name_scope("Initialization"):
-        if not predictions_flow_upward:
-            representations = [data, ]
-            for i in reversed(range(N)):
-                representations.insert(0, tf.matmul(weights[i], f(representations[0])))
-        else:
-            raise NotImplementedError
-            
+        representations = [data, ]
+        for i in reversed(range(N)):
+            representations.insert(0, tf.matmul(weights[i], f(representations[0])))
         errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
         
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
             with tf.name_scope("InferenceStep"):
-                if predictions_flow_upward:
-                    raise NotImplementedError
-                else:
-                    inference_step_backward_predictions(errors, representations, weights, ir, f, df,
-                                                        update_first=True, update_last=False)
+                inference_step_backward_predictions(errors, representations, weights, ir, f, df,
+                                                    update_first=True, update_last=False)
                     
     return representations[:-1]

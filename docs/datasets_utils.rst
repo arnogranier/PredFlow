@@ -1,5 +1,5 @@
-datasets\_utils module
-======================
+Datasets Utilities
+==================
 
 .. automodule:: datasets_utils
    :members:

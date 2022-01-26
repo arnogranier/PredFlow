@@ -41,7 +41,20 @@ class Dense(tf.Module):
         return tf.matmul(self.w, self.activation(x)) 
     
 class PrecisionModulatedDense(tf.Module):
+    """Unbiased dense layer additionally containing a precision matrix variable
 
+    :param input_dim: dimension of the layer's input
+    :type input_dim: int
+    :param output_size: dimension of the layer's output
+    :type output_size: int
+    :param name: custom name for the layer, defaults to None
+    :type name: str, optional
+    :param activation: activation function, defaults to tf.nn.relu
+    :type activation: function, optional
+    :param stddev: standard deviation of the normal initialization, defaults to .001
+    :type stddev: float, optional
+    """
+    
     def __init__(self, input_dim, output_size, name=None, activation=tf.nn.relu, stddev=.001):
         super(PrecisionModulatedDense, self).__init__(name=name)
         self.w = tf.Variable(tf.random.normal([output_size, input_dim], mean=0.05, stddev=stddev), name='w')
@@ -49,6 +62,14 @@ class PrecisionModulatedDense(tf.Module):
         self.activation = activation
         
     def __call__(self, x):
+        """Path through layer
+
+        :param x: input
+        :type x: 3d tf.Tensor of float32
+        :return: output
+        :rtype: 3d tf.Tensor of float32
+        """
+        
         return tf.matmul(self.w, self.activation(x)) 
     
 class BiasedDense(tf.Module):
@@ -149,10 +170,11 @@ def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=
     :type stddev: float, optional
     :param only_return_weights: controls weither we return a list of tf.Module or 2d variable weight matrices, defaults to False
     :type only_return_weights: bool, optional
-    :param precision_modulated: 
+    :param precision_modulated: controls weither the model includes precision weighting of prediction errors, defaults to False
+    :type precision_modulated: bool, optional
     
     :return: model
-    :rtype: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense` or 2d variable tf.Tensor of float32
+    :rtype: list of :py:class:`tf_utils.Dense`, :py:class:`tf_utils.BiasedDense`, :py:class:`tf_utils.PrecisionModulatedDense` or 2d variable tf.Tensor of float32
     """
     
     if precision_modulated:
