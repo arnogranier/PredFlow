@@ -124,6 +124,62 @@ def forward_initialize_representations_explicit(w, f, data, target=None):
         errors = [tf.zeros(tf.shape(representations[i])) for i in range(1,N+1)]
         
         return representations, errors
+    
+def forward_initialize_representations_explicit(w, f, data, target=None):
+    """Initialize representations with a forward sweep through the model explictly defined as w and f
+
+    :param w: weight matrix
+    :type w: list of 2d tf.Tensor of float32
+    :param f: activation function
+    :type f: function
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param target: output target batch, defaults to None
+    :type target: 3d tf.Tensor of float32, optional
+    :return: representations
+    :rtype: list of 3d tf.Tensor of float32
+    """
+    
+    with tf.name_scope("Initialization"):
+        N = len(w)
+        representations = [data, ]
+        for i in range(N-1):
+            representations.append(tf.matmul(w[i], f(representations[-1])))
+        if target is not None:
+            representations.append(target)
+        else:
+            representations.append(tf.matmul(w[-1], f(representations[-1])))
+        errors = [tf.zeros(tf.shape(representations[i])) for i in range(1,N+1)]
+        
+        return representations, errors
+    
+def forward_zero_initialize_representations_explicit(w, f, data, target=None, bias=tf.constant(0.)):
+    """Initialize representations with a forward sweep through the model explictly defined as w and f
+
+    :param w: weight matrix
+    :type w: list of 2d tf.Tensor of float32
+    :param f: activation function
+    :type f: function
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param target: output target batch, defaults to None
+    :type target: 3d tf.Tensor of float32, optional
+    :return: representations
+    :rtype: list of 3d tf.Tensor of float32
+    """
+    
+    with tf.name_scope("Initialization"):
+        N = len(w)
+        representations = [data, ]
+        for i in range(N-1):
+            representations.append(tf.zeros(tf.shape(tf.matmul(w[i], f(representations[-1]))))+bias)
+        if target is not None:
+            representations.append(target)
+        else:
+            representations.append(tf.zeros(tf.shape(tf.matmul(w[-1], f(representations[-1]))))+bias)
+        errors = [tf.zeros(tf.shape(representations[i])) for i in range(1,N+1)]
+        
+        return representations, errors
 
 def backward_initialize_representations(model, target, data=None):
     """Initialize representations with a backward sweep through the model
@@ -149,6 +205,46 @@ def backward_initialize_representations(model, target, data=None):
             representations.insert(0, model[0](representations[0]))
         return representations
     
+def backward_initialize_representations_explicit(w, f, target, data=None):
+    """Initialize representations with a backward sweep through the model
+
+    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
+    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
+    :param target: output target batch
+    :type target: 3d tf.Tensor of float32
+    :param data: inuput data batch, defaults to None
+    :type data: 3d tf.Tensor of float32, optional
+    :return: representations
+    :rtype: list of 3d tf.Tensor of float32
+    """
+    
+    with tf.name_scope("Initialization"):
+        N = len(w)
+        representations = [target, ]
+        for i in reversed(range(1,N)):
+            representations.insert(0, tf.matmul(w[i], f(representations[0])))
+        if data is not None:
+            representations.insert(0, data)
+        else:
+            representations.insert(0, tf.matmul(w[0], f(representations[0])))
+        errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+        
+        return representations, errors
+
+
+def backward_zero_initialize_representations_explicit(w, f, target_shape, data=None, bias=tf.constant(0.)):
+    with tf.name_scope("Initialization"):
+        N = len(w)
+        representations = [tf.zeros(target_shape)+bias,]
+        for i in reversed(range(1,N)):
+            representations.insert(0, tf.zeros(tf.shape(tf.matmul(w[i], f(representations[0]))))+bias)
+        if data is not None:
+            representations.insert(0, data)
+        else:
+            representations.insert(0, tf.zeros(tf.shape(tf.matmul(w[0], f(representations[0]))))+bias)
+        errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+        return representations, errors
+                
 def random_initialize_representations(model, data, stddev=0.001, predictions_flow_upward=False, target_shape=None):
     """Randomly initialize latent representations 
 

@@ -10,9 +10,9 @@ from precisions_utils import *
 from tf_utils import relu_derivate
 
 @tf.function
-def learn(weights, precisions, data, target, ir=0.1, lr=0.001, pr=0.001, T=20, 
+def learn(weights, precisions, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, 
           f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, 
-          diagonal=False, noise=0.0, clamp_w=None, defective_error_ratio=0.):
+          diagonal=False, noise=0.0):
     """Implements the following logic::
     
         Initialize representations
@@ -30,13 +30,13 @@ def learn(weights, precisions, data, target, ir=0.1, lr=0.001, pr=0.001, T=20,
     :type data: 3d tf.Tensor of float32
     :param target: output target batch
     :type target: 3d tf.Tensor of float32
-    :param ir: inference rate, defaults to 0.1
+    :param ir: inference rate, defaults to 0.05
     :type ir: float, optional
     :param lr: learning rate for weights, defaults to 0.001
     :type lr: float, optional
     :param pr: learning rate for precision, defaults to 0.001
     :type pr: float, optional
-    :param T: number of inference steps, defaults to 20
+    :param T: number of inference steps, defaults to 40
     :type T: int, optional
     :param f: activation function, defaults to tf.nn.relu
     :type f: function, optional
@@ -44,38 +44,34 @@ def learn(weights, precisions, data, target, ir=0.1, lr=0.001, pr=0.001, T=20,
     :type df: function, optional
     :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
+    :param diagonal: controls weither we use a diagonal approximation of the precision, defaults to False
+    :type diagonal: bool
+    :param noise: standard deviation of an eventual noise mask in the sensory layer, defaults to 0 (no noise mask)
+    :type noise: float
     """
     
     N = len(weights)
-    with tf.name_scope("Init"):
+    with tf.name_scope("Initialization"):
         if predictions_flow_upward:
-            representations = [data, ]
-            for i in range(N-1):
-                representations.append(tf.matmul(weights[i], f(representations[-1])))
-            representations.append(target)
-            errors = [tf.zeros(tf.shape(representations[i+1])) for i in range(N)]
+            representations, errors = forward_initialize_representations_explicit(weights, f, data, target)
+            inference_step = precision_modulated_inference_step_forward_predictions
+            weight_update = precision_modulated_weight_update_forward_predictions
+            precision_update = precisions_update_forward_predictions
         else:
-            representations = [target, ]
-            for i in reversed(range(1, N)):
-                representations.insert(0, tf.matmul(weights[i], f(representations[0])))
-            representations.insert(0, data )
-            errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+            representations, errors = backward_initialize_representations_explicit(weights, f, target, data)
+            inference_step = precision_modulated_inference_step_backward_predictions
+            weight_update = precision_modulated_weight_update_backward_predictions
+            precision_update = precisions_update_backward_predictions
+            
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
-            if predictions_flow_upward:
-                precision_modulated_inference_step_forward_predictions(errors, representations, weights, precisions, ir, f, df, update_last=False, defective_error_ratio=defective_error_ratio)
-            else:
-                precision_modulated_inference_step_backward_predictions(errors, representations, weights, precisions, ir, f, df, update_last=False, sensory_noise=noise)
-    if predictions_flow_upward:
-        precision_modulated_weight_update_forward_predictions(weights, errors, representations, precisions, lr, f, clamp_w=clamp_w)
-        precisions_update_forward_predictions(errors, precisions, pr, diagonal=diagonal)
-    else:
-        precision_modulated_weight_update_backward_predictions(weights, errors, representations, precisions, lr, f)
-        precisions_update_backward_predictions(errors, precisions, pr)
+            inference_step(errors, representations, weights, precisions, ir, f, df, update_last=False, sensory_noise=noise)
+    weight_update(weights, errors, representations, precisions, lr, f)
+    precision_update(errors, precisions, pr, diagonal=diagonal)
         
         
 @tf.function
-def infer(weights, precisions, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None, noise=0.0, initialize=True, defective_error_ratio=0.):
+def infer(weights, precisions, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None, noise=0.0, initialize=True):
     """Implements the following logic::
     
         Initialize representations
@@ -90,9 +86,9 @@ def infer(weights, precisions, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_deri
     :type preciions: list of 2d variable tf.Tensor of float32
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
-    :param ir: inference rate, defaults to 0.025
+    :param ir: inference rate, defaults to 0.05
     :type ir: float, optional
-    :param T: number of inference steps, defaults to 200
+    :param T: number of inference steps, defaults to 40
     :type T: int, optional
     :param f: activation function, defaults to tf.nn.relu
     :type f: function, optional
@@ -102,6 +98,10 @@ def infer(weights, precisions, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_deri
     :type predictions_flow_upward: bool, optional
     :param target_shape: shape of target minibatch, defaults to None
     :type target_shape: 1d tf.Tensor of int32, optional
+    :param noise: standard deviation of an eventual noise mask in the sensory layer, defaults to 0 (no noise mask)
+    :type noise: float
+    :param initialize: controls weither we initialize the hidden and top representations to the predictions or zero for models with predictions flowing upwards, defaults to True (intiialize to predictions)
+    :type initialize: bool
     :return: latent representations
     :rtype: list of 3d tf.Tensor of float32
     """
@@ -109,26 +109,18 @@ def infer(weights, precisions, data, ir=0.025, T=200, f=tf.nn.relu, df=relu_deri
     N = len(weights)
     with tf.name_scope("Initialization"):
         if predictions_flow_upward:
-            representations = [data, ]
-            for i in range(N):
-                if initialize:
-                    representations.append(tf.matmul(weights[i], f(representations[-1])))
-                else:
-                    representations.append(tf.zeros(tf.shape(tf.matmul(weights[i], f(representations[-1]))))+0.01)
+            if initialize:
+                representations, errors = forward_initialize_representations_explicit(weights, f, data)
+            else:
+                representations, errors = forward_zero_initialize_representations_explicit(weights, f, data)
+            inference_step = precision_modulated_inference_step_forward_predictions
         else:
-            representations = [tf.zeros(target_shape)+tf.constant(.0001),]
-            for i in reversed(range(1,N)):
-                representations.insert(0, tf.zeros(tf.shape(tf.matmul(weights[i], representations[0])))+tf.constant(.0001))
-            representations.insert(0, data)
-            
-        errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+            representations, errors = backward_zero_initialize_representations_explicit(weights, f, target_shape, data)
+            inference_step = precision_modulated_inference_step_backward_predictions
     
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
             with tf.name_scope("InferenceStep"):
-                if predictions_flow_upward:
-                    precision_modulated_inference_step_forward_predictions(errors, representations, weights, precisions, ir, f, df, defective_error_ratio=defective_error_ratio)
-                else:
-                    precision_modulated_inference_step_backward_predictions(errors, representations, weights, precisions, ir, f, df, sensory_noise=noise)
+                inference_step(errors, representations, weights, precisions, ir, f, df, sensory_noise=noise)
     
     return representations[1:]

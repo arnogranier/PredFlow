@@ -9,7 +9,7 @@ from pc_utils import *
 from tf_utils import relu_derivate
 
 @tf.function
-def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+def learn(weights, data, target, ir=0.05, lr=0.001, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
     """Implements the following logic::
     
         Initialize representations
@@ -24,11 +24,11 @@ def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_d
     :type data: 3d tf.Tensor of float32
     :param target: output target batch
     :type target: 3d tf.Tensor of float32
-    :param ir: inference rate, defaults to 0.1
+    :param ir: inference rate, defaults to 0.05
     :type ir: float, optional
     :param lr: learning rate, defaults to 0.001
     :type lr: float, optional
-    :param T: number of inference steps, defaults to 20
+    :param T: number of inference steps, defaults to 40
     :type T: int, optional
     :param f: activation function, defaults to tf.nn.relu
     :type f: function, optional
@@ -38,18 +38,13 @@ def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_d
     :type predictions_flow_upward: bool, optional
     """
     
-    N = len(weights)
     with tf.name_scope("Initialization"):
         if predictions_flow_upward:
-            forward_initialize_representations_explicit(weights, f, data, target)
+            representations, errors = forward_initialize_representations_explicit(weights, f, data, target)
             inference_step = inference_step_forward_predictions
             weight_update = weight_update_forward_predictions
         else:
-            representations = [target, ]
-            for i in reversed(range(1,N)):
-                representations.insert(0, tf.matmul(weights[i], f(representations[0])))
-            representations.insert(0, data)
-            errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+            representations, errors = backward_initialize_representations_explicit(weights, f, target, data)
             inference_step = inference_step_backward_predictions
             weight_update = weight_update_backward_predictions
         
@@ -60,7 +55,7 @@ def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_d
     weight_update(weights, errors, representations, lr, f)
         
 @tf.function
-def infer(weights, data, ir=0.025, T=10, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
+def infer(weights, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
     """Implements the following logic::
     
         Initialize representations and clamp representations in the sensory layer
@@ -73,9 +68,9 @@ def infer(weights, data, ir=0.025, T=10, f=tf.nn.relu, df=relu_derivate, predict
     :type weights: list of 2d tf.Tensor of float32
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
-    :param ir: inference rate, defaults to 0.025
+    :param ir: inference rate, defaults to 0.05
     :type ir: float, optional
-    :param T: number of inference steps, defaults to 200
+    :param T: number of inference steps, defaults to 40
     :type T: int, optional
     :param f: activation function, defaults to tf.nn.relu
     :type f: function, optional
@@ -89,32 +84,23 @@ def infer(weights, data, ir=0.025, T=10, f=tf.nn.relu, df=relu_derivate, predict
     :rtype: list of 3d tf.Tensor of float32
     """
     
-    N = len(weights)
     with tf.name_scope("Initialization"):
         if predictions_flow_upward:
-            representations = [data, ]
-            for i in range(N):
-                representations.append(tf.matmul(weights[i], f(representations[-1])))
+            representations, errors = forward_initialize_representations_explicit(weights, f, data)
+            inference_step = inference_step_forward_predictions
         else:
-            representations = [tf.zeros(target_shape)+tf.constant(.0001),]
-            for i in reversed(range(1,N)):
-                representations.insert(0, tf.zeros(tf.shape(tf.matmul(weights[i], representations[0])))+tf.constant(.0001))
-            representations.insert(0, data)
-            
-        errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+            representations, errors = backward_zero_initialize_representations_explicit(weights, f, target_shape, data=data)
+            inference_step = inference_step_backward_predictions
         
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
             with tf.name_scope("InferenceStep"):
-                if predictions_flow_upward:
-                    inference_step_forward_predictions(errors, representations, weights, ir, f, df)
-                else:
-                    inference_step_backward_predictions(errors, representations, weights, ir, f, df)
+                inference_step(errors, representations, weights, ir, f, df)
                     
     return representations[1:]
 
 @tf.function
-def generate(weights, data, ir=0.025, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+def generate(weights,target, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
     """Implements the following logic::
     
         Initialize representations and clamp representations in the top layer
@@ -125,11 +111,11 @@ def generate(weights, data, ir=0.025, T=40, f=tf.nn.relu, df=relu_derivate, pred
 
     :param weights: list of weight matrices, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type weights: list of 2d tf.Tensor of float32
-    :param data: inuput data batch
-    :type data: 3d tf.Tensor of float32
-    :param ir: inference rate, defaults to 0.025
+    :param target: inuput data batch (one-hot encoded labels for generation)
+    :type target: 3d tf.Tensor of float32
+    :param ir: inference rate, defaults to 0.05
     :type ir: float, optional
-    :param T: number of inference steps, defaults to 200
+    :param T: number of inference steps, defaults to 40
     :type T: int, optional
     :param f: activation function, defaults to tf.nn.relu
     :type f: function, optional
@@ -141,15 +127,12 @@ def generate(weights, data, ir=0.025, T=40, f=tf.nn.relu, df=relu_derivate, pred
     :rtype: list of 3d tf.Tensor of float32
     """
     
-    if not predictions_flow_upward:
+    if predictions_flow_upward:
         raise NotImplementedError("Generation is not implemented for reversed dynamics")
     
     N = len(weights)
     with tf.name_scope("Initialization"):
-        representations = [data, ]
-        for i in reversed(range(N)):
-            representations.insert(0, tf.matmul(weights[i], f(representations[0])))
-        errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+        representations, errors = backward_initialize_representations_explicit(weights, f, target)
         
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):

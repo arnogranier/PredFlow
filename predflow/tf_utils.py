@@ -154,7 +154,7 @@ def relu_derivate(x):
     """
     
     with tf.name_scope("ReLUDerivate"):
-        return tf.cast(tf.greater(x, tf.constant(0.)), tf.float32)
+        return tf.cast(tf.greater_equal(x, tf.constant(0.)), tf.float32)
 
 def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01, only_return_variables=False, precision_modulated=False):
     """Create a multi-layer perceptron

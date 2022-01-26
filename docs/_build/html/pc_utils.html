@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Supervised Autodiff Predictive Coding" href="supervised_autodiff_pc.html" />
-    <link rel="prev" title="datasets_utils module" href="datasets_utils.html" /> 
+    <link rel="prev" title="Datasets Utilities" href="datasets_utils.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,7 +40,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">datasets_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">Datasets Utilities</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Predictive Coding Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding</a></li>
@@ -90,7 +90,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.backward_initialize_representations">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">backward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.backward_initialize_representations" title="Permalink to this definition"></a></dt>
-<dd><p>Initial representations with a backward sweep through the model</p>
+<dd><p>Initialize representations with a backward sweep through the model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -107,6 +107,32 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pc_utils.backward_initialize_representations_explicit">
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">backward_initialize_representations_explicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.backward_initialize_representations_explicit" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize representations with a backward sweep through the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – inuput data batch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pc_utils.backward_zero_initialize_representations_explicit">
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">backward_zero_initialize_representations_explicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.0&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.backward_zero_initialize_representations_explicit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.energy_and_error">
@@ -133,11 +159,55 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.forward_initialize_representations">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.forward_initialize_representations" title="Permalink to this definition"></a></dt>
-<dd><p>Initial representations with a forward sweep through the model</p>
+<dd><p>Initialize representations with a forward sweep through the model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – output target batch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pc_utils.forward_initialize_representations_explicit">
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_initialize_representations_explicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.forward_initialize_representations_explicit" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize representations with a forward sweep through the model explictly defined as w and f</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – weight matrix</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – output target batch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pc_utils.forward_zero_initialize_representations_explicit">
+<span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_zero_initialize_representations_explicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.0&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.forward_zero_initialize_representations_explicit" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize representations with a forward sweep through the model explictly defined as w and f</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – weight matrix</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – output target batch, defaults to None</p></li>
 </ul>
@@ -183,6 +253,7 @@ unbiased MLP with reversed flow (predictions come from higher layer)</p>
 <li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
 <li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
 <li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
+<li><p><strong>update_first</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the first layer are updated, defaults to False</p></li>
 </ul>
 </dd>
 </dl>
@@ -314,7 +385,7 @@ unbiased MLP (predictions come from lower layer)</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="datasets_utils.html" class="btn btn-neutral float-left" title="datasets_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="datasets_utils.html" class="btn btn-neutral float-left" title="Datasets Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="supervised_autodiff_pc.html" class="btn btn-neutral float-right" title="Supervised Autodiff Predictive Coding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

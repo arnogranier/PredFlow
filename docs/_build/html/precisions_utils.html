@@ -40,7 +40,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">datasets_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets_utils.html">Datasets Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pc_utils.html">Predictive Coding Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="supervised_autodiff_pc.html">Supervised Autodiff Predictive Coding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="supervised_fullyconnected_stricthierarchy_explicit_pc.html">Supervised, Fully-connected, strict-hierarchy, explicit Predictive Coding</a></li>
@@ -127,7 +127,7 @@ unbiased MLP with reversed flow (predictions come from higher layer)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="precisions_utils.precision_modulated_inference_step_forward_predictions">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_inference_step_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defective_error_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_inference_step_forward_predictions" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_inference_step_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensory_noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_inference_step_forward_predictions" title="Permalink to this definition"></a></dt>
 <dd><p>Representations update using stochastic gradient descent with analytic expressions
 of the gradients of energy wrt representations, only applicable to an
 unbiased MLP (predictions come from lower layer)</p>
@@ -149,7 +149,7 @@ unbiased MLP (predictions come from lower layer)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="precisions_utils.precision_modulated_weight_update_backward_predictions">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_weight_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamp_w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_weight_update_backward_predictions" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_weight_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_weight_update_backward_predictions" title="Permalink to this definition"></a></dt>
 <dd><p>Weight update using stochastic gradient descent with analytic expressions
 of the gradients of energy wrt weights, only applicable to an
 unbiased MLP with reversed flow (predictions come from higher layer)</p>
@@ -169,7 +169,7 @@ unbiased MLP with reversed flow (predictions come from higher layer)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="precisions_utils.precision_modulated_weight_update_forward_predictions">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_weight_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamp_w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_weight_update_forward_predictions" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_weight_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_weight_update_forward_predictions" title="Permalink to this definition"></a></dt>
 <dd><p>Weight update using stochastic gradient descent with analytic expressions
 of the gradients of energy wrt weights, only applicable to an
 unbiased MLP (predictions come from lower layer)</p>
@@ -189,7 +189,7 @@ unbiased MLP (predictions come from lower layer)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="precisions_utils.precisions_update_backward_predictions">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precisions_update_backward_predictions" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_update_layer_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precisions_update_backward_predictions" title="Permalink to this definition"></a></dt>
 <dd><p>Precision update using stochastic gradient descent with analytic expressions
 of the gradients of energy wrt precision, only applicable to an
 unbiased MLP (predictions come from higher layer)</p>
@@ -199,6 +199,8 @@ unbiased MLP (predictions come from higher layer)</p>
 <li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
 <li><p><strong>P</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of precision matrices</p></li>
 <li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>diagonal</strong> (<em>bool</em>) – controls weither we use a diagonal approximation of the precision</p></li>
+<li><p><strong>only_update_layer_indices</strong> – </p></li>
 </ul>
 </dd>
 </dl>
@@ -222,19 +224,20 @@ unbiased MLP (predictions come from lower layer)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="precisions_utils.set_noisy_hidden">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">set_noisy_hidden</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">representations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.set_noisy_hidden" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="precisions_utils.set_noisy_labels">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">set_noisy_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">representations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.set_noisy_labels" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="precisions_utils.set_noisy_sensory">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">set_noisy_sensory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">representations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.set_noisy_sensory" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="precisions_utils.set_noisy_sensory_horizontal_window">
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">set_noisy_sensory_horizontal_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">representations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_pixel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">196</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_pixel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">392</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.set_noisy_sensory_horizontal_window" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>representations ([type]): [description]
+data ([type]): [description]
+noise ([type]): [description]
+clipmin (int, optional): [description]. Defaults to -10.
+clipmax (int, optional): [description]. Defaults to 10.
+first_pixel (int, optional): [description]. Defaults to 196.
+last_pixel (int, optional): [description]. Defaults to 392.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
