@@ -4,16 +4,10 @@
 Use the package manager `pip` (or `pip3`) to install `predflow`. 
 
 ```bash
-pip3 install predflow
+pip3 install predflow[x]
 ```
 
-If you intend to run simulations on GPU(s) use 
-
-```bash
-pip3 install predflow[gpu]
-```
-
-and make sure that you can run [TensorFlow GPU support](https://www.tensorflow.org/install/gpu).
+where `x` is either `cpu` if you only intend to run simulations on CPU or `gpu` if you inted to run simulations on GPU(s) (in that case you should also make sure that you can run [TensorFlow GPU support](https://www.tensorflow.org/install/gpu)).
 
 This software is free of use under the [MIT License](https://choosealicense.com/licenses/mit/).
 
