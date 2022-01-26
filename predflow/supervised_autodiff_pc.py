@@ -79,7 +79,6 @@ def infer(model, data, ir=0.025, T=200, predictions_flow_upward=False, target_sh
         representations = forward_initialize_representations(model, data)
     else:
         representations = zero_initialize_representations(model, data, predictions_flow_upward=predictions_flow_upward, target_shape=target_shape, bias=tf.constant(.0001))
-   
         
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):

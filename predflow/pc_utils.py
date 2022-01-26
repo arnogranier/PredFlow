@@ -67,13 +67,14 @@ def energy_and_error(model, r, theta=[], predictions_flow_upward=False):
             tape.watch(r+theta)
             for i in range(len(model)):
                 if predictions_flow_upward:
-                    F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i+1], model[i](r[i]))), 1)
+                    e = tf.subtract(r[i+1], model[i](r[i]))
                 else:
-                    F += 0.5 * tf.reduce_sum(tf.square(tf.subtract(r[i], model[i](r[i+1]))), 1)
+                    e = tf.subtract(r[i], model[i](r[i+1]))
+                F += 0.5 * tf.reduce_sum(tf.square(e), 1)
         return F, tape
     
 def forward_initialize_representations(model, data, target=None):
-    """Initial representations with a forward sweep through the model
+    """Initialize representations with a forward sweep through the model
 
     :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
@@ -95,9 +96,37 @@ def forward_initialize_representations(model, data, target=None):
         else:
             representations.append(model[-1](representations[-1]))
         return representations
+
+def forward_initialize_representations_explicit(w, f, data, target=None):
+    """Initialize representations with a forward sweep through the model explictly defined as w and f
+
+    :param w: weight matrix
+    :type w: list of 2d tf.Tensor of float32
+    :param f: activation function
+    :type f: function
+    :param data: inuput data batch
+    :type data: 3d tf.Tensor of float32
+    :param target: output target batch, defaults to None
+    :type target: 3d tf.Tensor of float32, optional
+    :return: representations
+    :rtype: list of 3d tf.Tensor of float32
+    """
     
+    with tf.name_scope("Initialization"):
+        N = len(w)
+        representations = [data, ]
+        for i in range(N-1):
+            representations.append(tf.matmul(w[i], f(representations[-1])))
+        if target is not None:
+            representations.append(target)
+        else:
+            representations.append(tf.matmul(w[-1], f(representations[-1])))
+        errors = [tf.zeros(tf.shape(representations[i])) for i in range(1,N+1)]
+        
+        return representations, errors
+
 def backward_initialize_representations(model, target, data=None):
-    """Initial representations with a backward sweep through the model
+    """Initialize representations with a backward sweep through the model
 
     :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`

@@ -39,30 +39,25 @@ def learn(weights, data, target, ir=0.1, lr=0.001, T=20, f=tf.nn.relu, df=relu_d
     """
     
     N = len(weights)
-    with tf.name_scope("Init"):
+    with tf.name_scope("Initialization"):
         if predictions_flow_upward:
-            representations = [data, ]
-            for i in range(N-1):
-                representations.append(tf.matmul(weights[i], f(representations[-1])))
-            representations.append(target)
+            forward_initialize_representations_explicit(weights, f, data, target)
+            inference_step = inference_step_forward_predictions
+            weight_update = weight_update_forward_predictions
         else:
             representations = [target, ]
             for i in reversed(range(1,N)):
                 representations.insert(0, tf.matmul(weights[i], f(representations[0])))
             representations.insert(0, data)
-        errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
-
+            errors = [tf.zeros(tf.shape(representations[i])) for i in range(N)]
+            inference_step = inference_step_backward_predictions
+            weight_update = weight_update_backward_predictions
+        
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
-            if predictions_flow_upward:
-                inference_step_forward_predictions(errors, representations, weights, ir, f, df, update_last=False)
-            else:
-                inference_step_backward_predictions(errors, representations, weights, ir, f, df, update_last=False)
+            inference_step(errors, representations, weights, ir, f, df, update_last=False)
                     
-    if predictions_flow_upward:
-        weight_update_forward_predictions(weights, errors, representations, lr, f)
-    else:
-        weight_update_backward_predictions(weights, errors, representations, lr, f)
+    weight_update(weights, errors, representations, lr, f)
         
 @tf.function
 def infer(weights, data, ir=0.025, T=10, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
