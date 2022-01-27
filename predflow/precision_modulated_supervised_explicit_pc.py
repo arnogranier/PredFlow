@@ -78,7 +78,7 @@ def learn(weights, precisions, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, 
         
 @tf.function
 def infer(weights, precisions, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False,
-          target_shape=None, noise=0.0, forward_pass_initialize=True, initialization_bias=tf.constant(0.0)):
+          target_shape=None, noise=0., forward_pass_initialize=True, initialization_bias=tf.constant(0.)):
     """Implements the following logic::
     
         Initialize representations
