@@ -1,0 +1,77 @@
+predflow package
+================
+
+Submodules
+----------
+
+predflow.datasets\_utils module
+-------------------------------
+
+.. automodule:: predflow.datasets_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+predflow.pc\_utils module
+-------------------------
+
+.. automodule:: predflow.pc_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+predflow.precision\_modulated\_supervised\_autodiff\_pc module
+--------------------------------------------------------------
+
+.. automodule:: predflow.precision_modulated_supervised_autodiff_pc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+predflow.precision\_modulated\_supervised\_explicit\_pc module
+--------------------------------------------------------------
+
+.. automodule:: predflow.precision_modulated_supervised_explicit_pc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+predflow.precisions\_utils module
+---------------------------------
+
+.. automodule:: predflow.precisions_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+predflow.supervised\_autodiff\_pc module
+----------------------------------------
+
+.. automodule:: predflow.supervised_autodiff_pc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+predflow.supervised\_fullyconnected\_stricthierarchy\_explicit\_pc module
+-------------------------------------------------------------------------
+
+.. automodule:: predflow.supervised_fullyconnected_stricthierarchy_explicit_pc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+predflow.tf\_utils module
+-------------------------
+
+.. automodule:: predflow.tf_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: predflow
+   :members:
+   :undoc-members:
+   :show-inheritance:

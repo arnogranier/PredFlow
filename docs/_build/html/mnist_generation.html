@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Train a MLP classifier on MNIST &mdash; PredFlow  documentation</title>
+  <title>Generate MNIST digits &mdash; PredFlow  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Visualize the computational graph" href="tensorboard_graph.html" />
-    <link rel="prev" title="Usage" href="usage.html" /> 
+    <link rel="prev" title="Train a MLP classifier on MNIST" href="mnist_experiments.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,7 +41,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="modules.html">PredFlow</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Usage</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Train a MLP classifier on MNIST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mnist_experiments.html">Train a MLP classifier on MNIST</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Generate MNIST digits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensorboard_graph.html">Visualize the computational graph</a></li>
 </ul>
 </li>
@@ -62,9 +63,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="usage.html">Usage</a> &raquo;</li>
-      <li>Train a MLP classifier on MNIST</li>
+      <li>Generate MNIST digits</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/mnist_experiments.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/mnist_generation.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -72,18 +73,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section class="tex2jax_ignore mathjax_ignore" id="train-a-mlp-classifier-on-mnist">
-<h1>Train a MLP classifier on MNIST<a class="headerlink" href="#train-a-mlp-classifier-on-mnist" title="Permalink to this headline"></a></h1>
-<p>Here we will show how to train a simple MLP classifier on MNIST with predictive
-coding, using the version of predictive coding where predictions
-flow up the network.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="generate-mnist-digits">
+<h1>Generate MNIST digits<a class="headerlink" href="#generate-mnist-digits" title="Permalink to this headline"></a></h1>
+<p>Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span> <span class="p">;</span> <span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_CPP_MIN_LOG_LEVEL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span> 
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">perf_counter</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">predflow.datasets_utils</span> <span class="kn">import</span> <span class="n">load_mnist</span>
-<span class="kn">from</span> <span class="nn">predflow.tf_utils</span> <span class="kn">import</span> <span class="n">mlp</span><span class="p">,</span> <span class="n">one_hot_pred_accuracy</span>
+<span class="kn">from</span> <span class="nn">predflow.tf_utils</span> <span class="kn">import</span> <span class="n">mlp</span>
 <span class="kn">import</span> <span class="nn">predflow.supervised_fullyconnected_stricthierarchy_explicit_pc</span> <span class="k">as</span> <span class="nn">pc</span>
 </pre></div>
 </div>
@@ -92,40 +91,39 @@ flow up the network.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># MLP model</span>
-<span class="n">W</span> <span class="o">=</span> <span class="n">mlp</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">only_return_variables</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">mlp</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">reversed_flow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">only_return_variables</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">train_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="mi">60000</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">image</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">:</span>
         <span class="n">pc</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="n">ir</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">.05</span><span class="p">),</span>
-                 <span class="n">lr</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">.01</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">predictions_flow_upward</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">elapsed</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+                 <span class="n">lr</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">.002</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">elapsed</span>
-<span class="go">19.691 seconds</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate sensory representations for each one-hot encoded label</span>
+<span class="n">targets</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">targets</span><span class="p">),</span> <span class="n">ir</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">.05</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Infer test set and compute accuracy</span>
-<span class="p">(</span><span class="n">test_images</span><span class="p">,</span> <span class="n">test_targets</span><span class="p">)</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="o">.</span><span class="n">get_single_element</span><span class="p">()</span>
-<span class="n">l</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">test_images</span><span class="p">),</span> <span class="n">predictions_flow_upward</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-             <span class="n">target_shape</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">test_targets</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fig</span><span class="o">.</span><span class="n">axes</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">,:,:],</span> <span class="p">(</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">)),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">one_hot_pred_accuracy</span><span class="p">(</span><span class="n">test_targets</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="go">0.9778</span>
-</pre></div>
-</div>
+<p><a href="https://ibb.co/YQ6Dfd5"><img src="https://i.ibb.co/h9kX2dG/generation.png" alt="generation" border="0" height=240 width=320></a></p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mnist_experiments.html" class="btn btn-neutral float-left" title="Train a MLP classifier on MNIST" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="tensorboard_graph.html" class="btn btn-neutral float-right" title="Visualize the computational graph" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

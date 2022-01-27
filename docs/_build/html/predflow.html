@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>predflow package &mdash; PredFlow  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> PredFlow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PredFlow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>predflow package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/predflow.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="predflow-package">
+<h1>predflow package<a class="headerlink" href="#predflow-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-predflow.datasets_utils">
+<span id="predflow-datasets-utils-module"></span><h2>predflow.datasets_utils module<a class="headerlink" href="#module-predflow.datasets_utils" title="Permalink to this headline"></a></h2>
+<p>Dataset loading utilities, mainly relying on the <a class="reference external" href="https://www.tensorflow.org/datasets/api_docs/python/tfds">tensorflow_datasets</a> module.</p>
+<p>Datasets:</p>
+<ul class="simple">
+<li><p>MNIST</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.datasets_utils.load_mnist">
+<span class="sig-prename descclassname"><span class="pre">predflow.datasets_utils.</span></span><span class="sig-name descname"><span class="pre">load_mnist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.datasets_utils.load_mnist" title="Permalink to this definition"></a></dt>
+<dd><p>Load the MNIST train and test dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>optional</em>) – minibatch size, defaults to 50</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>mnist dataset</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tf.Dataset</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-predflow.pc_utils">
+<span id="predflow-pc-utils-module"></span><h2>predflow.pc_utils module<a class="headerlink" href="#module-predflow.pc_utils" title="Permalink to this headline"></a></h2>
+<p>Utilities for predictive coding specifically.</p>
+<ul class="simple">
+<li><p>Energy computation and autodifferentiated gradients of energy wrt to representations and learnable parameters</p></li>
+<li><p>Explicit computation of gradients expressed with prediction errors in the nonlinear fully-connected strictly hierarchical case</p></li>
+<li><p>Stochastic gradient descent steps on representations and learnable parameters</p></li>
+<li><p>Representations initializers (first pass)</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.backward_initialize_representations">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">backward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.backward_initialize_representations" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize representations with a backward sweep through the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – inuput data batch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.energy_and_error">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">energy_and_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.energy_and_error" title="Permalink to this definition"></a></dt>
+<dd><p>Energy (total squared L2 norm of errors) computation and autodifferentiation with respect to representations and learnable parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em><em>, </em><em>optional</em>) – learnable parameters, defaults to []</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>energy, autodiff gradient tape</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float32, tf.GradientTape</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.forward_initialize_representations">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.forward_initialize_representations" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize representations with a forward sweep through the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – output target batch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.forward_initialize_representations_explicit">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_initialize_representations_explicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.forward_initialize_representations_explicit" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize representations with a forward sweep through the model explictly defined as w and f</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – weight matrix</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – output target batch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.inference_SGD_step">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">inference_SGD_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.inference_SGD_step" title="Permalink to this definition"></a></dt>
+<dd><p>Stochastic gradient descent step on represnetations (inference) using autodifferentiated gradients</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>g</strong> (<em>tf.GradientTape</em>) – autodiff gradient tape</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.inference_step_backward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">inference_step_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.inference_step_backward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Representations update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt representations, only applicable to an
+unbiased MLP with reversed flow (predictions come from higher layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
+<li><p><strong>update_first</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the first layer are updated, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.inference_step_forward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">inference_step_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.inference_step_forward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Representations update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt representations, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>f</strong> (<em>float32</em>) – activation function</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.parameters_SGD_step">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">parameters_SGD_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.parameters_SGD_step" title="Permalink to this definition"></a></dt>
+<dd><p>Stochastic gradient descent step on learnable parameters (learning) using autodifferentiated gradients</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em>) – learnable parameters</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>g</strong> (<em>tf.GradientTape</em>) – autodiff gradient tape</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.random_initialize_representations">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">random_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.random_initialize_representations" title="Permalink to this definition"></a></dt>
+<dd><p>Randomly initialize latent representations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to 0.001</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.weight_update_backward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">weight_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.weight_update_backward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Weight update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt weights, only applicable to an
+unbiased MLP with reversed flow (predictions come from higher layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.weight_update_forward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">weight_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.weight_update_forward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Weight update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt weights, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.pc_utils.zero_initialize_representations">
+<span class="sig-prename descclassname"><span class="pre">predflow.pc_utils.</span></span><span class="sig-name descname"><span class="pre">zero_initialize_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.0&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.pc_utils.zero_initialize_representations" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize representations at zero (or a constant)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+<li><p><strong>bias</strong> (<em>float32</em><em>, </em><em>optional</em>) – initialize representation with bias rather than 0., defaults to tf.constant(0.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-predflow.precision_modulated_supervised_autodiff_pc">
+<span id="predflow-precision-modulated-supervised-autodiff-pc-module"></span><h2>predflow.precision_modulated_supervised_autodiff_pc module<a class="headerlink" href="#module-predflow.precision_modulated_supervised_autodiff_pc" title="Permalink to this headline"></a></h2>
+<p>Supervised predictive coding with implicit gradients using tensorflow’s 
+autodifferentiation of the energy with respect to representations and 
+learnable parameters.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precision_modulated_supervised_autodiff_pc.infer">
+<span class="sig-prename descclassname"><span class="pre">predflow.precision_modulated_supervised_autodiff_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precision_modulated_supervised_autodiff_pc.infer" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">norm</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">model</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">log</span> <span class="o">|</span><span class="n">P</span><span class="o">|</span>
+    <span class="n">r</span> <span class="o">-=</span> <span class="n">ir</span> <span class="o">*</span> <span class="n">dE</span><span class="o">/</span><span class="n">dr</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (3d <cite>tf.Tensor</cite> of float32) – inuput data batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.025</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 200</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>latent representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precision_modulated_supervised_autodiff_pc.learn">
+<span class="sig-prename descclassname"><span class="pre">predflow.precision_modulated_supervised_autodiff_pc.</span></span><span class="sig-name descname"><span class="pre">learn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precision_modulated_supervised_autodiff_pc.learn" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">norm</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">model</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">log</span> <span class="o">|</span><span class="n">P</span><span class="o">|</span>
+    <span class="n">r</span> <span class="o">-=</span> <span class="n">ir</span> <span class="o">*</span> <span class="n">dE</span><span class="o">/</span><span class="n">dr</span>
+<span class="n">W</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">dE</span><span class="o">/</span><span class="n">dW</span>
+<span class="n">P</span> <span class="o">-=</span> <span class="n">pr</span> <span class="o">*</span> <span class="n">dE</span><span class="o">/</span><span class="n">dP</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.1</p></li>
+<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate, defaults to 0.001</p></li>
+<li><p><strong>pr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate for precision, defaults to 0.001</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 40</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-predflow.precision_modulated_supervised_explicit_pc">
+<span id="predflow-precision-modulated-supervised-explicit-pc-module"></span><h2>predflow.precision_modulated_supervised_explicit_pc module<a class="headerlink" href="#module-predflow.precision_modulated_supervised_explicit_pc" title="Permalink to this headline"></a></h2>
+<p>Supervised predictive coding with analytic expressions of the gradients of the 
+energy with respect to representations and learnable parameters.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precision_modulated_supervised_explicit_pc.infer">
+<span class="sig-prename descclassname"><span class="pre">predflow.precision_modulated_supervised_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precisions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialize=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defective_error_ratio=0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precision_modulated_supervised_explicit_pc.infer" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">W</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">+=</span> <span class="n">ir</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">P</span> <span class="o">*</span> <span class="n">e</span> <span class="o">+</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>precisions</strong> – list of precision matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.025</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 200</p></li>
+<li><p><strong>f</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – derivate of the activation function, defaults to relu_derivate</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>latent representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precision_modulated_supervised_explicit_pc.learn">
+<span class="sig-prename descclassname"><span class="pre">predflow.precision_modulated_supervised_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">learn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precisions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr=0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pr=0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise=0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clamp_w=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defective_error_ratio=0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precision_modulated_supervised_explicit_pc.learn" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">W</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">+=</span> <span class="n">ir</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span> <span class="n">P</span> <span class="o">*</span> <span class="n">e</span> <span class="o">+</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">+=</span> <span class="n">lr</span> <span class="o">*</span> <span class="p">(</span><span class="n">P</span> <span class="o">*</span> <span class="n">e</span> <span class="o">*</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+<span class="n">P</span> <span class="o">+=</span> <span class="n">pr</span> <span class="o">*</span> <span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">P</span> <span class="o">*</span> <span class="n">e</span> <span class="o">*</span> <span class="n">transpose</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> (<em>list of 2d variable tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>precisions</strong> – list of precision matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.1</p></li>
+<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate for weights, defaults to 0.001</p></li>
+<li><p><strong>pr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate for precision, defaults to 0.001</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 20</p></li>
+<li><p><strong>f</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – derivate of the activation function, defaults to tf_utils.relu_derivate</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-predflow.precisions_utils">
+<span id="predflow-precisions-utils-module"></span><h2>predflow.precisions_utils module<a class="headerlink" href="#module-predflow.precisions_utils" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precisions_utils.precision_modulated_energy">
+<span class="sig-prename descclassname"><span class="pre">predflow.precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.5&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precisions_utils.precision_modulated_energy" title="Permalink to this definition"></a></dt>
+<dd><p>Energy (total squared L2 norm of precision-weighted errors + regularizer) computation and autodifferentiation with respect to representations and learnable parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em><em>, </em><em>optional</em>) – learnable parameters, defaults to []</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>gamma</strong> (<em>float32</em><em>, </em><em>optional</em>) – Regularization scalar, defaults to .5</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>energy, autodiff gradient tape</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float32, tf.GradientTape</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precisions_utils.precision_modulated_inference_step_backward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_inference_step_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sensory_noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precisions_utils.precision_modulated_inference_step_backward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Representations update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt representations, only applicable to an
+unbiased MLP with reversed flow (predictions come from higher layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>P</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of precision matrices</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precisions_utils.precision_modulated_inference_step_forward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_inference_step_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_last</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precisions_utils.precision_modulated_inference_step_forward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Representations update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt representations, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>P</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of precision matrices</p></li>
+<li><p><strong>ir</strong> (<em>float32</em>) – inference rate</p></li>
+<li><p><strong>f</strong> (<em>float32</em>) – activation function</p></li>
+<li><p><strong>df</strong> (<em>function</em>) – derivate of the activation function</p></li>
+<li><p><strong>update_last</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither representations in the last layer are updated, defaults to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precisions_utils.precision_modulated_weight_update_backward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_weight_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precisions_utils.precision_modulated_weight_update_backward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Weight update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt weights, only applicable to an
+unbiased MLP with reversed flow (predictions come from higher layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>P</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of precision matrices</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precisions_utils.precision_modulated_weight_update_forward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_weight_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precisions_utils.precision_modulated_weight_update_forward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Weight update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt weights, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
+<li><p><strong>P</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of precision matrices</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precisions_utils.precisions_update_backward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_update_layer_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precisions_utils.precisions_update_backward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Precision update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt precision, only applicable to an
+unbiased MLP (predictions come from higher layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>P</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of precision matrices</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>diagonal</strong> (<em>bool</em>) – controls weither we use a diagonal approximation of the precision</p></li>
+<li><p><strong>only_update_layer_indices</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precisions_utils.precisions_update_forward_predictions">
+<span class="sig-prename descclassname"><span class="pre">predflow.precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precisions_utils.precisions_update_forward_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Precision update using stochastic gradient descent with analytic expressions
+of the gradients of energy wrt precision, only applicable to an
+unbiased MLP (predictions come from lower layer)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
+<li><p><strong>P</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of precision matrices</p></li>
+<li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.precisions_utils.set_noisy_sensory">
+<span class="sig-prename descclassname"><span class="pre">predflow.precisions_utils.</span></span><span class="sig-name descname"><span class="pre">set_noisy_sensory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">representations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.precisions_utils.set_noisy_sensory" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-predflow.supervised_autodiff_pc">
+<span id="predflow-supervised-autodiff-pc-module"></span><h2>predflow.supervised_autodiff_pc module<a class="headerlink" href="#module-predflow.supervised_autodiff_pc" title="Permalink to this headline"></a></h2>
+<p>Supervised predictive coding with implicit gradients using tensorflow’s 
+autodifferentiation of the energy with respect to representations and 
+learnable parameters.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.supervised_autodiff_pc.infer">
+<span class="sig-prename descclassname"><span class="pre">predflow.supervised_autodiff_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.supervised_autodiff_pc.infer" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">norm</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">model</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">^</span> <span class="mi">2</span>
+    <span class="n">r</span> <span class="o">-=</span> <span class="n">ir</span> <span class="o">*</span> <span class="n">dE</span><span class="o">/</span><span class="n">dr</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (3d <cite>tf.Tensor</cite> of float32) – inuput data batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.025</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 200</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>latent representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.supervised_autodiff_pc.learn">
+<span class="sig-prename descclassname"><span class="pre">predflow.supervised_autodiff_pc.</span></span><span class="sig-name descname"><span class="pre">learn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.supervised_autodiff_pc.learn" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">norm</span><span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">model</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="o">^</span> <span class="mi">2</span>
+    <span class="n">r</span> <span class="o">-=</span> <span class="n">ir</span> <span class="o">*</span> <span class="n">dE</span><span class="o">/</span><span class="n">dr</span>
+<span class="n">W</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">dE</span><span class="o">/</span><span class="n">dW</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.1</p></li>
+<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate, defaults to 0.001</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 40</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-predflow.supervised_fullyconnected_stricthierarchy_explicit_pc">
+<span id="predflow-supervised-fullyconnected-stricthierarchy-explicit-pc-module"></span><h2>predflow.supervised_fullyconnected_stricthierarchy_explicit_pc module<a class="headerlink" href="#module-predflow.supervised_fullyconnected_stricthierarchy_explicit_pc" title="Permalink to this headline"></a></h2>
+<p>Supervised predictive coding with analytic expressions of the gradients of the 
+energy with respect to representations and learnable parameters.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.generate">
+<span class="sig-prename descclassname"><span class="pre">predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.generate" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span> <span class="ow">and</span> <span class="n">clamp</span> <span class="n">representations</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">top</span> <span class="n">layer</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">W</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">+=</span> <span class="n">ir</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">e</span> <span class="o">+</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.025</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 200</p></li>
+<li><p><strong>f</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – derivate of the activation function, defaults to relu_derivate</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>latent representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.infer">
+<span class="sig-prename descclassname"><span class="pre">predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.infer" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span> <span class="ow">and</span> <span class="n">clamp</span> <span class="n">representations</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">sensory</span> <span class="n">layer</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">W</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">+=</span> <span class="n">ir</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">e</span> <span class="o">+</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">r</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.025</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 200</p></li>
+<li><p><strong>f</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – derivate of the activation function, defaults to relu_derivate</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>latent representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.learn">
+<span class="sig-prename descclassname"><span class="pre">predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.</span></span><span class="sig-name descname"><span class="pre">learn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir=0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr=0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T=20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df=&lt;function</span> <span class="pre">relu_derivate&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.supervised_fullyconnected_stricthierarchy_explicit_pc.learn" title="Permalink to this definition"></a></dt>
+<dd><p>Implements the following logic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Initialize</span> <span class="n">representations</span>
+<span class="n">do</span> <span class="n">T</span> <span class="n">times</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">r</span> <span class="o">-</span> <span class="n">W</span> <span class="o">*</span> <span class="n">r</span>
+    <span class="n">r</span> <span class="o">+=</span> <span class="n">ir</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">e</span> <span class="o">+</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">+=</span> <span class="n">lr</span> <span class="o">*</span> <span class="p">(</span><span class="n">e</span> <span class="o">*</span> <span class="n">tranpose</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> (<em>list of 2d variable tf.Tensor of float32</em>) – list of weight matrices, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
+<li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>
+<li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.1</p></li>
+<li><p><strong>lr</strong> (<em>float</em><em>, </em><em>optional</em>) – learning rate, defaults to 0.001</p></li>
+<li><p><strong>T</strong> (<em>int</em><em>, </em><em>optional</em>) – number of inference steps, defaults to 20</p></li>
+<li><p><strong>f</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>df</strong> (<em>function</em><em>, </em><em>optional</em>) – derivate of the activation function, defaults to tf_utils.relu_derivate</p></li>
+<li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-predflow.tf_utils">
+<span id="predflow-tf-utils-module"></span><h2>predflow.tf_utils module<a class="headerlink" href="#module-predflow.tf_utils" title="Permalink to this headline"></a></h2>
+<p>General tensorflow utilities.</p>
+<ul class="simple">
+<li><p>Custom tensorflow modules</p></li>
+<li><p>Simple general tensorflow operations (e.g. <a class="reference internal" href="#predflow.tf_utils.reduced_batched_outer_product" title="predflow.tf_utils.reduced_batched_outer_product"><code class="xref py py-func docutils literal notranslate"><span class="pre">reduced_batched_outer_product()</span></code></a>)</p></li>
+<li><p>tensorboard utilities</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="predflow.tf_utils.BiasedDense">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">predflow.tf_utils.</span></span><span class="sig-name descname"><span class="pre">BiasedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.tf_utils.BiasedDense" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
+<p>Biased dense layer, <code class="code docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">W</span> <span class="pre">*</span> <span class="pre">f(x)</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_dim</strong> (<em>int</em>) – dimension of the layer’s input</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – dimension of the layer’s output</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – custom name for the layer, defaults to None</p></li>
+<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to .001</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="predflow.tf_utils.Dense">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">predflow.tf_utils.</span></span><span class="sig-name descname"><span class="pre">Dense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.tf_utils.Dense" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
+<p>Unbiased dense layer, <code class="code docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">W</span> <span class="pre">*</span> <span class="pre">f(x)</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_dim</strong> (<em>int</em>) – dimension of the layer’s input</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – dimension of the layer’s output</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – custom name for the layer, defaults to None</p></li>
+<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to .001</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="predflow.tf_utils.PrecisionModulatedDense">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">predflow.tf_utils.</span></span><span class="sig-name descname"><span class="pre">PrecisionModulatedDense</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.tf_utils.PrecisionModulatedDense" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.module.module.Module</span></code></p>
+<p>Unbiased dense layer additionally containing a precision matrix variable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_dim</strong> (<em>int</em>) – dimension of the layer’s input</p></li>
+<li><p><strong>output_size</strong> (<em>int</em>) – dimension of the layer’s output</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – custom name for the layer, defaults to None</p></li>
+<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to .001</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.tf_utils.load_tensorboard_graph">
+<span class="sig-prename descclassname"><span class="pre">predflow.tf_utils.</span></span><span class="sig-name descname"><span class="pre">load_tensorboard_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.tf_utils.load_tensorboard_graph" title="Permalink to this definition"></a></dt>
+<dd><p>Log the tensorboard graph trace of <code class="code docutils literal notranslate"><span class="pre">func(*args,</span> <span class="pre">**kwargs)</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logdir</strong> (<em>str</em>) – log folder path</p></li>
+<li><p><strong>func</strong> (<em>function</em>) – function to analyze</p></li>
+<li><p><strong>args</strong> (<em>list</em>) – arguments of func</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of the tensorboard trace</p></li>
+<li><p><strong>step</strong> (<em>int</em><em>, </em><em>optional</em>) – tensorboard step, defaults to 0</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – kwargs of func, defaults to {}</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.tf_utils.mlp">
+<span class="sig-prename descclassname"><span class="pre">predflow.tf_utils.</span></span><span class="sig-name descname"><span class="pre">mlp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biased=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversed_flow=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation=&lt;function</span> <span class="pre">relu&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev=0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_return_variables=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision_modulated=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.tf_utils.mlp" title="Permalink to this definition"></a></dt>
+<dd><p>Create a multi-layer perceptron</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – sequence of int representing layer sizes</p></li>
+<li><p><strong>biased</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we use bias in layers, defaults to False</p></li>
+<li><p><strong>reversed_flow</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we reverse the flow of activation (default is bottom-up), defaults to False</p></li>
+<li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
+<li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to 0.01</p></li>
+<li><p><strong>only_return_weights</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we return a list of tf.Module or 2d variable weight matrices, defaults to False</p></li>
+<li><p><strong>precision_modulated</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither the model includes precision weighting of prediction errors, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>model</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a>, <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>, <a class="reference internal" href="tf_utils.html#tf_utils.PrecisionModulatedDense" title="tf_utils.PrecisionModulatedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.PrecisionModulatedDense</span></code></a> or 2d variable tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.tf_utils.one_hot_pred_accuracy">
+<span class="sig-prename descclassname"><span class="pre">predflow.tf_utils.</span></span><span class="sig-name descname"><span class="pre">one_hot_pred_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.tf_utils.one_hot_pred_accuracy" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the accuracy of a prediction <code class="code docutils literal notranslate"><span class="pre">p</span></code> with respect to target <code class="code docutils literal notranslate"><span class="pre">t</span></code> as the proportion of time <code class="code docutils literal notranslate"><span class="pre">argmax(p)</span> <span class="pre">==</span> <span class="pre">argmax(t)</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<em>3d tf.Tensor</em>) – network prediction</p></li>
+<li><p><strong>t</strong> (<em>3d tf.Tensor</em>) – ground truth target</p></li>
+<li><p><strong>axis</strong> (<em>int</em><em>, </em><em>optional</em>) – argmax axis, defaults to 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>accuracy</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.tf_utils.reduced_batched_outer_product">
+<span class="sig-prename descclassname"><span class="pre">predflow.tf_utils.</span></span><span class="sig-name descname"><span class="pre">reduced_batched_outer_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.tf_utils.reduced_batched_outer_product" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the outer product of <code class="code docutils literal notranslate"><span class="pre">x</span></code> and <code class="code docutils literal notranslate"><span class="pre">y</span></code> summed over batch dimesion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>3d tf.Tensor</em>) – first tensor</p></li>
+<li><p><strong>y</strong> (<em>3d tf.Tensor</em>) – second tensor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>outer product summed over batch dimesion</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>2d tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="predflow.tf_utils.relu_derivate">
+<span class="sig-prename descclassname"><span class="pre">predflow.tf_utils.</span></span><span class="sig-name descname"><span class="pre">relu_derivate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#predflow.tf_utils.relu_derivate" title="Permalink to this definition"></a></dt>
+<dd><p>Derivate of the ReLU activation function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tf.Tensor</em>) – input</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>output</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-predflow">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-predflow" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Arno Granier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
