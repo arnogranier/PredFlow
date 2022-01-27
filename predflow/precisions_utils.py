@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tf_utils import reduced_batched_outer_product
+from .tf_utils import reduced_batched_outer_product
 
 def set_noisy_sensory_horizontal_window(representations, noise, clipmin=-10., clipmax=10.,
                                         first_pixel=196, last_pixel=392):

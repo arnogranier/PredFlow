@@ -1,5 +1,5 @@
-PredFlow
-========
+Documentation
+=============
 
 .. toctree::
    :maxdepth: 4

@@ -9,7 +9,7 @@ Utilities for predictive coding specifically.
 
 
 import tensorflow as tf 
-from tf_utils import reduced_batched_outer_product
+from .tf_utils import reduced_batched_outer_product
 
 def inference_SGD_step(r, ir, g, update_last=True):
     """Stochastic gradient descent step on represnetations (inference) using autodifferentiated gradients
