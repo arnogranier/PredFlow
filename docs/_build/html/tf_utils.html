@@ -170,15 +170,18 @@
 <li><p><strong>reversed_flow</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we reverse the flow of activation (default is bottom-up), defaults to False</p></li>
 <li><p><strong>activation</strong> (<em>function</em><em>, </em><em>optional</em>) – activation function, defaults to tf.nn.relu</p></li>
 <li><p><strong>stddev</strong> (<em>float</em><em>, </em><em>optional</em>) – standard deviation of the normal initialization, defaults to 0.01</p></li>
-<li><p><strong>only_return_weights</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we return a list of tf.Module or 2d variable weight matrices, defaults to False</p></li>
-<li><p><strong>precision_modulated</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither the model includes precision weighting of prediction errors, defaults to False</p></li>
+<li><p><strong>only_return_weights</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither we return a list of tf.Module or 2d variable weight matrices,
+defaults to False</p></li>
+<li><p><strong>precision_modulated</strong> (<em>bool</em><em>, </em><em>optional</em>) – controls weither the model includes precision weighting of prediction errors,
+defaults to False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>model</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list of <a class="reference internal" href="#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a>, <a class="reference internal" href="#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>, <a class="reference internal" href="#tf_utils.PrecisionModulatedDense" title="tf_utils.PrecisionModulatedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.PrecisionModulatedDense</span></code></a> or 2d variable tf.Tensor of float32</p>
+<dd class="field-odd"><p>list of <a class="reference internal" href="#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a>, <a class="reference internal" href="#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>,
+<a class="reference internal" href="#tf_utils.PrecisionModulatedDense" title="tf_utils.PrecisionModulatedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.PrecisionModulatedDense</span></code></a> or 2d variable tf.Tensor of float32</p>
 </dd>
 </dl>
 </dd></dl>
@@ -186,7 +189,8 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="tf_utils.one_hot_pred_accuracy">
 <span class="sig-prename descclassname"><span class="pre">tf_utils.</span></span><span class="sig-name descname"><span class="pre">one_hot_pred_accuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tf_utils.one_hot_pred_accuracy" title="Permalink to this definition"></a></dt>
-<dd><p>Compute the accuracy of a prediction <code class="code docutils literal notranslate"><span class="pre">p</span></code> with respect to target <code class="code docutils literal notranslate"><span class="pre">t</span></code> as the proportion of time <code class="code docutils literal notranslate"><span class="pre">argmax(p)</span> <span class="pre">==</span> <span class="pre">argmax(t)</span></code></p>
+<dd><p>Compute the accuracy of a prediction <code class="code docutils literal notranslate"><span class="pre">p</span></code> with respect to target <code class="code docutils literal notranslate"><span class="pre">t</span></code>
+as the proportion of time <code class="code docutils literal notranslate"><span class="pre">argmax(p)</span> <span class="pre">==</span> <span class="pre">argmax(t)</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

@@ -10,9 +10,9 @@ from precisions_utils import *
 from tf_utils import relu_derivate
 
 @tf.function
-def learn(weights, precisions, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, 
-          f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, 
-          diagonal=False, noise=0.0):
+def learn(weights, precisions, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, f=tf.nn.relu, df=relu_derivate, 
+          predictions_flow_upward=False, diagonal=False, noise=0., learn_precision_indices=None, 
+          gamma=tf.constant(0.05)):
     """Implements the following logic::
     
         Initialize representations
@@ -45,9 +45,12 @@ def learn(weights, precisions, data, target, ir=0.05, lr=0.001, pr=0.001, T=40,
     :param predictions_flow_upward: direction of prediction flow, defaults to False
     :type predictions_flow_upward: bool, optional
     :param diagonal: controls weither we use a diagonal approximation of the precision, defaults to False
-    :type diagonal: bool
+    :type diagonal: bool, optional
     :param noise: standard deviation of an eventual noise mask in the sensory layer, defaults to 0 (no noise mask)
-    :type noise: float
+    :type noise: float, optional
+    :param learn_precision_indices: list of indices of layers in which we want to learn precision matrices,
+                                    defaults to None (all layers)
+    :type learn_precision_indices: list of int, optional 
     """
     
     N = len(weights)
@@ -65,13 +68,16 @@ def learn(weights, precisions, data, target, ir=0.05, lr=0.001, pr=0.001, T=40,
             
     with tf.name_scope("InferenceLoop"):
         for _ in range(T):
-            inference_step(errors, representations, weights, precisions, ir, f, df, update_last=False, sensory_noise=noise)
+            inference_step(errors, representations, weights, precisions, ir, f, df,
+                           update_last=False, sensory_noise=noise)
     weight_update(weights, errors, representations, precisions, lr, f)
-    precision_update(errors, precisions, pr, diagonal=diagonal)
+    precision_update(errors, precisions, pr, diagonal=diagonal,
+                     update_layer_indices=learn_precision_indices, gamma=gamma)
         
         
 @tf.function
-def infer(weights, precisions, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None, noise=0.0, initialize=True):
+def infer(weights, precisions, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False,
+          target_shape=None, noise=0.0, forward_pass_initialize=True, initialization_bias=tf.constant(0.0)):
     """Implements the following logic::
     
         Initialize representations
@@ -99,9 +105,14 @@ def infer(weights, precisions, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_deriva
     :param target_shape: shape of target minibatch, defaults to None
     :type target_shape: 1d tf.Tensor of int32, optional
     :param noise: standard deviation of an eventual noise mask in the sensory layer, defaults to 0 (no noise mask)
-    :type noise: float
-    :param initialize: controls weither we initialize the hidden and top representations to the predictions or zero for models with predictions flowing upwards, defaults to True (intiialize to predictions)
-    :type initialize: bool
+    :type noise: float, optional
+    :param forward_pass_initialize: controls weither we initialize the hidden and top representations to 
+                                    the predictions or zero for models with predictions flowing upwards, 
+                                    defaults to True (intiialize to predictions)
+    :type forward_pass_initialize: bool, optional
+    :param initialization_bias: If `forward_pass_initialize` is False, controls the value at which 
+                                representations are initialized, defaults to 0.
+    :type initialization_bias: float
     :return: latent representations
     :rtype: list of 3d tf.Tensor of float32
     """
@@ -109,10 +120,11 @@ def infer(weights, precisions, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_deriva
     N = len(weights)
     with tf.name_scope("Initialization"):
         if predictions_flow_upward:
-            if initialize:
+            if forward_pass_initialize:
                 representations, errors = forward_initialize_representations_explicit(weights, f, data)
             else:
-                representations, errors = forward_zero_initialize_representations_explicit(weights, f, data)
+                representations, errors = forward_zero_initialize_representations_explicit(weights, f, data, 
+                                                                                           bias=initialization_bias)
             inference_step = precision_modulated_inference_step_forward_predictions
         else:
             representations, errors = backward_zero_initialize_representations_explicit(weights, f, target_shape, data)

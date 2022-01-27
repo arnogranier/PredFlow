@@ -126,13 +126,43 @@
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>errors</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.backward_zero_initialize_representations_explicit">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">backward_zero_initialize_representations_explicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.0&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.backward_zero_initialize_representations_explicit" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Initialize representations at zero with a backward sweep</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list of 2d tf.Tensor of float32</em>) – weight matrix</p></li>
+<li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
+<li><p><strong>target_shape</strong> (<em>1d tf.Tensor of int32</em><em>, </em><em>optional</em>) – shape of target minibatch, defaults to None</p></li>
+<li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – inuput data batch, defaults to None</p></li>
+<li><p><strong>bias</strong> (<em>float32</em><em>, </em><em>optional</em>) – initialize representation with bias rather than 0., defaults to tf.constant(0.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>errors</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.energy_and_error">
@@ -196,13 +226,19 @@
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>errors</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pc_utils.forward_zero_initialize_representations_explicit">
 <span class="sig-prename descclassname"><span class="pre">pc_utils.</span></span><span class="sig-name descname"><span class="pre">forward_zero_initialize_representations_explicit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.0&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pc_utils.forward_zero_initialize_representations_explicit" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize representations with a forward sweep through the model explictly defined as w and f</p>
+<dd><p>Initialize representations at zero with a forward sweep</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -210,10 +246,17 @@
 <li><p><strong>f</strong> (<em>function</em>) – activation function</p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em><em>, </em><em>optional</em>) – output target batch, defaults to None</p></li>
+<li><p><strong>bias</strong> (<em>float32</em><em>, </em><em>optional</em>) – initialize representation with bias rather than 0., defaults to tf.constant(0.)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>representations</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>errors</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list of 3d tf.Tensor of float32</p>

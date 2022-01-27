@@ -156,7 +156,8 @@ def relu_derivate(x):
     with tf.name_scope("ReLUDerivate"):
         return tf.cast(tf.greater_equal(x, tf.constant(0.)), tf.float32)
 
-def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01, only_return_variables=False, precision_modulated=False):
+def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=0.01,
+        only_return_variables=False, precision_modulated=False):
     """Create a multi-layer perceptron
 
     :param args: sequence of int representing layer sizes
@@ -168,13 +169,16 @@ def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=
     :type activation: function, optional
     :param stddev: standard deviation of the normal initialization, defaults to 0.01
     :type stddev: float, optional
-    :param only_return_weights: controls weither we return a list of tf.Module or 2d variable weight matrices, defaults to False
+    :param only_return_weights: controls weither we return a list of tf.Module or 2d variable weight matrices,
+                                defaults to False
     :type only_return_weights: bool, optional
-    :param precision_modulated: controls weither the model includes precision weighting of prediction errors, defaults to False
+    :param precision_modulated: controls weither the model includes precision weighting of prediction errors,
+                                defaults to False
     :type precision_modulated: bool, optional
     
     :return: model
-    :rtype: list of :py:class:`tf_utils.Dense`, :py:class:`tf_utils.BiasedDense`, :py:class:`tf_utils.PrecisionModulatedDense` or 2d variable tf.Tensor of float32
+    :rtype: list of :py:class:`tf_utils.Dense`, :py:class:`tf_utils.BiasedDense`,
+            :py:class:`tf_utils.PrecisionModulatedDense` or 2d variable tf.Tensor of float32
     """
     
     if precision_modulated:
@@ -186,25 +190,32 @@ def mlp(*args, biased=False, reversed_flow=False, activation=tf.nn.relu, stddev=
     if only_return_variables:
         if not reversed_flow:
             if not precision_modulated:
-                return [tf.Variable(tf.random.normal([s2, s1], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+                return [tf.Variable(tf.random.normal([s2, s1], stddev=stddev))
+                        for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
             else:
-                return ([tf.Variable(tf.random.normal([s2, s1], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])], 
+                return ([tf.Variable(tf.random.normal([s2, s1], stddev=stddev))
+                         for (s1, s2) in zip(list(args)[:-1], list(args)[1:])], 
                         [tf.Variable(tf.eye(s2)) for s2 in list(args)[1:]])
         else:
             if not precision_modulated:
-                return [tf.Variable(tf.random.normal([s1, s2], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+                return [tf.Variable(tf.random.normal([s1, s2], stddev=stddev))
+                        for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
             else:
-                return ([tf.Variable(tf.random.normal([s1, s2], stddev=stddev)) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])], 
+                return ([tf.Variable(tf.random.normal([s1, s2], stddev=stddev))
+                         for (s1, s2) in zip(list(args)[:-1], list(args)[1:])], 
                         [tf.Variable(tf.eye(s1)) for s1 in list(args)[:-1]])
     else:
         if not reversed_flow:
-            return [Layer(s1, s2, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+            return [Layer(s1, s2, activation=activation, stddev=stddev)
+                    for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
         else:
-            return [Layer(s2, s1, activation=activation, stddev=stddev) for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
+            return [Layer(s2, s1, activation=activation, stddev=stddev)
+                    for (s1, s2) in zip(list(args)[:-1], list(args)[1:])]
 
 
 def one_hot_pred_accuracy(p, t, axis=1):
-    """Compute the accuracy of a prediction :code:`p` with respect to target :code:`t` as the proportion of time :code:`argmax(p) == argmax(t)`
+    """Compute the accuracy of a prediction :code:`p` with respect to target :code:`t`
+    as the proportion of time :code:`argmax(p) == argmax(t)`
 
     :param p: network prediction
     :type p: 3d tf.Tensor
@@ -215,6 +226,6 @@ def one_hot_pred_accuracy(p, t, axis=1):
     :return: accuracy
     :rtype: float32
     """
-    
+    b = tf.shape(p)[0]
     with tf.name_scope("AccuracyComputation"):
-        return tf.cast(tf.math.count_nonzero(tf.argmax(p, axis=axis) == tf.argmax(t, axis=axis)), tf.int32)/tf.shape(p)[0]
+        return tf.cast(tf.math.count_nonzero(tf.argmax(p, axis=axis) == tf.argmax(t, axis=axis)), tf.int32) / b

@@ -96,7 +96,7 @@ def forward_initialize_representations(model, data, target=None):
         else:
             representations.append(model[-1](representations[-1]))
         return representations
-
+    
 def forward_initialize_representations_explicit(w, f, data, target=None):
     """Initialize representations with a forward sweep through the model explictly defined as w and f
 
@@ -110,33 +110,7 @@ def forward_initialize_representations_explicit(w, f, data, target=None):
     :type target: 3d tf.Tensor of float32, optional
     :return: representations
     :rtype: list of 3d tf.Tensor of float32
-    """
-    
-    with tf.name_scope("Initialization"):
-        N = len(w)
-        representations = [data, ]
-        for i in range(N-1):
-            representations.append(tf.matmul(w[i], f(representations[-1])))
-        if target is not None:
-            representations.append(target)
-        else:
-            representations.append(tf.matmul(w[-1], f(representations[-1])))
-        errors = [tf.zeros(tf.shape(representations[i])) for i in range(1,N+1)]
-        
-        return representations, errors
-    
-def forward_initialize_representations_explicit(w, f, data, target=None):
-    """Initialize representations with a forward sweep through the model explictly defined as w and f
-
-    :param w: weight matrix
-    :type w: list of 2d tf.Tensor of float32
-    :param f: activation function
-    :type f: function
-    :param data: inuput data batch
-    :type data: 3d tf.Tensor of float32
-    :param target: output target batch, defaults to None
-    :type target: 3d tf.Tensor of float32, optional
-    :return: representations
+    :return: errors
     :rtype: list of 3d tf.Tensor of float32
     """
     
@@ -154,7 +128,7 @@ def forward_initialize_representations_explicit(w, f, data, target=None):
         return representations, errors
     
 def forward_zero_initialize_representations_explicit(w, f, data, target=None, bias=tf.constant(0.)):
-    """Initialize representations with a forward sweep through the model explictly defined as w and f
+    """Initialize representations at zero with a forward sweep
 
     :param w: weight matrix
     :type w: list of 2d tf.Tensor of float32
@@ -164,7 +138,11 @@ def forward_zero_initialize_representations_explicit(w, f, data, target=None, bi
     :type data: 3d tf.Tensor of float32
     :param target: output target batch, defaults to None
     :type target: 3d tf.Tensor of float32, optional
+    :param bias: initialize representation with bias rather than 0., defaults to tf.constant(0.)
+    :type bias: float32, optional
     :return: representations
+    :rtype: list of 3d tf.Tensor of float32
+    :return: errors
     :rtype: list of 3d tf.Tensor of float32
     """
     
@@ -203,6 +181,7 @@ def backward_initialize_representations(model, target, data=None):
             representations.insert(0, data)
         else:
             representations.insert(0, model[0](representations[0]))
+            
         return representations
     
 def backward_initialize_representations_explicit(w, f, target, data=None):
@@ -215,6 +194,8 @@ def backward_initialize_representations_explicit(w, f, target, data=None):
     :param data: inuput data batch, defaults to None
     :type data: 3d tf.Tensor of float32, optional
     :return: representations
+    :rtype: list of 3d tf.Tensor of float32
+    :return: errors
     :rtype: list of 3d tf.Tensor of float32
     """
     
@@ -231,8 +212,25 @@ def backward_initialize_representations_explicit(w, f, target, data=None):
         
         return representations, errors
 
-
 def backward_zero_initialize_representations_explicit(w, f, target_shape, data=None, bias=tf.constant(0.)):
+    """Initialize representations at zero with a backward sweep
+
+    :param w: weight matrix
+    :type w: list of 2d tf.Tensor of float32
+    :param f: activation function
+    :type f: function
+    :param target_shape: shape of target minibatch, defaults to None
+    :type target_shape: 1d tf.Tensor of int32, optional
+    :param data: inuput data batch, defaults to None
+    :type data: 3d tf.Tensor of float32, optional
+    :param bias: initialize representation with bias rather than 0., defaults to tf.constant(0.)
+    :type bias: float32, optional
+    :return: representations
+    :rtype: list of 3d tf.Tensor of float32
+    :return: errors
+    :rtype: list of 3d tf.Tensor of float32
+    """
+    
     with tf.name_scope("Initialization"):
         N = len(w)
         representations = [tf.zeros(target_shape)+bias,]
@@ -273,6 +271,7 @@ def random_initialize_representations(model, data, stddev=0.001, predictions_flo
             for i in reversed(range(1, N)):
                 representations.insert(0, tf.random.normal(tf.shape(model[i](representations[0])),stddev=stddev))
             representations.insert(0, data)
+            
         return representations
     
 def zero_initialize_representations(model, data, predictions_flow_upward=False, target_shape=None, bias=tf.constant(0.)):
@@ -303,6 +302,7 @@ def zero_initialize_representations(model, data, predictions_flow_upward=False, 
             for i in reversed(range(1, N)):
                 representations.insert(0, tf.zeros(tf.shape(model[i](representations[0])))+bias)
             representations.insert(0, data)
+            
         return representations
     
 def inference_step_backward_predictions(e, r, w, ir, f, df, update_last=True, update_first=False):

@@ -83,11 +83,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="precisions_utils.precision_modulated_energy">
 <span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precision_modulated_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta=[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.5&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precision_modulated_energy" title="Permalink to this definition"></a></dt>
-<dd><p>Energy (total squared L2 norm of precision-weighted errors + regularizer) computation and autodifferentiation with respect to representations and learnable parameters</p>
+<dd><p>Energy (total squared L2 norm of precision-weighted errors + regularizer) computation and 
+autodifferentiation with respect to representations and learnable parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers, can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers,
+can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>r</strong> (<em>list of 3d tf.Tensor of float32</em>) – representations</p></li>
 <li><p><strong>theta</strong> (<em>list of variable tf.Tensor of float32</em><em>, </em><em>optional</em>) – learnable parameters, defaults to []</p></li>
 <li><p><strong>predictions_flow_upward</strong> (<em>bool</em><em>, </em><em>optional</em>) – direction of prediction flow, defaults to False</p></li>
@@ -189,7 +191,7 @@ unbiased MLP (predictions come from lower layer)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="precisions_utils.precisions_update_backward_predictions">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_update_layer_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precisions_update_backward_predictions" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_backward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_layer_indices=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.05&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precisions_update_backward_predictions" title="Permalink to this definition"></a></dt>
 <dd><p>Precision update using stochastic gradient descent with analytic expressions
 of the gradients of energy wrt precision, only applicable to an
 unbiased MLP (predictions come from higher layer)</p>
@@ -208,7 +210,7 @@ unbiased MLP (predictions come from higher layer)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="precisions_utils.precisions_update_forward_predictions">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precisions_update_forward_predictions" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">precisions_update_forward_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_layer_indices=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma=&lt;tf.Tensor:</span> <span class="pre">shape=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numpy=0.05&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.precisions_update_forward_predictions" title="Permalink to this definition"></a></dt>
 <dd><p>Precision update using stochastic gradient descent with analytic expressions
 of the gradients of energy wrt precision, only applicable to an
 unbiased MLP (predictions come from lower layer)</p>
@@ -218,6 +220,7 @@ unbiased MLP (predictions come from lower layer)</p>
 <li><p><strong>e</strong> (<em>list of 3d tf.Tensor of float32</em>) – prediction errors</p></li>
 <li><p><strong>P</strong> (<em>list of 2d tf.Tensor of float32</em>) – list of precision matrices</p></li>
 <li><p><strong>lr</strong> (<em>float32</em>) – learning rate</p></li>
+<li><p><strong>diagonal</strong> (<em>bool</em>) – controls weither we use a diagonal approximation of the precision</p></li>
 </ul>
 </dd>
 </dl>
@@ -225,16 +228,19 @@ unbiased MLP (predictions come from lower layer)</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="precisions_utils.set_noisy_sensory_horizontal_window">
-<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">set_noisy_sensory_horizontal_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">representations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_pixel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">196</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_pixel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">392</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.set_noisy_sensory_horizontal_window" title="Permalink to this definition"></a></dt>
-<dd><p>[summary]</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>representations ([type]): [description]
-data ([type]): [description]
-noise ([type]): [description]
-clipmin (int, optional): [description]. Defaults to -10.
-clipmax (int, optional): [description]. Defaults to 10.
-first_pixel (int, optional): [description]. Defaults to 196.
-last_pixel (int, optional): [description]. Defaults to 392.</p>
+<span class="sig-prename descclassname"><span class="pre">precisions_utils.</span></span><span class="sig-name descname"><span class="pre">set_noisy_sensory_horizontal_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">representations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clipmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_pixel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">196</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_pixel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">392</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precisions_utils.set_noisy_sensory_horizontal_window" title="Permalink to this definition"></a></dt>
+<dd><p>Obscure a part of the sensory layer by clamping pixels that are not between
+first_pixel and last_pixel to a random gaussian variable of standard deviation noise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>representations</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>noise</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>clipmin</strong> (<em>int</em><em>, </em><em>optional</em>) – [description], defaults to -10</p></li>
+<li><p><strong>clipmax</strong> (<em>int</em><em>, </em><em>optional</em>) – [description], defaults to 10</p></li>
+<li><p><strong>first_pixel</strong> (<em>int</em><em>, </em><em>optional</em>) – [description], defaults to 196</p></li>
+<li><p><strong>last_pixel</strong> (<em>int</em><em>, </em><em>optional</em>) – [description], defaults to 392</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

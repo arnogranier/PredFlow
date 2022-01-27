@@ -9,7 +9,8 @@ from pc_utils import *
 from precisions_utils import *
 
 @tf.function
-def learn(model, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, predictions_flow_upward=False):
+def learn(model, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, predictions_flow_upward=False,
+          gamma=tf.constant(0.5)):
     """Implements the following logic::
     
         Initialize representations
@@ -19,7 +20,8 @@ def learn(model, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, predictions_fl
         W -= lr * dE/dW
         P -= pr * dE/dP
 
-    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
+    :param model: description of a sequential network by a list of layers,
+                  can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
@@ -49,7 +51,8 @@ def learn(model, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, predictions_fl
         for _ in range(T):
             with tf.name_scope("InferenceStep"):
                 energy, autodiff = precision_modulated_energy(model, representations, parameters, 
-                                                              predictions_flow_upward=predictions_flow_upward)
+                                                              predictions_flow_upward=predictions_flow_upward, 
+                                                              gamma=gamma)
                 inference_SGD_step(representations, ir, autodiff.gradient(energy, representations), 
                                    update_last=False)
     parameters_SGD_step(precisions, pr, autodiff.gradient(energy, precisions))
@@ -67,7 +70,8 @@ def infer(model, data, ir=0.05, T=40, predictions_flow_upward=False, target_shap
             r -= ir * dE/dr
         return r
 
-    :param model: description of a sequential network by a list of layers, can be generated e.g. using :py:func:`tf_utils.mlp`
+    :param model: description of a sequential network by a list of layers,
+                  can be generated e.g. using :py:func:`tf_utils.mlp`
     :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
     :param data: inuput data batch
     :type data: 3d `tf.Tensor` of float32

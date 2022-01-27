@@ -9,7 +9,8 @@ from pc_utils import *
 from tf_utils import relu_derivate
 
 @tf.function
-def learn(weights, data, target, ir=0.05, lr=0.001, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False):
+def learn(weights, data, target, ir=0.05, lr=0.001, T=40, f=tf.nn.relu, df=relu_derivate,
+          predictions_flow_upward=False):
     """Implements the following logic::
     
         Initialize representations
@@ -55,7 +56,8 @@ def learn(weights, data, target, ir=0.05, lr=0.001, T=40, f=tf.nn.relu, df=relu_
     weight_update(weights, errors, representations, lr, f)
         
 @tf.function
-def infer(weights, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate, predictions_flow_upward=False, target_shape=None):
+def infer(weights, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate,
+          predictions_flow_upward=False, target_shape=None):
     """Implements the following logic::
     
         Initialize representations and clamp representations in the sensory layer
@@ -89,7 +91,8 @@ def infer(weights, data, ir=0.05, T=40, f=tf.nn.relu, df=relu_derivate, predicti
             representations, errors = forward_initialize_representations_explicit(weights, f, data)
             inference_step = inference_step_forward_predictions
         else:
-            representations, errors = backward_zero_initialize_representations_explicit(weights, f, target_shape, data=data)
+            representations, errors = backward_zero_initialize_representations_explicit(weights, f,
+                                                                                        target_shape, data=data)
             inference_step = inference_step_backward_predictions
         
     with tf.name_scope("InferenceLoop"):
