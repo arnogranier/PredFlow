@@ -1,7 +1,7 @@
 '''
 Supervised predictive coding with implicit gradients using tensorflow's 
 autodifferentiation of the energy with respect to representations and 
-learnable parameters.
+learnable parameters, including precision weighting of prediction errors.
 '''
 
 import tensorflow as tf
@@ -22,7 +22,7 @@ def learn(model, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, predictions_fl
 
     :param model: description of a sequential network by a list of layers,
                   can be generated e.g. using :py:func:`tf_utils.mlp`
-    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
+    :type model: list of :py:class:`tf_utils.PrecisionModulatedDense`
     :param data: inuput data batch
     :type data: 3d tf.Tensor of float32
     :param target: output target batch
@@ -72,7 +72,7 @@ def infer(model, data, ir=0.05, T=40, predictions_flow_upward=False, target_shap
 
     :param model: description of a sequential network by a list of layers,
                   can be generated e.g. using :py:func:`tf_utils.mlp`
-    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
+    :type model: list of :py:class:`tf_utils.PrecisionModulatedDense`
     :param data: inuput data batch
     :type data: 3d `tf.Tensor` of float32
     :param ir: inference rate, defaults to 0.05

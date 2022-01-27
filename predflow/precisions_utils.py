@@ -1,22 +1,22 @@
 import tensorflow as tf
 from tf_utils import reduced_batched_outer_product
 
-def set_noisy_sensory_horizontal_window(representations, noise, clipmin=-10, clipmax=10,
+def set_noisy_sensory_horizontal_window(representations, noise, clipmin=-10., clipmax=10.,
                                         first_pixel=196, last_pixel=392):
     """Obscure a part of the sensory layer by clamping pixels that are not between
     first_pixel and last_pixel to a random gaussian variable of standard deviation noise
 
-    :param representations: [description]
-    :type representations: [type]
-    :param noise: [description]
-    :type noise: [type]
-    :param clipmin: [description], defaults to -10
-    :type clipmin: int, optional
-    :param clipmax: [description], defaults to 10
-    :type clipmax: int, optional
-    :param first_pixel: [description], defaults to 196
+    :param representations: representations
+    :type representations: list of 3d tf.Tensor of float32
+    :param noise: standard deviation of the noise mask
+    :type noise: float
+    :param clipmin: minimum value of representations, defaults to -10
+    :type clipmin: float, optional
+    :param clipmax: maximum value of representations, defaults to 10
+    :type clipmax: float, optional
+    :param first_pixel: first index of unobstructed pixels, defaults to 196
     :type first_pixel: int, optional
-    :param last_pixel: [description], defaults to 392
+    :param last_pixel: last index of unobstructed pixels, defaults to 392
     :type last_pixel: int, optional
     """
     
@@ -32,7 +32,7 @@ def precision_modulated_energy(model, r, theta=[], predictions_flow_upward=False
 
     :param model: description of a sequential network by a list of layers,
                   can be generated e.g. using :py:func:`tf_utils.mlp`
-    :type model: list of :py:class:`tf_utils.Dense` or :py:class:`tf_utils.BiasedDense`
+    :type model: list of :py:class:`PrecisionModulatedDense`
     :param r: representations
     :type r: list of 3d tf.Tensor of float32
     :param theta: learnable parameters, defaults to []

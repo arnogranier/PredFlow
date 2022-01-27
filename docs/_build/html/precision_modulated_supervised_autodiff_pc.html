@@ -82,7 +82,7 @@
 <span id="supervised-autodiff-predictive-coding-with-precision-weighting-of-prediction-errors"></span><h1>Supervised Autodiff Predictive Coding with precision weighting of prediction errors<a class="headerlink" href="#module-precision_modulated_supervised_autodiff_pc" title="Permalink to this headline"></a></h1>
 <p>Supervised predictive coding with implicit gradients using tensorflow’s 
 autodifferentiation of the energy with respect to representations and 
-learnable parameters.</p>
+learnable parameters, including precision weighting of prediction errors.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="precision_modulated_supervised_autodiff_pc.infer">
 <span class="sig-prename descclassname"><span class="pre">precision_modulated_supervised_autodiff_pc.</span></span><span class="sig-name descname"><span class="pre">infer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_flow_upward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#precision_modulated_supervised_autodiff_pc.infer" title="Permalink to this definition"></a></dt>
@@ -97,7 +97,7 @@ learnable parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers,
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.PrecisionModulatedDense" title="tf_utils.PrecisionModulatedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.PrecisionModulatedDense</span></code></a>) – description of a sequential network by a list of layers,
 can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>data</strong> (3d <cite>tf.Tensor</cite> of float32) – inuput data batch</p></li>
 <li><p><strong>ir</strong> (<em>float</em><em>, </em><em>optional</em>) – inference rate, defaults to 0.05</p></li>
@@ -130,7 +130,7 @@ can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.Dense" title="tf_utils.Dense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.Dense</span></code></a> or <a class="reference internal" href="tf_utils.html#tf_utils.BiasedDense" title="tf_utils.BiasedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.BiasedDense</span></code></a>) – description of a sequential network by a list of layers,
+<li><p><strong>model</strong> (list of <a class="reference internal" href="tf_utils.html#tf_utils.PrecisionModulatedDense" title="tf_utils.PrecisionModulatedDense"><code class="xref py py-class docutils literal notranslate"><span class="pre">tf_utils.PrecisionModulatedDense</span></code></a>) – description of a sequential network by a list of layers,
 can be generated e.g. using <a class="reference internal" href="tf_utils.html#tf_utils.mlp" title="tf_utils.mlp"><code class="xref py py-func docutils literal notranslate"><span class="pre">tf_utils.mlp()</span></code></a></p></li>
 <li><p><strong>data</strong> (<em>3d tf.Tensor of float32</em>) – inuput data batch</p></li>
 <li><p><strong>target</strong> (<em>3d tf.Tensor of float32</em>) – output target batch</p></li>

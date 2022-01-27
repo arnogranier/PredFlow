@@ -1,6 +1,7 @@
 '''
 Supervised predictive coding with analytic expressions of the gradients of the 
-energy with respect to representations and learnable parameters.
+energy with respect to representations and learnable parameters, including
+precision weighting of prediction errors.
 '''
 
 
