@@ -58,7 +58,7 @@ def precision_modulated_energy(model, r, theta=[], predictions_flow_upward=False
                                      - gamma*tf.math.log(tf.linalg.det(model[i].P))
         return F, tape
 
-def precision_modulated_inference_step_forward_predictions(e, r, w, P, ir, f, df, update_last=True, sensory_noise=0.0):
+def precision_modulated_inference_step_forward_predictions(e, r, w, P, ir, f, df, update_last=True, sensory_noise=0.):
     """Representations update using stochastic gradient descent with analytic expressions
     of the gradients of energy wrt representations, only applicable to an
     unbiased MLP (predictions come from lower layer)
@@ -91,7 +91,7 @@ def precision_modulated_inference_step_forward_predictions(e, r, w, P, ir, f, df
                                                   tf.matmul(P[i-1], e[i-1])))
         if update_last:
             r[N] -= tf.scalar_mul(ir, tf.matmul(P[N-1], e[N-1]))
-    if sensory_noise != 0.0:     
+    if sensory_noise != 0.:     
         set_noisy_sensory_horizontal_window(r, r[0], sensory_noise)
             
 def precision_modulated_weight_update_forward_predictions(w, e, r, P, lr, f):
@@ -117,7 +117,7 @@ def precision_modulated_weight_update_forward_predictions(w, e, r, P, lr, f):
         for i in range(len(w)):
             w[i].assign_add(tf.scalar_mul(lr, reduced_batched_outer_product(tf.matmul(P[i], e[i]), f(r[i]))))
 
-def precision_modulated_inference_step_backward_predictions(e, r, w, P, ir, f, df, update_last=True, sensory_noise=0.0):
+def precision_modulated_inference_step_backward_predictions(e, r, w, P, ir, f, df, update_last=True, sensory_noise=0.):
     """Representations update using stochastic gradient descent with analytic expressions
     of the gradients of energy wrt representations, only applicable to an
     unbiased MLP with reversed flow (predictions come from higher layer)
@@ -150,7 +150,7 @@ def precision_modulated_inference_step_backward_predictions(e, r, w, P, ir, f, d
                                                   tf.matmul(P[i], e[i])))
         if update_last:
             r[N] += tf.scalar_mul(ir, tf.matmul(w[N-1], tf.matmul(P[N-1], e[N-1]), transpose_a=True) * df(r[N]))
-    if sensory_noise != 0.0:     
+    if sensory_noise != 0.:     
         set_noisy_sensory_horizontal_window(r, sensory_noise)
             
 def precision_modulated_weight_update_backward_predictions(w, e, r, P, lr, f):
