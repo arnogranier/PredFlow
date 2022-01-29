@@ -1,8 +1,6 @@
 # PredFlow
 ## A python library for predictive coding simulations based on tensorflow
 
-## WORK IN PROGRESS, BROKEN FOR NOW
-
 Use the package manager `pip` (or `pip3`) to install `predflow`. 
 
 ```bash
