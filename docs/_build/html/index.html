@@ -68,6 +68,28 @@
              
   <section id="welcome-to-predflow-s-documentation">
 <h1>Welcome to PredFlow’s documentation!<a class="headerlink" href="#welcome-to-predflow-s-documentation" title="Permalink to this headline"></a></h1>
+<p>Predictive coding has been described as
+“the most complete framework to date for explaining perception, cognition, and action in terms of fundamental theoretical
+principles and neurocognitive architecture” (Anil Seth in <em>The cybernetic Bayesian brain</em>, 2004) and as “a computational framework for understanding
+cortical function in the context of emerging evidence” (Georg Keller and Thomas Mrsic-Flogel in <em>Predictive processing: a canonical cortical computation</em>, 2018).
+It is both a computational and process theory that aims at approximating bayesian inference and updating in hierarchical factorized gaussian
+generative models using prediction error minimization, in a computationally tractable way that could be
+implemented by neural circuits. This framework invites a reinterpretation of cortical computation from feature detection to
+inference on and learning of a generative model. This documentation is of course not the place to unwrap these sentences
+and introduce predictive coding in more details. Very good introduction to this theory
+can be found from very different points of view including <a class="reference external" href="https://www.nature.com/articles/nrn2787">theoretical neuroscience</a>,
+<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0896627318308572">experimental neuroscience</a>,
+<a class="reference external" href="https://predictive-mind.net/papers/vanilla-pp-for-philosophers-a-primer-on-predictive-processing">philosophy of mind</a>,
+<a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0006322318315324">neuropsychology</a>,
+<a class="reference external" href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/whatever-next-predictive-brains-situated-agents-and-the-future-of-cognitive-science/33542C736E17E3D1D44E8D03BE5F4CD9#article">cognitive science</a> and
+<a class="reference external" href="https://arxiv.org/abs/2107.12979">machine learning</a>.</p>
+<p>This package for now is mainly a support for my PhD and is not intended as a general predictive coding simulation platform, though the
+code can certainly be reused as is or with minor tweaks for applications and experiments similar to the one I conduct.
+The topics that I will (hopefully) cover during my PhD includes <strong>The geometry of precision in predictive coding</strong>, <strong>Lateral dynamics in predictive coding - correlations and sparsity</strong>, <strong>Semantization through multimodal predictions</strong> and <strong>The place of predictive coding in the brain’s algorithm</strong>. These will then be the main focus of this package, at least when it comes to my contribution.</p>
+<p>If you want to use this package and don’t know where to start, you can look at two simple usage examples, one for <a class="reference external" href="https://arnogranier.github.io/PredFlow/_build/html/mnist_experiments.html">classification on MNIST</a> and the other for <a class="reference external" href="https://arnogranier.github.io/PredFlow/_build/html/mnist_generation.html">generating MNIST digits</a>.</p>
+<p>Current features include vanilla predictive coding and predictive coding with precision weighting of prediction errors on the MNIST dataset.</p>
+<p>As a very simple benchmark, training a 784-256-64-10 multilayer perceptron on 60000 MNIST digits with 10 steps of inference before each weight update for 10
+epochs with minibatches of size 100 takes approximately 15-20 seconds on mid-range consumer hardware (CPU: AMD Ryzen 7 3700X (16) &#64; 3.600GHz, GPU: NVIDIA GeForce RTX 2070 SUPER).</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -90,14 +112,6 @@
 </li>
 </ul>
 </div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
 </section>
 
 

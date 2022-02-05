@@ -5,8 +5,8 @@ learnable parameters, including precision weighting of prediction errors.
 '''
 
 import tensorflow as tf
-from .pc_utils import *
-from .precisions_utils import *
+from pc_utils import *
+from precisions_utils import *
 
 @tf.function
 def learn(model, data, target, ir=0.05, lr=0.001, pr=0.001, T=40, predictions_flow_upward=False,
