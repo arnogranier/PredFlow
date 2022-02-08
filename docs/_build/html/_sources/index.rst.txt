@@ -21,7 +21,7 @@ can be found from very different points of view including `theoretical neuroscie
 `philosophy of mind <https://predictive-mind.net/papers/vanilla-pp-for-philosophers-a-primer-on-predictive-processing>`_,
 `neuropsychology <https://www.sciencedirect.com/science/article/pii/S0006322318315324>`_,
 `cognitive science <https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/whatever-next-predictive-brains-situated-agents-and-the-future-of-cognitive-science/33542C736E17E3D1D44E8D03BE5F4CD9#article>`_ and
-`machine learning <https://arxiv.org/abs/2107.12979>`_. 
+`machine learning <https://arxiv.org/abs/2107.12979>`_ (*citation does not mean endorsement*). 
 
 This package for now is mainly a support for my PhD and is not intended as a general predictive coding simulation platform, though the
 code can certainly be reused as is or with minor tweaks for applications and experiments similar to the one I conduct.
