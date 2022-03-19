@@ -4,6 +4,7 @@ gems:
 title: PredFlow
 paginate: 1
 locale: "en"
+baseurl: ""
 
 author:
   name: Arno Granier
