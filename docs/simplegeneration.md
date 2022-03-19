@@ -27,9 +27,9 @@ Define a step of learning for the supervised generative predictive coding algori
 2. Initialize the hidden layers to the predictions
 3. Run an inference loop: 
 do T times 
-for all layers
-$e_i = r_i - W_if(r_{i+1})$
-$r_i += ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$ 
+&nbsp;&nbsp;for all layers
+&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$
+&nbsp;&nbsp;&nbsp;&nbsp;$$r_i += ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$
 
 ```python
 @tf.function
