@@ -68,13 +68,12 @@ Define an inference loop for the supervised generative predictive coding algorit
 2. Initialize the hidden and bottom layers to the predictions $$W_if(r_{i+1})$$
 3. Run an inference loop: <br>
 do T times <br>
-&nbsp;&nbsp;for all hidden layers <br>
-&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
-&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
-&nbsp;&nbsp;# Bottom layer <br>
-&nbsp;&nbsp;$$e_0 = r_0 - W_0f(r_{1})$$ <br>
-&nbsp;&nbsp;$$r_0 \mathrel{+}= ir * (-e_0)$$ <br>
-4. Return the infered representations
+&nbsp;&nbsp;&nbsp;&nbsp;for all hidden layers <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;$$e_0 = r_0 - W_0f(r_{1})$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;$$r_0 \mathrel{+}= ir * (-e_0)$$ <br>
+4. Return the inferred representations
 ```python
 @tf.function
 def generate(w, target, ir=0.05, T=40, f=tf.nn.relu, df=drelu):
