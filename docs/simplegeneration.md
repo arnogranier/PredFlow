@@ -1,6 +1,8 @@
 ---
 title: MNIST generation
 description: A simple example of using predictive coding to generate MNIST digits
+header-includes:
+  - \usepackage{algorithm2e}
 ---
 
 Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.
@@ -10,20 +12,45 @@ import os ; os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 import tensorflow as tf 
 ```
 
-We first define a few helper functions: the derivate of the ReLU function
-
+Define the derivate of the ReLU function
 ```python
 def drelu(x):
     return tf.cast(tf.greater_equal(x, tf.constant(0.)), tf.float32)
 ```
 
-and a function to compute the reduced sum (over batches) of batched outer products
-
+Define a function to compute the reduced sum (over batches) of batched outer products
 ```python
 def reduce_batch_outer(x, y):
     return tf.reduce_sum(tf.einsum('nx,ny->nxy',tf.squeeze(x),tf.squeeze(y)), 0)
 ```
 
+Define a step of learning for the supervised generative predictive coding algorithm:
+1. Clamp the top layer to the target and the bottom layer to the data
+2. Initialize the hidden layers to the predictions
+3. Run an inference loop: 
+do T times 
+for all layers
+$e_i = r_i - W_if(r_{i+1})$
+$r_i += ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$ 
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\KwResult{Write here the result}
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Write here the input}
+\Output{Write here the output}
+\BlankLine
+\While{While condition}{
+    instructions\;
+    \eIf{condition}{
+        instructions1\;
+        instructions2\;
+    }{
+        instructions3\;
+    }
+}
+\caption{While loop with If/Else condition}
+\end{algorithm} 
 ```python
 @tf.function
 def learn(w, data, target, ir=0.05, lr=0.005, T=20, f=tf.nn.relu, df=drelu):
@@ -80,7 +107,6 @@ w_init_std = 0.001
 ```
 
 Load the MNIST dataset
-
 ```python
 import tensorflow_datasets as tfds
 def preprocess(image, label): 
