@@ -70,7 +70,7 @@ _do T times_: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_{i+1} - W_{i}f(r_{i})$$ <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_{i-1} + {W_i}^Te_i \odot f'(r_i))$$ <br>
 &nbsp;&nbsp;&nbsp;&nbsp;$$e_{N-1} = r_N - W_{N-1}f(r_{N-1})$$ <br>
-&nbsp;&nbsp;&nbsp;&nbsp;$$r_N \mathrel{+}= ir * (-e_{N-1}})$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;$$r_N \mathrel{+}= ir * (-e_{N-1})$$ <br>
 4. Return the inferred representations
 ```python
 @tf.function
@@ -149,4 +149,8 @@ Classify and plot classification accuracy:
 ```python
 l = infer(w, test_images)
 tf.print(one_hot_pred_accuracy(l[-1], test_targets))
+```
+
+```python
+>>> 0.9785
 ```
