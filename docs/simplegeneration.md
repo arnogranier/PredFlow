@@ -1,7 +1,6 @@
 ---
 title: MNIST generation
 description: A simple example of using predictive coding to generate MNIST digits
-layout: page
 ---
 
 Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.
@@ -26,7 +25,7 @@ def reduce_batch_outer(x, y):
 
 Define a step of learning for the supervised generative predictive coding algorithm with weights `w`:
 1. Clamp the top layer to the target and the bottom layer to the data
-2. Initialize the hidden layers to the predictions $W_ir_{i+1}$
+2. Initialize the hidden layers to the predictions $$W_ir_{i+1}$$
 3. Run an inference loop: <br>
 do T times <br>
 &nbsp;&nbsp;for all hidden layers <br>
@@ -64,13 +63,13 @@ def learn(w, data, target, ir=0.05, lr=0.005, T=20, f=tf.nn.relu, df=drelu):
 
 Define an inference loop for the supervised generative predictive coding algorithm with weights `w`:
 1. Clamp the top layer to the target
-2. Initialize the hidden and bottom layers to the predictions $W_ir_{i+1}$
+2. Initialize the hidden and bottom layers to the predictions $$W_ir_{i+1}$$
 3. Run an inference loop: <br>
 do T times <br>
 &nbsp;&nbsp;for all hidden layers <br>
 &nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
 &nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
-&nbsp;&nbsp;# Bottom layer 
+&nbsp;&nbsp;# Bottom layer <br>
 &nbsp;&nbsp;$$e_0 = r_0 - W_0f(r_{1})$$ <br>
 &nbsp;&nbsp;$$r_0 \mathrel{+}= ir * (-e_0)$$ <br>
 4. Return the infered representations
