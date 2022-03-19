@@ -1,18 +1,3 @@
-# Setup
-title:        PredFlow
-tagline:      Predictive coding with tensorflow
-description:  Predictive coding with tensorflow
-baseurl:      ""
-paginate:     1
-locale:       "en"
-
-# About/contact
-author:
-  name:       Arno Granier
-
-# Gems
-gems:
-  - jekyll-paginate
-
-#Others
-markdown: kramdown
+theme: jekyll-theme-cayman
+title: PredFlow
+description: Predictive coding using tensorflow
