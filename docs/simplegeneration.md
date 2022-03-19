@@ -1,6 +1,8 @@
 ---
 title: MNIST generation
 tagline: A simple example of using predictive coding to generate MNIST digits
+header-includes:
+  - \usepackage{algorithm2e}
 ---
 
 Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.
@@ -23,9 +25,29 @@ def reduce_batch_outer(x, y):
     return tf.reduce_sum(tf.einsum('nx,ny->nxy',tf.squeeze(x),tf.squeeze(y)), 0)
 ```
 
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\SetAlgoLined
+\KwResult{Write here the result}
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Write here the input}
+\Output{Write here the output}
+\BlankLine
+\While{While condition}{
+    instructions\;
+    \eIf{condition}{
+        instructions1\;
+        instructions2\;
+    }{
+        instructions3\;
+    }
+}
+\caption{While loop with If/Else condition}
+\end{algorithm} 
+
 Define a step of learning for the supervised generative predictive coding algorithm with weights `w`:
 1. Clamp the top layer to the target and the bottom layer to the data
-2. Initialize the hidden layers to the predictions $$W_ir_{i+1}$$
+2. Initialize the hidden layers to the predictions $$W_if(r_{i+1})$$
 3. Run an inference loop: <br>
 do T times <br>
 &nbsp;&nbsp;for all hidden layers <br>
@@ -63,7 +85,7 @@ def learn(w, data, target, ir=0.05, lr=0.005, T=20, f=tf.nn.relu, df=drelu):
 
 Define an inference loop for the supervised generative predictive coding algorithm with weights `w`:
 1. Clamp the top layer to the target
-2. Initialize the hidden and bottom layers to the predictions $$W_ir_{i+1}$$
+2. Initialize the hidden and bottom layers to the predictions $$W_if(r_{i+1})$$
 3. Run an inference loop: <br>
 do T times <br>
 &nbsp;&nbsp;for all hidden layers <br>
