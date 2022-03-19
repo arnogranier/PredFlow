@@ -1,0 +1,3 @@
+# Index
+
+[link](simplegeneration.md)
