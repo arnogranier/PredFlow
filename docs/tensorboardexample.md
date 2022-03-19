@@ -1,8 +1,13 @@
+---
+title: Tensorboard visualization
+tagline: Visualization of the computation graph using tensorboard
+---
+
 One of the advantage of tensorflow is that you can easily visualize the
 computational graph that is actually running on your computer
 using [tensorboard](https://www.tensorflow.org/tensorboard). 
 
-Here is what the computational graph of the simple `learn` function from the [example of MNIST digits generation](simplegeneration.md) from a high level view:
+Here is the computational graph of the simple `learn` function from the [example of MNIST digits generation](simplegeneration.md) from a high level view:
 
 <a href="https://ibb.co/WDgW16N"><img src="https://i.ibb.co/cbDcd1K/Screenshot-from-2022-03-19-19-30-51.png" alt="Screenshot-from-2022-03-19-19-30-51" border="0"></a>
 
