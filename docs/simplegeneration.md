@@ -6,34 +6,35 @@ layout: page
 
 Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.
 
+Import tensorflow:
 ```python
 import os ; os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1' 
 import tensorflow as tf 
 ```
 
-Define the derivate of the ReLU function
+Define the derivate of the ReLU function: 
 ```python
 def drelu(x):
     return tf.cast(tf.greater_equal(x, tf.constant(0.)), tf.float32)
 ```
 
-Define a function to compute the reduced sum (over batches) of batched outer products
+Define a function to compute the reduced sum (over batches) of batched outer products: 
 ```python
 def reduce_batch_outer(x, y):
     return tf.reduce_sum(tf.einsum('nx,ny->nxy',tf.squeeze(x),tf.squeeze(y)), 0)
 ```
 
-Define a step of learning for the supervised generative predictive coding algorithm:
+Define a step of learning for the supervised generative predictive coding algorithm with weights `w`:
 1. Clamp the top layer to the target and the bottom layer to the data
-2. Initialize the hidden layers to the predictions
+2. Initialize the hidden layers to the predictions $W_ir_{i+1}$
 3. Run an inference loop: <br>
 do T times <br>
 &nbsp;&nbsp;for all hidden layers <br>
 &nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
-&nbsp;&nbsp;&nbsp;&nbsp;$$r_i += ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
 4. Run a weight update step: <br>
 for all weight matrices <br>
-&nbsp;&nbsp;$$W_i += lr * (e_i \otimes f(r_{i+1}))$$
+&nbsp;&nbsp;$$W_i \mathrel{+}= lr * (e_i \otimes f(r_{i+1}))$$
 
 ```python
 @tf.function
@@ -61,6 +62,18 @@ def learn(w, data, target, ir=0.05, lr=0.005, T=20, f=tf.nn.relu, df=drelu):
         w[i].assign_add(tf.scalar_mul(lr, reduce_batch_outer(e[i], f(r[i+1]))))
 ```
 
+Define an inference loop for the supervised generative predictive coding algorithm with weights `w`:
+1. Clamp the top layer to the target
+2. Initialize the hidden and bottom layers to the predictions $W_ir_{i+1}$
+3. Run an inference loop: <br>
+do T times <br>
+&nbsp;&nbsp;for all hidden layers <br>
+&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
+&nbsp;&nbsp;# Bottom layer 
+&nbsp;&nbsp;$$e_0 = r_0 - W_0f(r_{1})$$ <br>
+&nbsp;&nbsp;$$r_0 \mathrel{+}= ir * (-e_0)$$ <br>
+4. Return the infered representations
 ```python
 @tf.function
 def generate(w, target, ir=0.05, T=40, f=tf.nn.relu, df=drelu):
@@ -84,7 +97,7 @@ def generate(w, target, ir=0.05, T=40, f=tf.nn.relu, df=drelu):
     return r
 ```
 
-Hyperparamaters
+Hyperparamaters: 
 ```python
 batch_size = 50
 mlp_architecture = [784, 256, 64, 10]
@@ -92,7 +105,7 @@ n_epochs = 5
 w_init_std = 0.001
 ```
 
-Load the MNIST dataset
+Load the MNIST dataset: 
 ```python
 import tensorflow_datasets as tfds
 def preprocess(image, label): 
@@ -103,13 +116,13 @@ ds = ds.map(preprocess, num_parallel_calls=tf.data.AUTOTUNE)
 ds = ds.cache().batch(batch_size).prefetch(tf.data.experimental.AUTOTUNE)
 ```
 
-Initialize the MLP weights
+Initialize the MLP weights: 
 ```python
 w = [tf.Variable(tf.random.normal([s1, s2], stddev=w_init_std))
      for (s1, s2) in zip(mlp_architecture[:-1], mlp_architecture[1:])]
 ```
 
-Training loop
+Training loop: 
 ```python
 for epoch in range(n_epochs):
     ds.shuffle(60000)
@@ -117,13 +130,13 @@ for epoch in range(n_epochs):
         learn(w, image, target)
 ```
 
-Generation of digits
+Generation of digits: 
 ```python
 targets = tf.constant(tf.expand_dims(tf.eye(10), -1))
 l = generate(w, targets)
 ```
 
-Plot the generated digits
+Plot the generated digits: 
 ```python
 import matplotlib.pyplot as plt
 fig, _ = plt.subplots(2,5)
