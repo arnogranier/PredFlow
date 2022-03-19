@@ -52,7 +52,8 @@ def learn(w, data, target, ir=0.1, lr=0.02, T=20, f=tf.nn.relu, df=drelu):
         for i in range(N):
             e[i] = tf.subtract(r[i+1], tf.matmul(w[i], f(r[i])))
         for i in range(1, N): 
-            r[i] += tf.scalar_mul(ir, -e[i-1] + tf.matmul(w[i], e[i], transpose_a=True) * df(r[i]))
+            r[i] += tf.scalar_mul(ir, -e[i-1] + tf.matmul(w[i], e[i],
+                                  transpose_a=True) * df(r[i]))
     
     # Learning
     for i in range(N):
@@ -88,7 +89,8 @@ def infer(w, data, ir=0.1, T=40, f=tf.nn.relu, df=drelu):
         for i in range(N):
             e[i] = tf.subtract(r[i+1], tf.matmul(w[i], f(r[i])))
         for i in range(1, N): 
-            r[i] += tf.scalar_mul(ir, -e[i-1] + tf.matmul(w[i], e[i], transpose_a=True) * df(r[i]))
+            r[i] += tf.scalar_mul(ir, -e[i-1] + tf.matmul(w[i], e[i],
+                                  transpose_a=True) * df(r[i]))
         r[N] += tf.scalar_mul(ir, -e[N-1])
     
     return r
