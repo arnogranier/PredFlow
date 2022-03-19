@@ -1,6 +1,6 @@
 ---
 title: MNIST generation
-description: A simple example of using predictive coding to generate MNIST digits
+tagline: A simple example of using predictive coding to generate MNIST digits
 ---
 
 Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.

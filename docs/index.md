@@ -1,6 +1,6 @@
 ---
 title: PredFlow
-description: Predictive coding using tensorflow
+tagline: Predictive coding using tensorflow
 ---
 
 Maximum likelihood estimation on factorized gaussian models can be realized through local prediction error minimization. This observation lead to the development of _predictive coding_ theories of cortical computation and cognition. 
@@ -18,7 +18,7 @@ The topics that I will (hopefully) cover during my PhD includes
  - **Lateral dynamics in predictive coding - correlations and sparsity**
  - **Semantization through multimodal predictions**
  - **The place of predictive coding in the brain's algorithm**
- 
+
 These will then be the main focus here, at least when it comes to my contribution.
 
 If you don't know where to start, you can look at simple examples of [classification](https://arnogranier.github.io/PredFlow/_build/html/mnist_experiments.html) and [generation](simplegeneration.md) with predictive coding on a multi-layer perceptron architecture. 

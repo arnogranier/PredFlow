@@ -1,6 +1,4 @@
 theme: jekyll-theme-cayman
-title: PredFlow
-tagline: Predictive coding using tensorflow
 gems:
   - jekyll-paginate
 
