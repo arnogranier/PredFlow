@@ -8,3 +8,6 @@ locale: "en"
 author:
   name: Arno Granier
   url: https://github.com/arnogranier
+
+github:
+  repository_url: https://github.com/arnogranier/PredFlow
