@@ -1,3 +1,14 @@
 theme: jekyll-theme-cayman
 title: PredFlow
 tagline: Predictive coding using tensorflow
+gems:
+  - jekyll-paginate
+baseurl: "arnogranier.github.io/PredFlow"
+paginate: 1
+locale: "en"
+
+author:
+  name: Arno Granier
+  url: https://github.com/arnogranier
+
+markdown: kramdown
