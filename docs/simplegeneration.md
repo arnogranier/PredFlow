@@ -1,8 +1,6 @@
 ---
 title: MNIST generation
 description: A simple example of using predictive coding to generate MNIST digits
-header-includes:
-  - \usepackage{algorithm2e}
 ---
 
 Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.
@@ -32,25 +30,7 @@ do T times
 for all layers
 $e_i = r_i - W_if(r_{i+1})$
 $r_i += ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$ 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-\KwResult{Write here the result}
-\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-\Input{Write here the input}
-\Output{Write here the output}
-\BlankLine
-\While{While condition}{
-    instructions\;
-    \eIf{condition}{
-        instructions1\;
-        instructions2\;
-    }{
-        instructions3\;
-    }
-}
-\caption{While loop with If/Else condition}
-\end{algorithm} 
+
 ```python
 @tf.function
 def learn(w, data, target, ir=0.05, lr=0.005, T=20, f=tf.nn.relu, df=drelu):
@@ -68,7 +48,8 @@ def learn(w, data, target, ir=0.05, lr=0.005, T=20, f=tf.nn.relu, df=drelu):
         for i in range(N):
             e[i] = tf.subtract(r[i], tf.matmul(w[i], f(r[i+1])))
         for i in range(1, N): 
-            r[i] += tf.scalar_mul(ir, -e[i] + tf.matmul(w[i-1], e[i-1], transpose_a=True) * df(r[i]))
+            r[i] += tf.scalar_mul(ir, -e[i] + tf.matmul(w[i-1], e[i-1],
+                                  transpose_a=True) * df(r[i]))
     
     # Learning
     for i in range(N):
@@ -92,7 +73,8 @@ def generate(w, target, ir=0.05, T=40, f=tf.nn.relu, df=drelu):
         for i in range(N):
             e[i] = tf.subtract(r[i], tf.matmul(w[i], f(r[i+1])))
         for i in range(1, N): 
-            r[i] += tf.scalar_mul(ir, -e[i] + tf.matmul(w[i-1], e[i-1], transpose_a=True) * df(r[i]))
+            r[i] += tf.scalar_mul(ir, -e[i] + tf.matmul(w[i-1], e[i-1],
+                                  transpose_a=True) * df(r[i]))
         r[0] += tf.scalar_mul(ir, -e[0])
     
     return r
