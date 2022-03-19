@@ -1,7 +1,7 @@
 theme: jekyll-theme-cayman
 gems:
   - jekyll-paginate
-
+title: PredFlow
 paginate: 1
 locale: "en"
 
