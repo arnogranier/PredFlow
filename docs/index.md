@@ -25,3 +25,8 @@ If you don't know where to start, you can look at simple examples of [classifica
 
 As a very simple benchmark, training a 784-256-64-10 multilayer perceptron on 60000 MNIST digits with 10 steps of inference before each weight update for 10
 epochs with minibatches of size 100 takes approximately 15-20 seconds on mid-range consumer hardware (CPU: AMD Ryzen 7 3700X (16) @ 3.600GHz, GPU: NVIDIA GeForce RTX 2070 SUPER).
+
+## Content
+ - [A simple example of using predictive coding to generate MNIST digits](simplegeneration.md)
+ - [A simple example of using predictive coding to classify MNIST digits](simpleclassification.md)
+ - [Visualization of the computation graph using tensorboard](tensorboardexample.md)

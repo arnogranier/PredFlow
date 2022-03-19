@@ -7,7 +7,6 @@ Here we will show how to train a simple multilayer perceptron with predictive co
 
 Import tensorflow:
 ```python
-import os ; os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1' 
 import tensorflow as tf 
 ```
 

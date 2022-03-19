@@ -35,7 +35,6 @@ A particularly important feature of the three last core computational graphs is 
 Here is the code generating this tensorboard graph. It is very similar to [this code](simplegeneration.md), but we added identifier using `tensorflow.name_scope` to specify the names of our high-level operations, and we only go through one step of learning since it is the only thing needed to elicit a trace of the algorithm for tensorboard to plot.
 
 ```python
-import os ; os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1' 
 import tensorflow as tf 
 import tensorflow_datasets as tfds
 import matplotlib.pyplot as plt
