@@ -25,37 +25,17 @@ def reduce_batch_outer(x, y):
     return tf.reduce_sum(tf.einsum('nx,ny->nxy',tf.squeeze(x),tf.squeeze(y)), 0)
 ```
 
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\SetAlgoLined
-\KwResult{Write here the result}
-\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
-\Input{Write here the input}
-\Output{Write here the output}
-\BlankLine
-\While{While condition}{
-    instructions\;
-    \eIf{condition}{
-        instructions1\;
-        instructions2\;
-    }{
-        instructions3\;
-    }
-}
-\caption{While loop with If/Else condition}
-\end{algorithm} 
-
 Define a step of learning for the supervised generative predictive coding algorithm with weights `w`:
 1. Clamp the top layer to the target and the bottom layer to the data
 2. Initialize the hidden layers to the predictions $$W_if(r_{i+1})$$
 3. Run an inference loop: <br>
-do T times <br>
-&nbsp;&nbsp;for all hidden layers <br>
-&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
-&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
+do T times: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;for all hidden layers: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
 4. Run a weight update step: <br>
-for all weight matrices <br>
-&nbsp;&nbsp;$$W_i \mathrel{+}= lr * (e_i \otimes f(r_{i+1}))$$
+for all weight matrices: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;$$W_i \mathrel{+}= lr * (e_i \otimes f(r_{i+1}))$$
 
 ```python
 @tf.function
