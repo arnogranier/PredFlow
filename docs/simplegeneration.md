@@ -1,6 +1,7 @@
 ---
 title: MNIST generation
 description: A simple example of using predictive coding to generate MNIST digits
+layout: page
 ---
 
 Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.
@@ -27,9 +28,12 @@ Define a step of learning for the supervised generative predictive coding algori
 2. Initialize the hidden layers to the predictions
 3. Run an inference loop: 
 do T times 
-&nbsp;&nbsp;for all layers
+&nbsp;&nbsp;for all hidden layers
 &nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$
 &nbsp;&nbsp;&nbsp;&nbsp;$$r_i += ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$
+4. Run a weight update step:
+for all weight matrices
+&nbsp;&nbsp;$$W_i += lr * (e_i \otimes f(r_{i+1}))$$
 
 ```python
 @tf.function
