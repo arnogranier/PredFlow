@@ -15,15 +15,15 @@ Let us also further inspect the graph of the inference loop:
 <a href="https://ibb.co/1mgy2JG"><img src="https://i.ibb.co/6WM9sJ0/Screenshot-from-2022-03-19-19-32-30.png" alt="Screenshot-from-2022-03-19-19-32-30" border="0"></a>
 
 We can see that it is alternating sequentially between prediction error computation and representation update (for 5 timesteps here). We can further inspect prediction errors computation:
-<a href="https://ibb.co/FgNZ4bk"><img src="https://i.ibb.co/LnbjdzD/Screenshot-from-2022-03-19-19-33-33.png" alt="Screenshot-from-2022-03-19-19-33-33" border="0" width="500"></a>
+<a href="https://ibb.co/FgNZ4bk"><img src="https://i.ibb.co/LnbjdzD/Screenshot-from-2022-03-19-19-33-33.png" alt="Screenshot-from-2022-03-19-19-33-33" border="0"></a>
 
 and remark that it indeed computes $$e_i = r_i - W_if(r_{i+1})$$ as expected for this model. 
 
 A further inspection of representation update illustrates the computation $$r_i \mathrel{+}= ir * (-e_i + {W_{i-1}}^Te_{i-1} \odot f'(r_i))$$:
-<a href="https://ibb.co/gPmPTWx"><img src="https://i.ibb.co/TbYb80s/Screenshot-from-2022-03-19-19-33-08.png" alt="Screenshot-from-2022-03-19-19-33-08" border="0" width="700"></a>
+<a href="https://ibb.co/gPmPTWx"><img src="https://i.ibb.co/TbYb80s/Screenshot-from-2022-03-19-19-33-08.png" alt="Screenshot-from-2022-03-19-19-33-08" border="0"></a>
 
 Finally we can inspect the weight update computational graph, illustrating the computation $$W_i \mathrel{+}= lr * (e_i \otimes f(r_{i+1}))$$
-<a href="https://ibb.co/2kprRdw"><img src="https://i.ibb.co/XCGP6t9/Screenshot-from-2022-03-19-19-34-46.png" alt="Screenshot-from-2022-03-19-19-34-46" border="0" width="00"></a>
+<a href="https://ibb.co/2kprRdw"><img src="https://i.ibb.co/rwXhqHg/Screenshot-from-2022-03-19-19-34-46.png" alt="Screenshot-from-2022-03-19-19-34-46" border="0"></a>
 
 A particularly important feature of the three last core computational graphs is that operations for each layers and weight matrices are executed in parallel (nodes on the same horizontal level in tensorboard graphs are executed in parallel). This certainly illustrates an important property of predictive coding, namely that it is highly parallelizable across layers, since there is no need to backpropagate gradients (because representations and parameters update are based on _local_ prediction errors).
 
