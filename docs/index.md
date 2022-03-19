@@ -21,7 +21,7 @@ The topics that I will (hopefully) cover during my PhD includes
 
 These will then be the main focus here, at least when it comes to my contribution.
 
-If you don't know where to start, you can look at simple examples of [classification](https://arnogranier.github.io/PredFlow/_build/html/mnist_experiments.html) and [generation](simplegeneration.md) with predictive coding on a multi-layer perceptron architecture. 
+If you don't know where to start, you can look at simple examples of [classification](simpleclassification.md) and [generation](simplegeneration.md) with predictive coding on a multi-layer perceptron architecture. 
 
 As a very simple benchmark, training a 784-256-64-10 multilayer perceptron on 60000 MNIST digits with 10 steps of inference before each weight update for 10
 epochs with minibatches of size 100 takes approximately 15-20 seconds on mid-range consumer hardware (CPU: AMD Ryzen 7 3700X (16) @ 3.600GHz, GPU: NVIDIA GeForce RTX 2070 SUPER).

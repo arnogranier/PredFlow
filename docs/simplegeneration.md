@@ -1,8 +1,6 @@
 ---
 title: MNIST generation
 tagline: A simple example of using predictive coding to generate MNIST digits
-header-includes:
-  - \usepackage{algorithm2e}
 ---
 
 Here we will show how to train a simple multilayer perceptron with predictive coding to generate samples of MNIST digits.
@@ -29,12 +27,12 @@ Define a step of learning for the supervised generative predictive coding algori
 1. Clamp the top layer to the target and the bottom layer to the data
 2. Initialize the hidden layers to the predictions $$W_if(r_{i+1})$$
 3. Run an inference loop: <br>
-do T times: <br>
-&nbsp;&nbsp;&nbsp;&nbsp;for all hidden layers: <br>
+_do T times_: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;_for all hidden layers_: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_{i-1}}^Te_{i-1} \odot f'(r_i))$$ <br>
 4. Run a weight update step: <br>
-for all weight matrices: <br>
+_for all weight matrices_: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;$$W_i \mathrel{+}= lr * (e_i \otimes f(r_{i+1}))$$
 
 ```python
@@ -67,10 +65,10 @@ Define an inference loop for the supervised generative predictive coding algorit
 1. Clamp the top layer to the target
 2. Initialize the hidden and bottom layers to the predictions $$W_if(r_{i+1})$$
 3. Run an inference loop: <br>
-do T times <br>
-&nbsp;&nbsp;&nbsp;&nbsp;for all hidden layers <br>
+_do T times_: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;_for all hidden layers_: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$e_i = r_i - W_if(r_{i+1})$$ <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_i}^Te_i \odot f'(r_i))$$ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$$r_i \mathrel{+}= ir * (-e_i + {W_{i-1}}^Te_{i-1} \odot f'(r_i))$$ <br>
 &nbsp;&nbsp;&nbsp;&nbsp;$$e_0 = r_0 - W_0f(r_{1})$$ <br>
 &nbsp;&nbsp;&nbsp;&nbsp;$$r_0 \mathrel{+}= ir * (-e_0)$$ <br>
 4. Return the inferred representations
@@ -116,7 +114,7 @@ ds = ds.map(preprocess, num_parallel_calls=tf.data.AUTOTUNE)
 ds = ds.cache().batch(batch_size).prefetch(tf.data.experimental.AUTOTUNE)
 ```
 
-Initialize the MLP weights: 
+Initialize the reversed MLP weights (_top-down_ weights): 
 ```python
 w = [tf.Variable(tf.random.normal([s1, s2], stddev=w_init_std))
      for (s1, s2) in zip(mlp_architecture[:-1], mlp_architecture[1:])]

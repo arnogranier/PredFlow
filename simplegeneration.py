@@ -68,7 +68,7 @@ if __name__ == "__main__":
     ds = ds.map(preprocess, num_parallel_calls=tf.data.AUTOTUNE)
     ds = ds.cache().batch(batch_size).prefetch(tf.data.experimental.AUTOTUNE)
 
-    # MLP weights
+    # Reversed MLP weights
     w = [tf.Variable(tf.random.normal([s1, s2], stddev=w_init_std))
          for (s1, s2) in zip(mlp_architecture[:-1], mlp_architecture[1:])]
 
