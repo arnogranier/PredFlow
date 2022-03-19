@@ -4,26 +4,26 @@ using [tensorboard](https://www.tensorflow.org/tensorboard).
 
 Here is what the computational graph of the simple `learn` function from the [example of MNIST digits generation](simplegeneration.md) from a high level view:
 
-<a href="https://ibb.co/DLHZ6DX"><img src="https://i.ibb.co/FnLFfbv/full.png" alt="full" border="0"></a>
+<a href="https://ibb.co/WDgW16N"><img src="https://i.ibb.co/cbDcd1K/Screenshot-from-2022-03-19-19-30-51.png" alt="Screenshot-from-2022-03-19-19-30-51" border="0"></a>
 
 Of course we can get to a finer level of detail, and inspect for example the initialization phase:
-<a href="https://ibb.co/sbwSsMY"><img src="https://i.ibb.co/ckF527n/init.png" alt="init" border="0"></a>
+<a href="https://ibb.co/DzjJPNv"><img src="https://i.ibb.co/rFXjKgz/Screenshot-from-2022-03-19-19-31-49.png" alt="Screenshot-from-2022-03-19-19-31-49" border="0"></a>
 
 We can see that the initialization consist of a sweep through the model, stopping before the first layer since its activity is clamped to data, and an initalization of prediction errors to zero.
 
 Let us also further inspect the graph of the inference loop:
-<a href="https://ibb.co/GTxQrSM"><img src="https://i.ibb.co/8cKgQZx/inferenceloop.png" alt="inferenceloop" border="0"></a>
+<a href="https://ibb.co/1mgy2JG"><img src="https://i.ibb.co/6WM9sJ0/Screenshot-from-2022-03-19-19-32-30.png" alt="Screenshot-from-2022-03-19-19-32-30" border="0"></a>
 
 We can see that it is alternating sequentially between prediction error computation and representation update (for 5 timesteps here). We can further inspect prediction errors computation:
-<a href="https://ibb.co/McF6MSs"><img src="https://i.ibb.co/jynRgfT/pe.png" alt="pe" border="0"></a>
+<a href="https://ibb.co/FgNZ4bk"><img src="https://i.ibb.co/LnbjdzD/Screenshot-from-2022-03-19-19-33-33.png" alt="Screenshot-from-2022-03-19-19-33-33" border="0"></a>
 
 and remark that it indeed computes $$e_i = r_i - W_if(r_{i+1})$$ as expected for this model. 
 
 A further inspection of representation update illustrates the computation $$r_i \mathrel{+}= ir * (-e_i + {W_{i-1}}^Te_{i-1} \odot f'(r_i))$$:
-<a href="https://ibb.co/mzhPh58"><img src="https://i.ibb.co/YjfVfBZ/reprupdate.png" alt="reprupdate" border="0"></a>
+<a href="https://ibb.co/gPmPTWx"><img src="https://i.ibb.co/TbYb80s/Screenshot-from-2022-03-19-19-33-08.png" alt="Screenshot-from-2022-03-19-19-33-08" border="0"></a>
 
 Finally we can inspect the weight update computational graph, illustrating the computation $$W_i \mathrel{+}= lr * (e_i \otimes f(r_{i+1}))$$
-<a href="https://ibb.co/X4ZHvWt"><img src="https://i.ibb.co/PYZkfrg/weightupdate.png" alt="weightupdate" border="0"></a>
+<a href="https://ibb.co/2kprRdw"><img src="https://i.ibb.co/rwXhqHg/Screenshot-from-2022-03-19-19-34-46.png" alt="Screenshot-from-2022-03-19-19-34-46" border="0"></a>
 
 A particularly important feature of the three last core computational graphs is that operations for each layers and weight matrices are executed in parallel (nodes on the same horizontal level in tensorboard graphs are executed in parallel). This certainly illustrates an important property of predictive coding, namely that it is highly parallelizable across layers, since there is no need to backpropagate gradients (because representations and parameters update are based on _local_ prediction errors).
 
@@ -78,6 +78,8 @@ if __name__ == "__main__":
     # Hyperparamaters
     batch_size = 50
     mlp_architecture = [784, 256, 64, 10]
+    logdir = 'YOUR_DIR_NAME'
+    trace_name = 'trace'
 
     # Load MNIST dataset
     def preprocess(image, label): 
@@ -91,7 +93,7 @@ if __name__ == "__main__":
     w = [tf.Variable(tf.random.normal([s1, s2], stddev=0.001, name='w', dtype=tf.float32))
          for (s1, s2) in zip(mlp_architecture[:-1], mlp_architecture[1:])]
 
-    logdir = '/home/arno/tensorboard_trace/'
+    # Tensorboard writer
     writer = tf.summary.create_file_writer(logdir)
     tf.summary.trace_on()
     
@@ -100,9 +102,10 @@ if __name__ == "__main__":
         learn(w, tf.constant(image), tf.constant(target))
         break
     
+    # Exporting trace
     with writer.as_default():
         tf.summary.trace_export(
-            name='trace',
+            name=trace_name,
             step=0,
             profiler_outdir=logdir)
 ```
