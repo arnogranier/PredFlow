@@ -141,7 +141,10 @@ for i, ax in enumerate(fig.axes):
     ax.imshow(tf.reshape(l[0][i,:,:], (28,28)), cmap="Greys")
     ax.axis("off")
 plt.tight_layout()
-plt.show()
+```
+
+```python
+>>> plt.show()
 ```
 
 <a href="https://ibb.co/YQ6Dfd5"><img src="https://i.ibb.co/h9kX2dG/generation.png" alt="generation" border="0" height=240 width=320></a>

@@ -10,7 +10,7 @@ can be found from very different points of view including [theoretical neuroscie
 [philosophy of mind](https://predictive-mind.net/papers/vanilla-pp-for-philosophers-a-primer-on-predictive-processing),
 [neuropsychology](https://www.sciencedirect.com/science/article/pii/S0006322318315324),
 [cognitive science](https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/whatever-next-predictive-brains-situated-agents-and-the-future-of-cognitive-science/33542C736E17E3D1D44E8D03BE5F4CD9#article) and
-[machine learning](https://arxiv.org/abs/2107.12979) (*citation does not mean endorsement*). 
+[machine learning](https://arxiv.org/abs/2107.12979). 
 
 This repository of tutorials and short software pieces is mainly a support for my PhD and is not intended as a general predictive coding simulation platform.
 
@@ -23,4 +23,5 @@ epochs with minibatches of size 100 takes approximately 15-20 seconds on mid-ran
  - [A simple example of using predictive coding to generate MNIST digits](simplegeneration.md)
  - [A simple example of using predictive coding to classify MNIST digits](simpleclassification.md)
  - [Visualization of the computation graph using tensorboard](tensorboardexample.md)
+ - [Full precision-weighting of prediction errors in pixel space of a shallow network on MNIST: Visualization the precision matrix](full_pwpe_visualization.md)
 

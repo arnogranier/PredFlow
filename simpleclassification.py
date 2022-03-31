@@ -36,23 +36,13 @@ def learn(w, data, target, ir=0.1, lr=0.02, T=20, f=tf.nn.relu, df=drelu):
         w[i].assign_add(tf.scalar_mul(lr, reduce_batch_outer(e[i], f(r[i]))))
 
 @tf.function
-def infer(w, data, ir=0.1, T=40, f=tf.nn.relu, df=drelu):
+def infer(w, data, f=tf.nn.relu):
     N = len(w)
     
-    # Initialization
     r = [data, ]
     for i in range(N-1):
         r.append(tf.matmul(w[i], f(r[-1])))
     r.append(tf.matmul(w[-1], f(r[-1])))
-    e = [tf.zeros(tf.shape(r[i])) for i in range(1,N+1)]
-    
-    # Inference
-    for _ in range(T):
-        for i in range(N):
-            e[i] = tf.subtract(r[i+1], tf.matmul(w[i], f(r[i])))
-        for i in range(1, N): 
-            r[i] += tf.scalar_mul(ir, -e[i-1] + tf.matmul(w[i], e[i], transpose_a=True) * df(r[i]))
-        r[N] += tf.scalar_mul(ir, -e[N-1])
     
     return r
 
