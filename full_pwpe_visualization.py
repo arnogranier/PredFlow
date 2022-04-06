@@ -1,4 +1,3 @@
-import os ; os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1' 
 import tensorflow as tf 
 import tensorflow_datasets as tfds
 import matplotlib.pyplot as plt
@@ -27,6 +26,7 @@ def infer(w, p, data, target_size, ir=0.05, T=60, f=tf.nn.relu, df=drelu):
         e = tf.subtract(data, tf.matmul(w, f(r)))
         epsilon = tf.matmul(p, e)
         r += tf.scalar_mul(ir, tf.matmul(w, epsilon, transpose_a=True) * df(r))
+        
     return r
 
 if __name__ == "__main__":
