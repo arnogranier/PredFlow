@@ -23,5 +23,5 @@ epochs with minibatches of size 100 takes approximately 15-20 seconds on mid-ran
  - [A simple example of using predictive coding to generate MNIST digits](simplegeneration.md)
  - [A simple example of using predictive coding to classify MNIST digits](simpleclassification.md)
  - [Visualization of the computation graph using tensorboard](tensorboardexample.md)
- - [Full precision-weighting of prediction errors in pixel space of a shallow network on MNIST: Visualization the precision matrix](full_pwpe_visualization.md)
+ - [Full precision-weighting of prediction errors in pixel space of a shallow network on MNIST: Visualization of the precision matrix](full_pwpe_visualization.md)
 

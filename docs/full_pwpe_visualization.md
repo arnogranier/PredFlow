@@ -1,6 +1,6 @@
 ---
-title: Visualization the precision matrix
-tagline: Full precision-weighting of prediction errors in pixel space of a shallow network on MNIST - Visualization the precision matrix
+title: Visualization of the precision matrix
+tagline: Full precision-weighting of prediction errors in pixel space of a shallow network on MNIST - Visualization of the precision matrix
 ---
 
 Import tensorflow:
